@@ -8,6 +8,7 @@ import java.util.Random;
 
 import com.someguyssoftware.gottschcore.item.ModItem;
 import com.someguyssoftware.gottschcore.random.RandomHelper;
+import com.someguyssoftware.gottschcore.world.WorldInfo;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.block.AbstractChestBlock;
 import com.someguyssoftware.treasure2.block.ITreasureChestProxy;
@@ -167,7 +168,7 @@ public class KeyItem extends ModItem {
 			AbstractTreasureChestTileEntity tcte = (AbstractTreasureChestTileEntity)te;
 						
 			// exit if on the client
-			if (worldIn.isRemote) {			
+			if (WorldInfo.isClientSide(worldIn)) {			
 				return EnumActionResult.FAIL;
 			}
 
