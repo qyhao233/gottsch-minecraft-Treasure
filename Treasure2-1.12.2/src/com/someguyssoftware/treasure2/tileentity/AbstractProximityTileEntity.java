@@ -5,10 +5,10 @@ package com.someguyssoftware.treasure2.tileentity;
 
 import java.util.Random;
 
+import com.someguyssoftware.gottschcore.GottschCore;
 import com.someguyssoftware.gottschcore.positional.Coords;
 import com.someguyssoftware.gottschcore.tileentity.AbstractModTileEntity;
 import com.someguyssoftware.gottschcore.world.WorldInfo;
-import com.someguyssoftware.treasure2.Treasure;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ITickable;
@@ -57,10 +57,11 @@ public abstract class AbstractProximityTileEntity extends AbstractModTileEntity 
             double distanceSq = player.getDistanceSq(this.getPos().add(0.5D, 0.5D, 0.5D));
            
             if (!isTriggered && !this.isDead && (distanceSq < proximitySq)) {
-            	Treasure.logger.debug("PTE proximity was met.");
+            	GottschCore.logger.debug("PTE proximity was met.");
+            	isTriggered = true;
             	// exectute action
             	execute(this.getWorld(), new Random(), new Coords(this.getPos()), new Coords(player.getPosition()));
-            	isTriggered = true;
+
             	// NOTE: does not self-destruct that is up to the execute action to perform
             }
             

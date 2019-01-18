@@ -2,18 +2,22 @@ package com.someguyssoftware.treasure2.generator.pit;
 
 import java.util.Random;
 
+import com.someguyssoftware.gottschcore.Quantity;
 import com.someguyssoftware.gottschcore.cube.Cube;
 import com.someguyssoftware.gottschcore.positional.Coords;
 import com.someguyssoftware.gottschcore.positional.ICoords;
 import com.someguyssoftware.gottschcore.random.RandomHelper;
 import com.someguyssoftware.gottschcore.random.RandomWeightedCollection;
 import com.someguyssoftware.treasure2.Treasure;
+import com.someguyssoftware.treasure2.block.TreasureBlocks;
 import com.someguyssoftware.treasure2.generator.GenUtil;
+import com.someguyssoftware.treasure2.tileentity.ProximitySpawnerTileEntity;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
 
@@ -132,7 +136,15 @@ public class BigBottomMobTrapPitGenerator extends AbstractPitGenerator {
     	spawnMob(world, coords.add(-2, 0, 0), "skeleton");
     	spawnMob(world, coords.add(0, 0, -2), "zombie");
     	spawnMob(world, coords.add(2, 0, 0), "zombie");
-    	spawnMob(world, coords.add(0, 0, 2), "skeleton");    	
+    	spawnMob(world, coords.add(0, 0, 2), "skeleton");
+    	
+    	// test
+    	world.setBlockState(coords.add(-1, 0, 0).toPos(), TreasureBlocks.PROXIMITY_SPAWNER.getDefaultState());
+    	ProximitySpawnerTileEntity te = (ProximitySpawnerTileEntity) world.getTileEntity(coords.add(-1, 0, 0).toPos());
+    	te.setMobName("minecraft:Spider");
+    	te.setMobNum(new Quantity(1, 2));
+    	te.setProximity(5D);
+    	
 		return coords;
 	}
 	
