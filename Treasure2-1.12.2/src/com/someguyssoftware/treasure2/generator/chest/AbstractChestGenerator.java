@@ -36,7 +36,10 @@ import com.someguyssoftware.treasure2.worldgen.ChestWorldGenerator;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.Rotation;
 import net.minecraft.world.World;
+import net.minecraft.world.gen.structure.template.TemplateManager;
+import net.minecraft.world.gen.structure.template.Template;
 
 /**
  * @author Mark Gottschling on Feb 1, 2018
@@ -98,6 +101,17 @@ public abstract class AbstractChestGenerator implements IChestGenerator {
 			isGenerated = pitGenerator.generate(world, random, markerCoords, spawnCoords);
 //			Treasure.logger.debug("Is pit generated: {}", isGenerated);
 			// 4. build the room
+//			TemplateManager tm = null;
+//			Template t = new Template();
+//			t.read(compound);
+//			t.transformedSize(Rotation.CLOCKWISE_180);
+//			t.getSize();
+//			t.transformedBlockPos(placementIn, pos)
+			
+			// TODO in order to build a room using Structure NBT the pitGenerator would have to return an object with 
+			// success/failure, chest location and spawner location because the nbt doesn't contain any meta data about
+			// where things are and you wouldn't know where the chest was until after it is generated, and thus wouldn't match
+			// with spawnCoords. so you'd have to calc the chest coords and pass that back to the caller so chestCoords = newCoords
 			
 			// 5. update the chest coords
 			chestCoords = new Coords(spawnCoords);
