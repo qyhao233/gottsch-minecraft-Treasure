@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.someguyssoftware.treasure2.structure;
+package com.someguyssoftware.treasure2.world.gen.structure;
 
 import java.util.List;
 import java.util.Map;
