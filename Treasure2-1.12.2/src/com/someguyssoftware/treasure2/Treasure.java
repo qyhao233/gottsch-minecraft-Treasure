@@ -16,8 +16,6 @@ import com.someguyssoftware.gottschcore.config.IConfig;
 import com.someguyssoftware.gottschcore.config.ILoggerConfig;
 import com.someguyssoftware.gottschcore.mod.AbstractMod;
 import com.someguyssoftware.gottschcore.mod.IMod;
-import com.someguyssoftware.gottschcore.positional.Coords;
-import com.someguyssoftware.gottschcore.positional.ICoords;
 import com.someguyssoftware.gottschcore.version.BuildVersion;
 import com.someguyssoftware.treasure2.block.TreasureBlocks;
 import com.someguyssoftware.treasure2.client.gui.GuiHandler;
@@ -34,11 +32,13 @@ import com.someguyssoftware.treasure2.eventhandler.PlayerEventHandler;
 import com.someguyssoftware.treasure2.eventhandler.WorldEventHandler;
 import com.someguyssoftware.treasure2.item.PaintingItem;
 import com.someguyssoftware.treasure2.item.TreasureItems;
+import com.someguyssoftware.treasure2.world.gen.structure.TreasureTemplateManager;
 import com.someguyssoftware.treasure2.worldgen.ChestWorldGenerator;
 import com.someguyssoftware.treasure2.worldgen.GemOreWorldGenerator;
 import com.someguyssoftware.treasure2.worldgen.WellWorldGenerator;
 import com.someguyssoftware.treasure2.worldgen.WitherTreeWorldGenerator;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
@@ -107,12 +107,16 @@ public class Treasure extends AbstractMod {
 	};
     
 	// forge world generators
-    public static Map<String, IWorldGenerator> worldGenerators = new HashMap<>();
+    public static final Map<String, IWorldGenerator> WORLD_GENERATORS = new HashMap<>();
+    
+    // template manager - TODO update
+    public static final TreasureTemplateManager TEMPLATE_MANAGER = new TreasureTemplateManager("mods/treasure2/locations", Minecraft.getMinecraft().getDataFixer());
     
 	/**
 	 * 
 	 */
-	public Treasure() {}
+	public Treasure() {
+	}
 	
 	/**
 	 * 
@@ -185,15 +189,14 @@ public class Treasure extends AbstractMod {
 		super.init(event);
 
 		// register world generators
-		worldGenerators.put("chest", new ChestWorldGenerator());
-		worldGenerators.put("well", new WellWorldGenerator());
-		worldGenerators.put("witherTree", new WitherTreeWorldGenerator());
-		worldGenerators.put("gem", new GemOreWorldGenerator());
+		WORLD_GENERATORS.put("chest", new ChestWorldGenerator());
+		WORLD_GENERATORS.put("well", new WellWorldGenerator());
+		WORLD_GENERATORS.put("witherTree", new WitherTreeWorldGenerator());
+		WORLD_GENERATORS.put("gem", new GemOreWorldGenerator());
 		int genWeight = 0;
-		for (Entry<String, IWorldGenerator> gen : worldGenerators.entrySet()) {
+		for (Entry<String, IWorldGenerator> gen : WORLD_GENERATORS.entrySet()) {
 			GameRegistry.registerWorldGenerator(gen.getValue(), genWeight++);
 		}
-
 	}
 	
 	/**

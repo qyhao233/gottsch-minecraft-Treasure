@@ -32,6 +32,7 @@ public class WorldEventHandler {
 	public void onWorldLoad(WorldEvent.Load event) {
 //		Treasure.logger.debug("In world load event for dimension {}", event.getWorld().provider.getDimension());
 		
+		// TODO this is called on every load of the DIMENSION - only need it once though - shouldn't be here
 		/*
 		 * On load of dimension 0 (overworld), initialize the loot table's context and other static loot tables
 		 */

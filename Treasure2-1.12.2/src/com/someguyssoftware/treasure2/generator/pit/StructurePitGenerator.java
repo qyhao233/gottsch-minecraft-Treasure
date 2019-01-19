@@ -1,5 +1,6 @@
 package com.someguyssoftware.treasure2.generator.pit;
 
+import java.util.List;
 import java.util.Random;
 
 import com.someguyssoftware.gottschcore.Quantity;
@@ -12,14 +13,19 @@ import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.block.TreasureBlocks;
 import com.someguyssoftware.treasure2.generator.GenUtil;
 import com.someguyssoftware.treasure2.tileentity.ProximitySpawnerTileEntity;
+import com.someguyssoftware.treasure2.world.gen.structure.TreasureTemplate;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
+import net.minecraft.world.gen.structure.template.TemplateManager;
 
 
 /**
@@ -78,7 +84,24 @@ public class StructurePitGenerator extends AbstractPitGenerator {
 		Treasure.logger.debug("Distance to ySurface =" + yDist);
 	
 		ICoords nextCoords = null;
-		if (yDist > 6) {			
+		if (yDist > 6) {
+			// TODO will want the structures organized better to say grab RARE UNDERGROUND ROOMs
+			TreasureTemplate template = (TreasureTemplate) Treasure.TEMPLATE_MANAGER.getTemplate(new ResourceLocation("treasure2:underground/basic1.nbt"));
+			
+			// TODO check if the yDist is big enough to accodate a room
+			BlockPos size = template.getSize();
+			
+			// TODO select a rotation
+			
+			// TODO perfrom rotation, mirror on specials map
+			
+			// TODO find the entrance block
+			
+			// TODO find the chest block
+			List<ICoords> chestCoordsList = (List<ICoords>) template.getMap().get(Blocks.CHEST);
+			
+			template.addBlocksToWorld(world, spawnCoords.toPos(), null, 3);
+			
 			Treasure.logger.debug("Generating shaft @ " + spawnCoords.toShortString());
 			// at chest level
 			nextCoords = build6WideLayer(world, random, spawnCoords, Blocks.AIR);
