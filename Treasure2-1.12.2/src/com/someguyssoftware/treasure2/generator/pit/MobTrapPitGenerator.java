@@ -142,11 +142,16 @@ public class MobTrapPitGenerator extends AbstractPitGenerator {
 		nextCoords = buildLogLayer(world, random, nextCoords, block);
 
 		// spawn the mobs
-    	spawnMob(world, spawnCoords, "skeleton");
-    	spawnMob(world, spawnCoords.add(1, 0, 0), "zombie");
-    	spawnMob(world, spawnCoords.add(0, 0, 1), "zombie");
-    	spawnMob(world, spawnCoords.add(1, 0, 1), "skeleton");
+//    	spawnMob(world, spawnCoords, "skeleton");
+//    	spawnMob(world, spawnCoords.add(1, 0, 0), "zombie");
+//    	spawnMob(world, spawnCoords.add(0, 0, 1), "zombie");
+//    	spawnMob(world, spawnCoords.add(1, 0, 1), "skeleton");
 		
+    	spawnRandomMob(world, random, spawnCoords);
+    	spawnRandomMob(world, random, spawnCoords.add(1, 0, 0));
+    	spawnRandomMob(world, random, spawnCoords.add(0, 0, 1));
+    	spawnRandomMob(world, random, spawnCoords.add(1, 0, 1));
+    	
 		// get the next coords
 		nextCoords = nextCoords.up(1);
 		// return the next coords
