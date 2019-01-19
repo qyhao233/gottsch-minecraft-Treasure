@@ -18,7 +18,9 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
+import net.minecraftforge.common.DungeonHooks;
 
 
 /**
@@ -133,19 +135,20 @@ public class BigBottomMobTrapPitGenerator extends AbstractPitGenerator {
 	 * @return
 	 */
 	public ICoords buildTrapLayer(final World world, final Random random, final ICoords coords, final Block block) {
-		// spawn the mobs
-    	spawnMob(world, coords.add(-2, 0, 0), "skeleton");
-    	spawnMob(world, coords.add(0, 0, -2), "zombie");
-    	spawnMob(world, coords.add(2, 0, 0), "zombie");
-    	spawnMob(world, coords.add(0, 0, 2), "skeleton");
-    	
-    	// test
+		// spawn random registered mobs on either side of the chest
     	world.setBlockState(coords.add(-1, 0, 0).toPos(), TreasureBlocks.PROXIMITY_SPAWNER.getDefaultState());
     	ProximitySpawnerTileEntity te = (ProximitySpawnerTileEntity) world.getTileEntity(coords.add(-1, 0, 0).toPos());
-    	te.setMobName("minecraft:Spider");
-    	te.setMobNum(new Quantity(1, 2));
+    	ResourceLocation r = DungeonHooks.getRandomDungeonMob(random);
+    	te.setMobName(r);
+    	te.setMobNum(new Quantity(2, 2));
     	te.setProximity(5D);
-    	
+    	    	
+    	world.setBlockState(coords.add(1, 0, 0).toPos(), TreasureBlocks.PROXIMITY_SPAWNER.getDefaultState());
+    	te = (ProximitySpawnerTileEntity) world.getTileEntity(coords.add(1, 0, 0).toPos());
+    	r = DungeonHooks.getRandomDungeonMob(random);
+    	te.setMobName(r);
+    	te.setMobNum(new Quantity(2, 2));
+    	te.setProximity(5D);
 		return coords;
 	}
 	

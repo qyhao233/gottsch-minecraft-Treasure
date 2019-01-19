@@ -23,7 +23,7 @@ import net.minecraft.world.World;
  *
  */
 public class ProximitySpawnerTileEntity extends AbstractProximityTileEntity {
-	private String mobName;
+	private ResourceLocation mobName;
 	private Quantity mobNum;
 	
 	/**
@@ -47,7 +47,7 @@ public class ProximitySpawnerTileEntity extends AbstractProximityTileEntity {
     	int mobCount = RandomHelper.randomInt(getMobNum().getMinInt(), getMobNum().getMaxInt());
     	for (int i = 0; i < mobCount; i++) {
 
-            Entity entity = EntityList.createEntityByIDFromName(new ResourceLocation(getMobName()), world);
+            Entity entity = EntityList.createEntityByIDFromName(getMobName(), world);
 
             if (entity instanceof EntityLiving) {
                 EntityLiving entityliving = (EntityLiving)entity;
@@ -75,14 +75,14 @@ public class ProximitySpawnerTileEntity extends AbstractProximityTileEntity {
 	/**
 	 * @return the mobName
 	 */
-	public String getMobName() {
+	public ResourceLocation getMobName() {
 		return mobName;
 	}
 
 	/**
 	 * @param mobName the mobName to set
 	 */
-	public void setMobName(String mobName) {
+	public void setMobName(ResourceLocation mobName) {
 		this.mobName = mobName;
 	}
 

@@ -18,6 +18,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
 
@@ -144,7 +145,7 @@ public class StructurePitGenerator extends AbstractPitGenerator {
     	// test
     	world.setBlockState(coords.add(-1, 0, 0).toPos(), TreasureBlocks.PROXIMITY_SPAWNER.getDefaultState());
     	ProximitySpawnerTileEntity te = (ProximitySpawnerTileEntity) world.getTileEntity(coords.add(-1, 0, 0).toPos());
-    	te.setMobName("minecraft:Spider");
+    	te.setMobName(new ResourceLocation("minecraft:Spider"));
     	te.setMobNum(new Quantity(1, 2));
     	te.setProximity(5D);
     	

@@ -110,11 +110,6 @@
 					"type": "loot_table",
 					"name": "treasure2:items/uncommon",
 					"weight": 1
-				},
-				{
-					"type": "loot_table",
-					"name": "treasure2:loot_tables/mocreatures/items/uncommon",
-					"weight": 1
 				}
 			]
 		},
@@ -128,11 +123,6 @@
 				{
 					"type": "loot_table",
 					"name": "treasure2:armor/uncommon",
-					"weight": 1
-				},
-				{
-					"type": "loot_table",
-					"name": "treasure2:loot_tables/mocreatures/armor/uncommon",
 					"weight": 1
 				}
 			]
@@ -148,11 +138,6 @@
 					"type": "loot_table",
 					"name": "treasure2:food/uncommon",
 					"weight": 1
-				},
-				{
-					"type": "loot_table",
-					"name": "treasure2:loot_tables/mocreatures/food/uncommon",
-					"weight": 1
 				}
 			]
 		},
@@ -166,11 +151,6 @@
 				{
 					"type": "loot_table",
 					"name": "treasure2:tools/uncommon",
-					"weight": 1
-				},
-				{
-					"type": "loot_table",
-					"name": "treasure2:loot_tables/mocreatures/tools/uncommon",
 					"weight": 1
 				}
 			]
