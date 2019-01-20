@@ -63,6 +63,7 @@ public class TreasureTemplateManager {
 	 * @param fixer
 	 */
 	public TreasureTemplateManager(String baseFolder, DataFixer fixer) {
+		Treasure.logger.debug("creating a TreasureTemplateManager");
         this.baseFolder = baseFolder;
         this.fixer = fixer;        
         loadAll();
@@ -96,7 +97,9 @@ public class TreasureTemplateManager {
 	 * 
 	 */
 	public void loadAll() {
+		Treasure.logger.debug("loading all structures...");
 		for (String s : locations) {
+			Treasure.logger.debug("loading from -> {}", s);
 			load(new ResourceLocation(s), scanList);
 		}
 	}
@@ -107,7 +110,6 @@ public class TreasureTemplateManager {
 	 * @param templatePath
 	 * @return
 	 */
-	@Nullable
 	public Template load(/*@Nullable MinecraftServer server, */ResourceLocation templatePath, List<Block> scanForBlocks) {
 		String s = templatePath.getResourcePath();
 //
@@ -142,6 +144,7 @@ public class TreasureTemplateManager {
 		File file1 = new File(this.baseFolder, s + ".nbt");
 
 		if (!file1.exists()) {
+			Treasure.logger.debug("file does not exist, read from jar -> {}", file1.getAbsolutePath());
 			return this.readTemplateFromJar(location, scanForBlocks);
 		} else {
 			InputStream inputstream = null;
@@ -171,10 +174,12 @@ public class TreasureTemplateManager {
 		boolean flag;
 
 		try {
-			inputstream = MinecraftServer.class.getResourceAsStream("/assets/" + s + "/locations/" + s1 + ".nbt");
+			Treasure.logger.debug("attempting to open resource stream -> {}", "/assets/" + s + "/strucutres/" + s1 + ".nbt");
+			inputstream = MinecraftServer.class.getResourceAsStream("/assets/" + s + "/structures/" + s1 + ".nbt");
 			this.readTemplateFromStream(s1, inputstream, scanForBlocks);
 			return true;
 		} catch (Throwable var10) {
+			Treasure.logger.error("error reading resource: ", var10);
 			flag = false;
 		} finally {
 			IOUtils.closeQuietly(inputstream);
@@ -195,6 +200,7 @@ public class TreasureTemplateManager {
 
 		TreasureTemplate template = new TreasureTemplate();
 		template.read(this.fixer.process(FixTypes.STRUCTURE, nbttagcompound), scanForBlocks);
+		Treasure.logger.debug("adding template to map with key -> {}", id);
 		this.templates.put(id, template);
 	}
 

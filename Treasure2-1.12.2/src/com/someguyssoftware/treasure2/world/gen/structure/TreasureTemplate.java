@@ -13,6 +13,7 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
 import com.someguyssoftware.gottschcore.positional.Coords;
 import com.someguyssoftware.gottschcore.positional.ICoords;
+import com.someguyssoftware.treasure2.Treasure;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -447,6 +448,7 @@ public class TreasureTemplate extends Template {
 	 * @param scanForBlocks
 	 */
 	public void read(NBTTagCompound compound, List<Block> scanForBlocks) {
+		Treasure.logger.debug("made it to template.read()");
 		this.blocks.clear();
 		this.entities.clear();
 		NBTTagList nbttaglist = compound.getTagList("size", 3);
