@@ -95,12 +95,16 @@ public class StructurePitGenerator extends AbstractPitGenerator {
 			
 			// TODO perfrom rotation, mirror on specials map
 			
-			// TODO find the entrance block
+			// find the entrance block
+			ICoords entranceCoords = template.findCoords(random, Blocks.GOLD_BLOCK);
 			
-			// TODO find the chest block
-			List<ICoords> chestCoordsList = (List<ICoords>) template.getMap().get(Blocks.CHEST);
-			
+			// find the chest block
+			ICoords chestCoords = template.findCoords(random, Blocks.CHEST);
+
+			// generate the structure
 			template.addBlocksToWorld(world, spawnCoords.toPos(), null, 3);
+			
+			// TODO update the nextCoords add the entranceCoords
 			
 			Treasure.logger.debug("Generating shaft @ " + spawnCoords.toShortString());
 			// at chest level
