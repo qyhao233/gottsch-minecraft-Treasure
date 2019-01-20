@@ -3,6 +3,7 @@ package com.someguyssoftware.treasure2.world.gen.structure;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.UUID;
 
 import javax.annotation.Nullable;
@@ -568,5 +569,19 @@ public class TreasureTemplate extends Template {
 	 */
 	public void setSize(BlockPos size) {
 		this.size = size;
+	}
+
+	/**
+	 * 
+	 * @param random
+	 * @param findBlock
+	 * @return
+	 */
+	public ICoords findCoords(Random random, Block findBlock) {
+		ICoords coords = null; // TODO should this be an empty object
+		List<ICoords> list = (List<ICoords>) getMap().get(findBlock);
+		if (list.size() ==1) coords = list.get(0);
+		else coords = list.get(random.nextInt(list.size()));
+		return coords;
 	}
 }
