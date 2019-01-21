@@ -115,6 +115,7 @@ public class ChestWorldGenerator implements IWorldGenerator {
 		pitGenerators.put(Pits.MOB_TRAP_PIT, new MobTrapPitGenerator());
 		pitGenerators.put(Pits.LAVA_SIDE_TRAP_PIT, new LavaSideTrapPitGenerator());
 		pitGenerators.put(Pits.BIG_BOTTOM_MOB_TRAP_PIT, new BigBottomMobTrapPitGenerator());
+		pitGenerators.put(Pits.STRUCTURE_PIT, new SimplePitGenerator());
 	}
 
 	/**
