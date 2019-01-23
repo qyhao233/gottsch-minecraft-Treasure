@@ -34,7 +34,10 @@ public abstract class AbstractPitGenerator implements IPitGenerator {
 	protected static final int Y_SURFACE_OFFSET = 6;
 
 	private RandomWeightedCollection<Block> blockLayers = new RandomWeightedCollection<>();
-	
+
+	// TODO need to separate out the gen of the chest area with the rest of the pit so that a random pit can be generated without
+	// generating the chest area.  maybe a wrapper call that gens the pit, gens the entrance and gens the base which could be over-
+	// written so the base isn't gen for things like structure pits
 	/**
 	 * 
 	 */
@@ -42,6 +45,35 @@ public abstract class AbstractPitGenerator implements IPitGenerator {
 		super();
 	}
 
+	/**
+	 * 
+	 */
+	@Override
+	public boolean generateBase(World world, Random random, ICoords surfaceCorods, ICoords spawnCoords) {
+		// at chest level
+		buildLayer(world, spawnCoords, Blocks.AIR);
+		
+		// above the chest
+		buildAboveChestLayers(world, random, spawnCoords);
+		
+		return true;
+	}
+	
+	@Override
+	public boolean generatePit(World world, Random random, ICoords surfaceCoords, ICoords spawnCoords) {
+		buildPit(world, random, spawnCoords, surfaceCoords, getBlockLayers());
+		return true;
+	}
+	
+	@Override
+	public boolean generateEntrance(World world, Random random, ICoords surfaceCoords, ICoords spawnCoords) {
+		// pit enterance
+		buildLogLayer(world, random, surfaceCoords.add(0, -3, 0), Blocks.LOG);
+		buildLayer(world, surfaceCoords.add(0, -4, 0), Blocks.SAND);
+		buildLogLayer(world, random, surfaceCoords.add(0, -5, 0), Blocks.LOG);
+		return true;
+	}
+	
 	/**
 	 * 
 	 * @param world
@@ -80,18 +112,22 @@ public abstract class AbstractPitGenerator implements IPitGenerator {
 		if (yDist > 6) {			
 			Treasure.logger.debug("Generating shaft @ " + spawnCoords.toShortString());
 			// at chest level
-			buildLayer(world, spawnCoords, Blocks.AIR);
-			
-			// above the chest
-			buildAboveChestLayers(world, random, spawnCoords);
+//			buildLayer(world, spawnCoords, Blocks.AIR);
+//			
+//			// above the chest
+//			buildAboveChestLayers(world, random, spawnCoords);
 
-			// shaft enterance
-			buildLogLayer(world, random, surfaceCoords.add(0, -3, 0), Blocks.LOG);
-			buildLayer(world, surfaceCoords.add(0, -4, 0), Blocks.SAND);
-			buildLogLayer(world, random, surfaceCoords.add(0, -5, 0), Blocks.LOG);
+			generateBase(world, random, surfaceCoords, spawnCoords);
+			
+			// pit enterance
+//			buildLogLayer(world, random, surfaceCoords.add(0, -3, 0), Blocks.LOG);
+//			buildLayer(world, surfaceCoords.add(0, -4, 0), Blocks.SAND);
+//			buildLogLayer(world, random, surfaceCoords.add(0, -5, 0), Blocks.LOG);
+			generateEntrance(world, random, surfaceCoords, spawnCoords);
 
 			// build the pit
-			buildPit(world, random, spawnCoords, surfaceCoords, getBlockLayers());
+//			buildPit(world, random, spawnCoords, surfaceCoords, getBlockLayers());
+			generatePit(world, random, surfaceCoords, spawnCoords);
 		}			
 		// shaft is only 2-6 blocks long - can only support small covering
 		else if (yDist >= 2) {

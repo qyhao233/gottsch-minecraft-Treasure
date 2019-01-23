@@ -141,18 +141,6 @@ public class Treasure extends AbstractMod {
 		
 		// register the GUI handler
 		NetworkRegistry.INSTANCE.registerGuiHandler(this, new GuiHandler());
-		
-		/*
-		 * KEEP FOR REFERNCE PURPOSES
-		 */
-		// start the database
-//		try {
-//			DbManager.start((TreasureConfig)getConfig());
-//		} catch (DatabaseInitializationException e) {
-//			logger.error("Unable to start database manager:", e);
-//			getConfig().setModEnabled(false);
-//		}
-
 	}
 	
 	/**
@@ -167,7 +155,6 @@ public class Treasure extends AbstractMod {
     	event.registerServerCommand(new ShowVersionCommand(this));
     	
 		/*
-		 * FOR DEBUGGING ONLY
 		 *  register additional commands
 		 */
     	event.registerServerCommand(new SpawnChestCommand());

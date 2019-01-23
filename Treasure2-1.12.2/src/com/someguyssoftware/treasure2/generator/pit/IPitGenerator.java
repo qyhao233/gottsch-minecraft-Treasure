@@ -19,5 +19,10 @@ public interface IPitGenerator {
 	 * @return
 	 */
 	public boolean generate(World world, Random random, ICoords surfaceCoords, ICoords spawnCoords);
+	
+	public boolean generateBase(World world, Random random, ICoords surfaceCoords, ICoords spawnCoords);
 
+	public boolean generatePit(World world, Random random, ICoords surfaceCoords, ICoords spawnCoords);
+	
+	public boolean generateEntrance(World world, Random random, ICoords surfaceCoords, ICoords spawnCoords);
 }

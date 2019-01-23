@@ -25,8 +25,8 @@ public class NBTStructureScanner {
 	 * @param r
 	 * @return
 	 */
-	public static IStructureMetaData scan(ResourceLocation r, List<IBlockState> searchFor) {
-		IStructureMetaData data = new StructureMetaData();
+	public static IStructureInfo scan(ResourceLocation r, List<IBlockState> searchFor) {
+		IStructureInfo data = new StructureInfo();
 		return data;
 	}
 

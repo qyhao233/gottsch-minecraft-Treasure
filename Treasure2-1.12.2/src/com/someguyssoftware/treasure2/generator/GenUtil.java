@@ -116,9 +116,6 @@ public class GenUtil {
 //		Treasure.logger.info("World Chest Block:" + oldState.getClass().getCanonicalName());
 //		Treasure.logger.info("Treasure Chest Block:" + chest.getClass().getCanonicalName());
 		
-		/**
-		 * NOTE this is legecy code when Plans was used to mark with another block where a chest should go and face.
-		 */
 		if (oldState.getProperties().containsKey(FACING)) {
 			Treasure.logger.info("World Chest marker has FACING property:" + oldState.getValue(FACING));
 			// set the new state

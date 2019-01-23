@@ -54,6 +54,8 @@ public class TreasureTemplate extends Template {
 	 */
 	private final Multimap<Block, ICoords> map = ArrayListMultimap.create();
 	
+	private int offsetY = 0;
+	
 	@Override
 	public BlockPos getSize() {
 		return this.size;
@@ -441,7 +443,7 @@ public class TreasureTemplate extends Template {
 	}
 
 	/**
-	 * TODO record a map of coords by block
+	 * 
 	 */
 	/**
 	 * 
@@ -484,6 +486,9 @@ public class TreasureTemplate extends Template {
 				// add pos to map
 				map.put(block, new Coords(blockPos));
 			}
+			
+			// update the y offset
+			if (blockPos.getY() < this.offsetY) this.offsetY = blockPos.getY();
 		}
 
 		NBTTagList nbttaglist4 = compound.getTagList("entities", 10);
@@ -583,5 +588,29 @@ public class TreasureTemplate extends Template {
 		if (list.size() ==1) coords = list.get(0);
 		else coords = list.get(random.nextInt(list.size()));
 		return coords;
+	}
+	
+	/**
+	 * 
+	 * @param findBlock
+	 * @return
+	 */
+	public List<ICoords> findCoods(Block findBlock) {
+		List<ICoords> list = (List<ICoords>) getMap().get(findBlock);
+		return list;
+	}
+
+	/**
+	 * @return the offsetY
+	 */
+	public int getOffsetY() {
+		return offsetY;
+	}
+
+	/**
+	 * @param offsetY the offsetY to set
+	 */
+	public void setOffsetY(int offsetY) {
+		this.offsetY = offsetY;
 	}
 }

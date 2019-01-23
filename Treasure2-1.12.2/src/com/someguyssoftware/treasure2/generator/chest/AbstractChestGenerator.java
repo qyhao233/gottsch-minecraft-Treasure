@@ -4,6 +4,7 @@
 package com.someguyssoftware.treasure2.generator.chest;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Random;
 
@@ -25,15 +26,18 @@ import com.someguyssoftware.treasure2.enums.Pits;
 import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.generator.GenUtil;
 import com.someguyssoftware.treasure2.generator.pit.IPitGenerator;
+import com.someguyssoftware.treasure2.generator.pit.StructurePitGenerator;
 import com.someguyssoftware.treasure2.item.LockItem;
 import com.someguyssoftware.treasure2.item.TreasureItems;
 import com.someguyssoftware.treasure2.lock.LockState;
 import com.someguyssoftware.treasure2.loot.TreasureLootTable;
 import com.someguyssoftware.treasure2.loot.TreasureLootTables;
 import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
+import com.someguyssoftware.treasure2.world.gen.structure.IStructureInfoProvider;
 import com.someguyssoftware.treasure2.worldgen.ChestWorldGenerator;
 
 import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Rotation;
@@ -94,27 +98,36 @@ public abstract class AbstractChestGenerator implements IChestGenerator {
 			
 			// select a pit generator
 			Pits pit = Pits.values()[random.nextInt(Pits.values().length)];
-			IPitGenerator pitGenerator = ChestWorldGenerator.pitGenerators.get(pit);
+			IPitGenerator pitGenerator = null;
+			if (pit == Pits.STRUCTURE_PIT) {
+				// select a pit from the subset
+				IPitGenerator parentPit = ((List<IPitGenerator>)ChestWorldGenerator.structurePitGenerators.values()).get(random.nextInt(ChestWorldGenerator.structurePitGenerators.size()));
+				// create a new pit instance (new instance as it contains state)
+				pitGenerator = new StructurePitGenerator(ChestWorldGenerator.structurePitGenerators.get(parentPit));
+			}
+			else {
+				pitGenerator = ChestWorldGenerator.pitGenerators.get(pit);
+			}
 			Treasure.logger.debug("Using Pit: {}, Gen: {}", pit, pitGenerator.getClass());
 			
 			// 3. build the pit
 			isGenerated = pitGenerator.generate(world, random, markerCoords, spawnCoords);
 //			Treasure.logger.debug("Is pit generated: {}", isGenerated);
-			// 4. build the room
-//			TemplateManager tm = null;
-//			Template t = new Template();
-//			t.read(compound);
-//			t.transformedSize(Rotation.CLOCKWISE_180);
-//			t.getSize();
-//			t.transformedBlockPos(placementIn, pos)
-			
+						
 			// TODO in order to build a room using Structure NBT the pitGenerator would have to return an object with 
 			// success/failure, chest location and spawner location because the nbt doesn't contain any meta data about
 			// where things are and you wouldn't know where the chest was until after it is generated, and thus wouldn't match
 			// with spawnCoords. so you'd have to calc the chest coords and pass that back to the caller so chestCoords = newCoords
 			
 			// 5. update the chest coords
-			chestCoords = new Coords(spawnCoords);
+			if (pitGenerator instanceof IStructureInfoProvider) {
+				// TODO could extend IStructureInfoProvider for Treasure context that only records a single or main chest
+				List<ICoords> coordsList = (List<ICoords>)((IStructureInfoProvider)pitGenerator).getInfo().getMap().get(Blocks.CHEST);
+				chestCoords = coordsList.get(0);
+			}
+			else {
+				chestCoords = new Coords(spawnCoords);
+			}
 		}
 		else { return false; }
 

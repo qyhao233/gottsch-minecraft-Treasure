@@ -37,6 +37,7 @@ import com.someguyssoftware.treasure2.generator.pit.LavaSideTrapPitGenerator;
 import com.someguyssoftware.treasure2.generator.pit.LavaTrapPitGenerator;
 import com.someguyssoftware.treasure2.generator.pit.MobTrapPitGenerator;
 import com.someguyssoftware.treasure2.generator.pit.SimplePitGenerator;
+import com.someguyssoftware.treasure2.generator.pit.StructurePitGenerator;
 import com.someguyssoftware.treasure2.generator.pit.TntTrapPitGenerator;
 import com.someguyssoftware.treasure2.persistence.GenDataPersistence;
 import com.someguyssoftware.treasure2.registry.ChestRegistry;
@@ -66,6 +67,7 @@ public class ChestWorldGenerator implements IWorldGenerator {
 	// TODO probably should be moved to AbstractChestGenerator
 	// the pit generators
 	public static Map<Pits, IPitGenerator> pitGenerators = new HashMap<>();
+	public static Map<Pits, IPitGenerator> structurePitGenerators = new HashMap<>();
 	
 	/**
 	 * 
@@ -115,7 +117,13 @@ public class ChestWorldGenerator implements IWorldGenerator {
 		pitGenerators.put(Pits.MOB_TRAP_PIT, new MobTrapPitGenerator());
 		pitGenerators.put(Pits.LAVA_SIDE_TRAP_PIT, new LavaSideTrapPitGenerator());
 		pitGenerators.put(Pits.BIG_BOTTOM_MOB_TRAP_PIT, new BigBottomMobTrapPitGenerator());
-		pitGenerators.put(Pits.STRUCTURE_PIT, new SimplePitGenerator());
+		
+		// setup the structures pit generators - a subset of the pit generators map
+		structurePitGenerators.put(Pits.SIMPLE_PIT, pitGenerators.get(Pits.SIMPLE_PIT));
+		structurePitGenerators.put(Pits.TNT_TRAP_PIT, pitGenerators.get(Pits.TNT_TRAP_PIT));
+		structurePitGenerators.put(Pits.AIR_PIT, pitGenerators.get(Pits.AIR_PIT));
+		structurePitGenerators.put(Pits.MOB_TRAP_PIT, pitGenerators.get(Pits.MOB_TRAP_PIT));
+		structurePitGenerators.put(Pits.LAVA_SIDE_TRAP_PIT, pitGenerators.get(Pits.LAVA_SIDE_TRAP_PIT));
 	}
 
 	/**

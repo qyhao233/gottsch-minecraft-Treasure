@@ -112,7 +112,6 @@ public class PaintingItem extends ModItem {
 
 		ItemStack heldItem = player.getHeldItem(hand);
 		this.placeBlock(worldIn, p, block, player, heldItem);
-		heldItem.shrink(1);
 		return EnumActionResult.SUCCESS;
 	}
 
@@ -130,6 +129,7 @@ public class PaintingItem extends ModItem {
 		if (block.canPlaceBlockAt(world, pos)) {
 			world.setBlockState(pos, block.getDefaultState());
 			block.onBlockPlacedBy(world, pos, block.getDefaultState(), player, itemStack);
+			itemStack.shrink(1);
 		}
 	}
 

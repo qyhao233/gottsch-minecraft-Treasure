@@ -1,42 +1,42 @@
 package com.someguyssoftware.treasure2.generator.pit;
 
-import java.util.List;
 import java.util.Random;
 
 import com.someguyssoftware.gottschcore.Quantity;
-import com.someguyssoftware.gottschcore.cube.Cube;
 import com.someguyssoftware.gottschcore.positional.Coords;
 import com.someguyssoftware.gottschcore.positional.ICoords;
-import com.someguyssoftware.gottschcore.random.RandomHelper;
-import com.someguyssoftware.gottschcore.random.RandomWeightedCollection;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.block.TreasureBlocks;
 import com.someguyssoftware.treasure2.generator.GenUtil;
 import com.someguyssoftware.treasure2.tileentity.ProximitySpawnerTileEntity;
+import com.someguyssoftware.treasure2.world.gen.structure.IStructureInfo;
+import com.someguyssoftware.treasure2.world.gen.structure.IStructureInfoProvider;
+import com.someguyssoftware.treasure2.world.gen.structure.StructureInfo;
 import com.someguyssoftware.treasure2.world.gen.structure.TreasureTemplate;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldServer;
-import net.minecraft.world.gen.structure.template.TemplateManager;
+import net.minecraft.world.gen.structure.template.PlacementSettings;
 
 
 /**
  * TODO should a structure pit generator be of a different class than a regular pit generator?
- * -- The return value has to be different -> a class containing the StructureMetaData and the result.
+ * -- The return value has to be different -> a class containing the StructureInfo and the result.
  * -- Looks like I will have to load the template, get the list of pos, rotate manually, and scan manually.
  * Generates lava blocks outside the main pit to prevent players from digging down on the edges
  * @author Mark Gottschling on Dec 9, 2018
  *
  */
-public class StructurePitGenerator extends AbstractPitGenerator {
+public class StructurePitGenerator extends AbstractPitGenerator implements IStructureInfoProvider {
+	
+	IPitGenerator generator;
+	IStructureInfo info;
 	
 	/**
 	 * 
@@ -46,6 +46,25 @@ public class StructurePitGenerator extends AbstractPitGenerator {
 		getBlockLayers().add(25,  Blocks.SAND);
 		getBlockLayers().add(15, Blocks.GRAVEL);
 		getBlockLayers().add(10, Blocks.LOG);
+	}
+	
+	/**
+	 * 
+	 * @param generator
+	 */
+	public StructurePitGenerator(IPitGenerator generator) {
+		this();
+		setGenerator(generator);
+	}
+	
+	@Override
+	public boolean generateEntrance(World world, Random random, ICoords surfaceCoords, ICoords spawnCoords) {
+		return getGenerator().generateEntrance(world, random, surfaceCoords, spawnCoords);
+	}
+	
+	@Override
+	public boolean generatePit(World world, Random random, ICoords surfaceCoords, ICoords spawnCoords) {
+		return getGenerator().generatePit(world, random, surfaceCoords, spawnCoords);
 	}
 	
 	/**
@@ -85,98 +104,169 @@ public class StructurePitGenerator extends AbstractPitGenerator {
 	
 		ICoords nextCoords = null;
 		if (yDist > 6) {
+			Treasure.logger.debug("generating structure room at -> {}", spawnCoords.toShortString());
+			
 			// TODO will want the structures organized better to say grab RARE UNDERGROUND ROOMs
 			TreasureTemplate template = (TreasureTemplate) Treasure.TEMPLATE_MANAGER.getTemplate(new ResourceLocation("treasure2:underground/basic1.nbt"));
 			
-			// TODO check if the yDist is big enough to accodate a room
+			// check if the yDist is big enough to accodate a room
 			BlockPos size = template.getSize();
+			Treasure.logger.debug("template size -> {}, offset -> {}", size, template.getOffsetY());
 			
-			// TODO select a rotation
+			// if size of room is greater the distance to the surface minus 3, then fail 
+			if (size.getY() + template.getOffsetY() + 3 < yDist) {
+				Treasure.logger.debug("Structure is too large for available space.");
+				return getGenerator().generate(world, random, surfaceCoords, spawnCoords);
+			}
 			
-			// TODO perfrom rotation, mirror on specials map
+			// TODO all this stuff should move into a StructureGenerator
 			
+			// initialize StructureInfo
+			IStructureInfo info = new StructureInfo();
+		
 			// find the entrance block
 			ICoords entranceCoords = template.findCoords(random, Blocks.GOLD_BLOCK);
-			
-			// find the chest block
+			if (entranceCoords == null) {
+				Treasure.logger.debug("Unable to locate entrance position.");
+				return false;
+			}
 			ICoords chestCoords = template.findCoords(random, Blocks.CHEST);
-
-			// generate the structure
-			template.addBlocksToWorld(world, spawnCoords.toPos(), null, 3);
+			if (chestCoords == null) {
+				Treasure.logger.debug("Unable to locate chest position.");
+				return false;
+			}
 			
-			// TODO update the nextCoords add the entranceCoords
+			// select a random rotation
+			Rotation rotation = Rotation.values()[random.nextInt(Rotation.values().length)];
+			rotation = Rotation.CLOCKWISE_90; // TEMP
+			rotation = Rotation.NONE;
+			Treasure.logger.debug("rotation used -> {}", rotation);
+			
+			// TODO setup placement
+			PlacementSettings placement = new PlacementSettings();
+			placement.setRotation(rotation).setRandom(random);
+			
+			// NOTE these values are still relative to origin (spawnCoords);
+			// TODO perfrom rotation, mirror on specials map
+			// TODO test is same as what Coords.rotate creates
+			ICoords newEntrance = new Coords(TreasureTemplate.transformedBlockPos(placement, entranceCoords.toPos()));
+			ICoords gottschCoreCoords = entranceCoords.rotate90(size.getX());
+			Treasure.logger.debug("rotation of -> {}: template -> {}, gottschcore -> {}", entranceCoords.toShortString(), 
+					newEntrance.toShortString(), gottschCoreCoords.toShortString());
+			
+			// TODO need to find the entire list in case there are more and they need to be erased after build
+			// TODO this is why using only Structure Data blocks would be ideal - they are removed natively
+			// find the new chest block
+			chestCoords = new Coords(TreasureTemplate.transformedBlockPos(placement, chestCoords.toPos()));
+			
+			// TODO adjust spawn coords to line up room entrance with pit
+			BlockPos transformedSize = template.transformedSize(rotation);
+			Treasure.logger.debug("transformed size -> {}", transformedSize);
+			
+			ICoords roomCoords = alignToPit(spawnCoords, newEntrance, transformedSize, placement);
+			Treasure.logger.debug("aligned room coords -> {}", roomCoords.toShortString());
+			
+			// generate the structure
+			template.addBlocksToWorld(world, roomCoords.toPos(), placement, 3);
+			
+			// TODO go back into build and remove any extra special blocks
+			
+			// update StrucutreInfo
+			info.setCoords(roomCoords);
+			info.setSize(new Coords(transformedSize));		
+			info.getMap().put(Blocks.GOLD_BLOCK, newEntrance);
+			info.getMap().put(Blocks.CHEST, chestCoords);
+			setInfo(info);
 			
 			Treasure.logger.debug("Generating shaft @ " + spawnCoords.toShortString());
-			// at chest level
-			nextCoords = build6WideLayer(world, random, spawnCoords, Blocks.AIR);
-			
-			// above the chest
-			nextCoords = build6WideLayer(world, random, nextCoords, Blocks.AIR);
-			nextCoords = build6WideLayer(world, random, nextCoords, Blocks.AIR);
-			nextCoords = buildLogLayer(world, random, nextCoords, Blocks.LOG);
-			nextCoords = buildLayer(world, nextCoords, Blocks.SAND);
 			
 			// shaft enterance
-			buildLogLayer(world, random, surfaceCoords.add(0, -3, 0), Blocks.LOG);
-			buildLayer(world, surfaceCoords.add(0, -4, 0), Blocks.SAND);
-			buildLogLayer(world, random, surfaceCoords.add(0, -5, 0), Blocks.LOG);
-
-			// build the trap
-			buildTrapLayer(world, random, spawnCoords, null);
+//			buildLogLayer(world, random, surfaceCoords.add(0, -3, 0), Blocks.LOG);
+//			buildLayer(world, surfaceCoords.add(0, -4, 0), Blocks.SAND);
+//			buildLogLayer(world, random, surfaceCoords.add(0, -5, 0), Blocks.LOG);
+			generateEntrance(world, random, surfaceCoords, spawnCoords.add(0, size.getY()+1, 0));
 			
 			// build the pit
-			buildPit(world, random, nextCoords, surfaceCoords, getBlockLayers());
+//			buildPit(world, random, spawnCoords.add(0, size.getY() + 1, 0), surfaceCoords, getBlockLayers());
+			generatePit(world, random, surfaceCoords, spawnCoords.add(0, size.getY() + 1, 0));
 		}			
 		// shaft is only 2-6 blocks long - can only support small covering
 		else if (yDist >= 2) {
 			// simple short pit
 			new SimpleShortPitGenerator().generate(world, random, surfaceCoords, spawnCoords);
 		}		
-		Treasure.logger.debug("Generated Big Bottom Mob Trap Pit at " + spawnCoords.toShortString());
+		Treasure.logger.debug("Generated Structure Pit at " + spawnCoords.toShortString());
 		return true;
 	}	
 
 	/**
 	 * 
-	 * @param world
-	 * @param random
-	 * @param coords
-	 * @param block
+	 * @param spawnCoords
+	 * @param newEntrance
+	 * @param transformedSize
+	 * @param placement
 	 * @return
 	 */
-	private ICoords build6WideLayer(World world, Random random, ICoords coords, Block block) {
-		ICoords startCoords = coords.add(-2, 0, -2);
-		for (int x = startCoords.getX(); x < startCoords.getX() + 6; x++) {
-			for (int z = startCoords.getZ(); z < startCoords.getZ() + 6; z++) {
-				GenUtil.replaceWithBlockState(world, new Coords(x, coords.getY(), z), block.getDefaultState());
-			}
+	private ICoords alignToPit(ICoords spawnCoords, ICoords newEntrance, BlockPos transformedSize, PlacementSettings placement) {
+		ICoords startCoords = null;
+		// TODO size is not needed
+		// NOTE work with rotations only for now
+		
+		// first offset spawnCoords by newEntrance
+		startCoords = spawnCoords.add(-newEntrance.getX(), 0, -newEntrance.getZ());
+		
+		// make adjustments for the rotation. REMEMBER that pits are 2x2
+		switch (placement.getRotation()) {
+		case CLOCKWISE_90:
+			startCoords = startCoords.add(1, 0, 0);
+			break;
+		case CLOCKWISE_180:
+			break;
+		case COUNTERCLOCKWISE_90:
+			break;
+		default:
+			break;
 		}
-		return coords.add(0, 1, 0);
+		return startCoords;
+	}
+
+	private ICoords transform(final ICoords coordsIn, final PlacementSettings placement) {
+		ICoords coords = null;
+		switch(placement.getRotation()) {
+		case CLOCKWISE_90:
+			coords = coordsIn.rotate90(5);
+			break;
+		}
+		return coords;
 	}
 	
 	/**
-	 * 
-	 * @param world
-	 * @param random
-	 * @param coords
-	 * @param block
-	 * @return
+	 * @return the generator
 	 */
-	public ICoords buildTrapLayer(final World world, final Random random, final ICoords coords, final Block block) {
-		// spawn the mobs
-    	spawnMob(world, coords.add(-2, 0, 0), "skeleton");
-    	spawnMob(world, coords.add(0, 0, -2), "zombie");
-    	spawnMob(world, coords.add(2, 0, 0), "zombie");
-    	spawnMob(world, coords.add(0, 0, 2), "skeleton");
-    	
-    	// test
-    	world.setBlockState(coords.add(-1, 0, 0).toPos(), TreasureBlocks.PROXIMITY_SPAWNER.getDefaultState());
-    	ProximitySpawnerTileEntity te = (ProximitySpawnerTileEntity) world.getTileEntity(coords.add(-1, 0, 0).toPos());
-    	te.setMobName(new ResourceLocation("minecraft:Spider"));
-    	te.setMobNum(new Quantity(1, 2));
-    	te.setProximity(5D);
-    	
-		return coords;
+	public IPitGenerator getGenerator() {
+		return generator;
+	}
+
+	/**
+	 * @param generator the generator to set
+	 */
+	public void setGenerator(IPitGenerator generator) {
+		this.generator = generator;
+	}
+
+	/**
+	 * @return the info
+	 */
+	@Override
+	public IStructureInfo getInfo() {
+		return info;
+	}
+
+	/**
+	 * @param info2 the info to set
+	 */
+	protected void setInfo(IStructureInfo info2) {
+		this.info = info2;
 	}
 	
 }
