@@ -94,4 +94,10 @@ public class StructureInfo implements IStructureInfo {
 		this.coords = coords;
 	}
 
+	@Override
+	public String toString() {
+		return "StructureInfo [coords=" + coords + ", size=" + size + ", chests=" + chests + ", spawners=" + spawners
+				+ ", map=" + map + "]";
+	}
+
 }

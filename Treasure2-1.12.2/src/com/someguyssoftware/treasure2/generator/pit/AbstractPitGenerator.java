@@ -30,11 +30,12 @@ import net.minecraftforge.common.DungeonHooks;
  */
 public abstract class AbstractPitGenerator implements IPitGenerator {
 
-	protected static final int Y_OFFSET = 5;
-	protected static final int Y_SURFACE_OFFSET = 6;
+	protected static final int OFFSET_Y = 5;
+	protected static final int SURFACE_OFFSET_Y = 6;
 
 	private RandomWeightedCollection<Block> blockLayers = new RandomWeightedCollection<>();
-
+	private int offsetY = OFFSET_Y;
+	
 	// TODO need to separate out the gen of the chest area with the rest of the pit so that a random pit can be generated without
 	// generating the chest area.  maybe a wrapper call that gens the pit, gens the entrance and gens the base which could be over-
 	// written so the base isn't gen for things like structure pits
@@ -163,7 +164,7 @@ public abstract class AbstractPitGenerator implements IPitGenerator {
 		ICoords expectedCoords = null;
 		
 		// randomly fill shaft
-		for (int yIndex = coords.getY() + Y_OFFSET; yIndex <= surfaceCoords.getY() - Y_SURFACE_OFFSET; yIndex++) {
+		for (int yIndex = coords.getY() + getOffsetY(); yIndex <= surfaceCoords.getY() - SURFACE_OFFSET_Y; yIndex++) {
 			
 			// if the block to be replaced is air block then skip to the next pos
 			Cube cube = new Cube(world, new Coords(coords.getX(), yIndex, coords.getZ()));
@@ -317,5 +318,15 @@ public abstract class AbstractPitGenerator implements IPitGenerator {
 	 */
 	public void setBlockLayers(RandomWeightedCollection<Block> blockLayers) {
 		this.blockLayers = blockLayers;
+	}
+
+	@Override
+	public int getOffsetY() {
+		return offsetY;
+	}
+
+	@Override
+	public void setOffsetY(int offsetY) {
+		this.offsetY = offsetY;
 	}
 }

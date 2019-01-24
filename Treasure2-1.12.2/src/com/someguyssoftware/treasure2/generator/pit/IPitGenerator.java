@@ -25,4 +25,7 @@ public interface IPitGenerator {
 	public boolean generatePit(World world, Random random, ICoords surfaceCoords, ICoords spawnCoords);
 	
 	public boolean generateEntrance(World world, Random random, ICoords surfaceCoords, ICoords spawnCoords);
+
+	public int getOffsetY();
+	public void setOffsetY(int i);
 }

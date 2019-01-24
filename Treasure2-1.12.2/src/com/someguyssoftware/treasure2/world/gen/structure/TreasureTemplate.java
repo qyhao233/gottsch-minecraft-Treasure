@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import javax.annotation.Nullable;
 
@@ -53,8 +54,6 @@ public class TreasureTemplate extends Template {
 	 * A map of block locations of all the specials within the template.
 	 */
 	private final Multimap<Block, ICoords> map = ArrayListMultimap.create();
-	
-	private int offsetY = 0;
 	
 	@Override
 	public BlockPos getSize() {
@@ -330,6 +329,20 @@ public class TreasureTemplate extends Template {
 
 	/**
 	 * 
+	 */
+	@Override
+	public BlockPos transformedSize(Rotation rotationIn) {
+		switch (rotationIn) {
+		case COUNTERCLOCKWISE_90:
+		case CLOCKWISE_90:
+			return new BlockPos(this.getSize().getZ(), this.getSize().getY(), this.getSize().getX());
+		default:
+			return this.getSize();
+		}
+	}
+    
+	/**
+	 * 
 	 * @param pos
 	 * @param mirrorIn
 	 * @param rotationIn
@@ -486,9 +499,6 @@ public class TreasureTemplate extends Template {
 				// add pos to map
 				map.put(block, new Coords(blockPos));
 			}
-			
-			// update the y offset
-			if (blockPos.getY() < this.offsetY) this.offsetY = blockPos.getY();
 		}
 
 		NBTTagList nbttaglist4 = compound.getTagList("entities", 10);
@@ -585,7 +595,8 @@ public class TreasureTemplate extends Template {
 	public ICoords findCoords(Random random, Block findBlock) {
 		ICoords coords = null; // TODO should this be an empty object
 		List<ICoords> list = (List<ICoords>) getMap().get(findBlock);
-		if (list.size() ==1) coords = list.get(0);
+		if (list.isEmpty()) return new Coords(0, 0, 0);
+		if (list.size() == 1) coords = list.get(0);
 		else coords = list.get(random.nextInt(list.size()));
 		return coords;
 	}
@@ -595,22 +606,17 @@ public class TreasureTemplate extends Template {
 	 * @param findBlock
 	 * @return
 	 */
-	public List<ICoords> findCoods(Block findBlock) {
+	public List<ICoords> findCoords(Block findBlock) {
 		List<ICoords> list = (List<ICoords>) getMap().get(findBlock);
 		return list;
 	}
-
+	
 	/**
-	 * @return the offsetY
+	 * 
+	 * @return
 	 */
-	public int getOffsetY() {
-		return offsetY;
-	}
-
-	/**
-	 * @param offsetY the offsetY to set
-	 */
-	public void setOffsetY(int offsetY) {
-		this.offsetY = offsetY;
+	public List<ICoords> getMapCoords() {
+		List<ICoords> coords = getMap().values().stream().collect(Collectors.toList());
+		return coords;
 	}
 }

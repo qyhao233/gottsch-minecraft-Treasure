@@ -7,6 +7,7 @@ import com.someguyssoftware.gottschcore.positional.Coords;
 import com.someguyssoftware.gottschcore.positional.ICoords;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.block.TreasureBlocks;
+import com.someguyssoftware.treasure2.enums.StructureMarkers;
 import com.someguyssoftware.treasure2.generator.GenUtil;
 import com.someguyssoftware.treasure2.tileentity.ProximitySpawnerTileEntity;
 import com.someguyssoftware.treasure2.world.gen.structure.IStructureInfo;
@@ -55,6 +56,7 @@ public class StructurePitGenerator extends AbstractPitGenerator implements IStru
 	public StructurePitGenerator(IPitGenerator generator) {
 		this();
 		setGenerator(generator);
+		Treasure.logger.debug("using parent generator -> {}", getGenerator().getClass().getSimpleName());
 	}
 	
 	@Override
@@ -64,6 +66,7 @@ public class StructurePitGenerator extends AbstractPitGenerator implements IStru
 	
 	@Override
 	public boolean generatePit(World world, Random random, ICoords surfaceCoords, ICoords spawnCoords) {
+		getGenerator().setOffsetY(0);
 		return getGenerator().generatePit(world, random, surfaceCoords, spawnCoords);
 	}
 	
@@ -107,14 +110,25 @@ public class StructurePitGenerator extends AbstractPitGenerator implements IStru
 			Treasure.logger.debug("generating structure room at -> {}", spawnCoords.toShortString());
 			
 			// TODO will want the structures organized better to say grab RARE UNDERGROUND ROOMs
-			TreasureTemplate template = (TreasureTemplate) Treasure.TEMPLATE_MANAGER.getTemplate(new ResourceLocation("treasure2:underground/basic1.nbt"));
+			ResourceLocation r =new ResourceLocation("treasure2:underground/basic1");
+			TreasureTemplate template = (TreasureTemplate) Treasure.TEMPLATE_MANAGER.getTemplate(r);
+			if (template == null) {
+				Treasure.logger.debug("could not find template -> {}", r);
+			}
+			
+			// find the offset block
+			int offset = 0;
+			ICoords offsetCoords = template.findCoords(random, getMarkerBlock(StructureMarkers.OFFSET));
+			if (offsetCoords != null) {
+				offset = -offsetCoords.getY();
+			}
 			
 			// check if the yDist is big enough to accodate a room
 			BlockPos size = template.getSize();
-			Treasure.logger.debug("template size -> {}, offset -> {}", size, template.getOffsetY());
+			Treasure.logger.debug("template size -> {}, offset -> {}", size, offset);
 			
 			// if size of room is greater the distance to the surface minus 3, then fail 
-			if (size.getY() + template.getOffsetY() + 3 < yDist) {
+			if (size.getY() + offset + 3 >= yDist) {
 				Treasure.logger.debug("Structure is too large for available space.");
 				return getGenerator().generate(world, random, surfaceCoords, spawnCoords);
 			}
@@ -139,7 +153,7 @@ public class StructurePitGenerator extends AbstractPitGenerator implements IStru
 			// select a random rotation
 			Rotation rotation = Rotation.values()[random.nextInt(Rotation.values().length)];
 			rotation = Rotation.CLOCKWISE_90; // TEMP
-			rotation = Rotation.NONE;
+//			rotation = Rotation.NONE;
 			Treasure.logger.debug("rotation used -> {}", rotation);
 			
 			// TODO setup placement
@@ -151,7 +165,7 @@ public class StructurePitGenerator extends AbstractPitGenerator implements IStru
 			// TODO test is same as what Coords.rotate creates
 			ICoords newEntrance = new Coords(TreasureTemplate.transformedBlockPos(placement, entranceCoords.toPos()));
 			ICoords gottschCoreCoords = entranceCoords.rotate90(size.getX());
-			Treasure.logger.debug("rotation of -> {}: template -> {}, gottschcore -> {}", entranceCoords.toShortString(), 
+			Treasure.logger.debug("rotation of entrance -> {}: template -> {}, gottschcore -> {}", entranceCoords.toShortString(), 
 					newEntrance.toShortString(), gottschCoreCoords.toShortString());
 			
 			// TODO need to find the entire list in case there are more and they need to be erased after build
@@ -170,25 +184,31 @@ public class StructurePitGenerator extends AbstractPitGenerator implements IStru
 			template.addBlocksToWorld(world, roomCoords.toPos(), placement, 3);
 			
 			// TODO go back into build and remove any extra special blocks
+			// TODO have to remove the entrance because it is shifted?
+			for (ICoords c : template.getMapCoords()) {
+				BlockPos p = TreasureTemplate.transformedBlockPos(placement, c.toPos());
+				world.setBlockToAir(roomCoords.toPos().add(p));
+				Treasure.logger.debug("removing mapped block -> {} : {}", p, roomCoords.toPos().add(p));
+			}
+			
+			// remove entrance
+//			Treasure.logger.debug("removing entrance at -> {}", roomCoords.add(newEntrance).toShortString());
+//			world.setBlockToAir(roomCoords.add(newEntrance).toPos());
 			
 			// update StrucutreInfo
 			info.setCoords(roomCoords);
 			info.setSize(new Coords(transformedSize));		
-			info.getMap().put(Blocks.GOLD_BLOCK, newEntrance);
-			info.getMap().put(Blocks.CHEST, chestCoords);
+			info.getMap().put(getMarkerBlock(StructureMarkers.ENTRANCE), newEntrance);
+			info.getMap().put(getMarkerBlock(StructureMarkers.CHEST), chestCoords);
 			setInfo(info);
 			
-			Treasure.logger.debug("Generating shaft @ " + spawnCoords.toShortString());
+			Treasure.logger.debug("generating shaft (top of room) @ " + spawnCoords.add(0, size.getY(),0).toShortString());
 			
 			// shaft enterance
-//			buildLogLayer(world, random, surfaceCoords.add(0, -3, 0), Blocks.LOG);
-//			buildLayer(world, surfaceCoords.add(0, -4, 0), Blocks.SAND);
-//			buildLogLayer(world, random, surfaceCoords.add(0, -5, 0), Blocks.LOG);
 			generateEntrance(world, random, surfaceCoords, spawnCoords.add(0, size.getY()+1, 0));
 			
 			// build the pit
-//			buildPit(world, random, spawnCoords.add(0, size.getY() + 1, 0), surfaceCoords, getBlockLayers());
-			generatePit(world, random, surfaceCoords, spawnCoords.add(0, size.getY() + 1, 0));
+			generatePit(world, random, surfaceCoords, spawnCoords.add(0, size.getY(), 0));
 		}			
 		// shaft is only 2-6 blocks long - can only support small covering
 		else if (yDist >= 2) {
@@ -198,6 +218,15 @@ public class StructurePitGenerator extends AbstractPitGenerator implements IStru
 		Treasure.logger.debug("Generated Structure Pit at " + spawnCoords.toShortString());
 		return true;
 	}	
+
+	/**
+	 * convenience method
+	 * @param offset
+	 * @return
+	 */
+	private Block getMarkerBlock(StructureMarkers marker) {
+		return Treasure.TEMPLATE_MANAGER.getMarkerMap().get(marker);
+	}
 
 	/**
 	 * 

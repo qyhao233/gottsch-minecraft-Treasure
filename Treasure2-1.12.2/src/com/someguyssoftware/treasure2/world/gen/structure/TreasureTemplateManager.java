@@ -19,6 +19,7 @@ import org.apache.commons.io.IOUtils;
 
 import com.google.common.collect.Maps;
 import com.someguyssoftware.treasure2.Treasure;
+import com.someguyssoftware.treasure2.enums.StructureMarkers;
 
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
@@ -29,6 +30,8 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.datafix.DataFixer;
 import net.minecraft.util.datafix.FixTypes;
 import net.minecraft.world.gen.structure.template.Template;
+
+import static com.someguyssoftware.treasure2.enums.StructureMarkers.*;
 
 /**
  * Custom template manager that create TreasureTemplates instead of Template.
@@ -44,11 +47,7 @@ public class TreasureTemplateManager {
 	/*
 	 * standard list of blocks to scan for 
 	 */
-	List<Block> scanList = Arrays.asList(new Block[] {
-			Blocks.CHEST, 
-			Blocks.MOB_SPAWNER, 
-			Blocks.STRUCTURE_BLOCK, 
-			Blocks.GOLD_BLOCK});
+	List<Block> scanList;
 
 	/*
 	 * builtin locations for structures
@@ -56,7 +55,12 @@ public class TreasureTemplateManager {
 	List<String> locations = Arrays.asList(new String [] {
 			"treasure2:underground/basic1"
 	});
-	
+
+	/*
+	 * 
+	 */
+	public Map<StructureMarkers, Block> markerMap;
+
 	/**
 	 * 
 	 * @param baseFolder
@@ -66,6 +70,25 @@ public class TreasureTemplateManager {
 		Treasure.logger.debug("creating a TreasureTemplateManager");
         this.baseFolder = baseFolder;
         this.fixer = fixer;        
+        
+        // setup standard list of markers
+        markerMap = Maps.newHashMapWithExpectedSize(10);
+        markerMap.put(StructureMarkers.CHEST, Blocks.CHEST);
+        markerMap.put(StructureMarkers.BOSS_CHEST, Blocks.ENDER_CHEST);
+        markerMap.put(StructureMarkers.SPAWNER, Blocks.MOB_SPAWNER);
+        markerMap.put(StructureMarkers.ENTRANCE, Blocks.GOLD_BLOCK);
+        markerMap.put(StructureMarkers.OFFSET, Blocks.REDSTONE_BLOCK);
+        markerMap.put(StructureMarkers.PROXIMITY_SPAWNER, Blocks.IRON_BLOCK);
+        		
+        // default scan list
+        scanList = Arrays.asList(new Block[] {
+    			markerMap.get(CHEST), 
+    			markerMap.get(SPAWNER),
+    			markerMap.get(ENTRANCE),
+    			markerMap.get(OFFSET),
+    			markerMap.get(PROXIMITY_SPAWNER)
+    			});
+        // load all the structure templates
         loadAll();
     }
 
@@ -249,5 +272,13 @@ public class TreasureTemplateManager {
 	 */
 	public void remove(ResourceLocation templatePath) {
 		this.templates.remove(templatePath.getResourcePath());
+	}
+
+	public Map<StructureMarkers, Block> getMarkerMap() {
+		return markerMap;
+	}
+
+	public void setMarkerMap(Map<StructureMarkers, Block> markerMap) {
+		this.markerMap = markerMap;
 	}
 }

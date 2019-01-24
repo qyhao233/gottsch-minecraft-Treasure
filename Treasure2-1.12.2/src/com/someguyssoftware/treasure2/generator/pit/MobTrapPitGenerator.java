@@ -67,9 +67,9 @@ public class MobTrapPitGenerator extends AbstractPitGenerator {
 		ICoords midCoords = new Coords(coords.getX(), midY, coords.getZ());
 		int deltaY = surfaceCoords.delta(midCoords).getY();
 		
-//		Treasure.logger.debug("Mob Trap pit from {} to {}", coords.getY() + Y_OFFSET, surfaceCoords.getY() - Y_SURFACE_OFFSET);
+//		Treasure.logger.debug("Mob Trap pit from {} to {}", coords.getY() + OFFSET_Y, surfaceCoords.getY() - SURFACE_OFFSET_Y);
 		// randomly fill shaft
-		for (int yIndex = coords.getY() + Y_OFFSET; yIndex <= surfaceCoords.getY() - Y_SURFACE_OFFSET; yIndex++) {
+		for (int yIndex = coords.getY() + OFFSET_Y; yIndex <= surfaceCoords.getY() - SURFACE_OFFSET_Y; yIndex++) {
 			
 			// if the block to be replaced is air block then skip to the next pos
 			Cube cube = new Cube(world, new Coords(coords.getX(), yIndex, coords.getZ()));
