@@ -62,7 +62,7 @@ public class LavaSideTrapPitGenerator extends AbstractPitGenerator {
 		ICoords expectedCoords = null;
 		
 		// randomly fill shaft
-		for (int yIndex = coords.getY() + OFFSET_Y; yIndex <= surfaceCoords.getY() - SURFACE_OFFSET_Y; yIndex++) {
+		for (int yIndex = coords.getY() + getOffsetY(); yIndex <= surfaceCoords.getY() - SURFACE_OFFSET_Y; yIndex++) {
 			
 			// if the block to be replaced is air block then skip to the next pos
 			Cube cube = new Cube(world, new Coords(coords.getX(), yIndex, coords.getZ()));

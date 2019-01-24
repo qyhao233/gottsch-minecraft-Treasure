@@ -296,8 +296,11 @@ public class TreasureTemplate extends Template {
 	}
 
 	private void addEntitiesToWorld(World worldIn, BlockPos pos, Mirror mirrorIn, Rotation rotationIn, @Nullable StructureBoundingBox aabb) {
+		PlacementSettings placement = new PlacementSettings();
+		placement.setRotation(rotationIn).setMirror(mirrorIn);
+		
 		for (TreasureTemplate.EntityInfo template$entityinfo : this.entities) {
-			BlockPos blockpos = transformedBlockPos(template$entityinfo.blockPos, mirrorIn, rotationIn).add(pos);
+			BlockPos blockpos = transformedBlockPos(placement, template$entityinfo.blockPos).add(pos);
 
 			if (aabb == null || aabb.isVecInside(blockpos)) {
 				NBTTagCompound nbttagcompound = template$entityinfo.entityData;
@@ -342,40 +345,50 @@ public class TreasureTemplate extends Template {
 	}
     
 	/**
+	 * Wrapper for transformedBlockPos()
+	 * @param placementIn
+	 * @param coords
+	 * @return
+	 */
+    public static ICoords transformedCoords(PlacementSettings placement, ICoords coords) {
+        return new Coords(transformedBlockPos(placement, coords.toPos()));
+    }
+    
+	/**
 	 * 
 	 * @param pos
 	 * @param mirrorIn
 	 * @param rotationIn
 	 * @return
 	 */
-	private static BlockPos transformedBlockPos(BlockPos pos, Mirror mirrorIn, Rotation rotationIn) {
-		int i = pos.getX();
-		int j = pos.getY();
-		int k = pos.getZ();
-		boolean flag = true;
-
-		switch (mirrorIn) {
-		case LEFT_RIGHT:
-			k = -k;
-			break;
-		case FRONT_BACK:
-			i = -i;
-			break;
-		default:
-			flag = false;
-		}
-
-		switch (rotationIn) {
-		case COUNTERCLOCKWISE_90:
-			return new BlockPos(k, j, -i);
-		case CLOCKWISE_90:
-			return new BlockPos(-k, j, i);
-		case CLOCKWISE_180:
-			return new BlockPos(-i, j, -k);
-		default:
-			return flag ? new BlockPos(i, j, k) : pos;
-		}
-	}
+//	private static BlockPos transformedBlockPos(BlockPos pos, Mirror mirrorIn, Rotation rotationIn) {
+//		int i = pos.getX();
+//		int j = pos.getY();
+//		int k = pos.getZ();
+//		boolean flag = true;
+//
+//		switch (mirrorIn) {
+//		case LEFT_RIGHT:
+//			k = -k;
+//			break;
+//		case FRONT_BACK:
+//			i = -i;
+//			break;
+//		default:
+//			flag = false;
+//		}
+//
+//		switch (rotationIn) {
+//		case COUNTERCLOCKWISE_90:
+//			return new BlockPos(k, j, -i);
+//		case CLOCKWISE_90:
+//			return new BlockPos(-k, j, i);
+//		case CLOCKWISE_180:
+//			return new BlockPos(-i, j, -k);
+//		default:
+//			return flag ? new BlockPos(i, j, k) : pos;
+//		}
+//	}
 
 	private static Vec3d transformedVec3d(Vec3d vec, Mirror mirrorIn, Rotation rotationIn) {
 		double d0 = vec.x;

@@ -112,22 +112,13 @@ public abstract class AbstractPitGenerator implements IPitGenerator {
 	
 		if (yDist > 6) {			
 			Treasure.logger.debug("Generating shaft @ " + spawnCoords.toShortString());
-			// at chest level
-//			buildLayer(world, spawnCoords, Blocks.AIR);
-//			
-//			// above the chest
-//			buildAboveChestLayers(world, random, spawnCoords);
 
 			generateBase(world, random, surfaceCoords, spawnCoords);
 			
 			// pit enterance
-//			buildLogLayer(world, random, surfaceCoords.add(0, -3, 0), Blocks.LOG);
-//			buildLayer(world, surfaceCoords.add(0, -4, 0), Blocks.SAND);
-//			buildLogLayer(world, random, surfaceCoords.add(0, -5, 0), Blocks.LOG);
 			generateEntrance(world, random, surfaceCoords, spawnCoords);
 
 			// build the pit
-//			buildPit(world, random, spawnCoords, surfaceCoords, getBlockLayers());
 			generatePit(world, random, surfaceCoords, spawnCoords);
 		}			
 		// shaft is only 2-6 blocks long - can only support small covering
