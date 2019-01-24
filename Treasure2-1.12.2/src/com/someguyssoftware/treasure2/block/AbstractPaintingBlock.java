@@ -92,6 +92,14 @@ public abstract class AbstractPaintingBlock extends CardinalDirectionFacadeBlock
 	public boolean isNormalCube(IBlockState state, IBlockAccess world, BlockPos pos) {
 		return false;
 	}
+	
+	/**
+	 * Prevent torches and buttons from being placed on block.
+	 */
+	@Override
+	public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
+		return BlockFaceShape.UNDEFINED;
+	}
 
 	/**
 	 * 

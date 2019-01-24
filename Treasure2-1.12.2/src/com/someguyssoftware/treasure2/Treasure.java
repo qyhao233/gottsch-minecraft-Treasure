@@ -110,7 +110,7 @@ public class Treasure extends AbstractMod {
     public static final Map<String, IWorldGenerator> WORLD_GENERATORS = new HashMap<>();
     
     // template manager - TODO update
-    public static TreasureTemplateManager TEMPLATE_MANAGER;// = new TreasureTemplateManager("mods/treasure2/locations", Minecraft.getMinecraft().getDataFixer());
+    public static TreasureTemplateManager TEMPLATE_MANAGER;
     
 	/**
 	 * 

@@ -39,27 +39,29 @@ import static com.someguyssoftware.treasure2.enums.StructureMarkers.*;
  *
  */
 public class TreasureTemplateManager {
+	// TODO will need a better mapped system - something based on underground/above ground, rarity?
 	private final Map<String, Template> templates = Maps.<String, Template>newHashMap();
 	/** the folder in the assets folder where the structure templates are found. */
 	private final String baseFolder;
 	private final DataFixer fixer;
 	
 	/*
-	 * standard list of blocks to scan for 
-	 */
-	List<Block> scanList;
-
-	/*
 	 * builtin locations for structures
 	 */
 	List<String> locations = Arrays.asList(new String [] {
-			"treasure2:underground/basic1"
+			"treasure2:underground/basic1",
+			"treasure2:underground/basic2",
 	});
 
 	/*
+	 * standard list of blocks to scan for 
+	 */
+	private List<Block> scanList;
+	
+	/*
 	 * 
 	 */
-	public Map<StructureMarkers, Block> markerMap;
+	private Map<StructureMarkers, Block> markerMap;
 
 	/**
 	 * 
@@ -280,5 +282,17 @@ public class TreasureTemplateManager {
 
 	public void setMarkerMap(Map<StructureMarkers, Block> markerMap) {
 		this.markerMap = markerMap;
+	}
+
+	public List<Block> getScanList() {
+		return scanList;
+	}
+
+	public void setScanList(List<Block> scanList) {
+		this.scanList = scanList;
+	}
+
+	public Map<String, Template> getTemplates() {
+		return templates;
 	}
 }

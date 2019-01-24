@@ -1,6 +1,8 @@
 package com.someguyssoftware.treasure2.generator.pit;
 
+import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 import com.someguyssoftware.gottschcore.Quantity;
 import com.someguyssoftware.gottschcore.positional.Coords;
@@ -24,6 +26,7 @@ import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.template.PlacementSettings;
+import net.minecraft.world.gen.structure.template.Template;
 
 
 /**
@@ -110,10 +113,15 @@ public class StructurePitGenerator extends AbstractPitGenerator implements IStru
 			Treasure.logger.debug("generating structure room at -> {}", spawnCoords.toShortString());
 			
 			// TODO will want the structures organized better to say grab RARE UNDERGROUND ROOMs
-			ResourceLocation r =new ResourceLocation("treasure2:underground/basic1");
-			TreasureTemplate template = (TreasureTemplate) Treasure.TEMPLATE_MANAGER.getTemplate(r);
+			// select a random underground structure
+			List<Template> templates = Treasure.TEMPLATE_MANAGER.getTemplates().values().stream().collect(Collectors.toList());
+			TreasureTemplate template = (TreasureTemplate) templates.get(random.nextInt(templates.size()));
+//			ResourceLocation r =new ResourceLocation("treasure2:underground/basic1");
+//			TreasureTemplate template = (TreasureTemplate) Treasure.TEMPLATE_MANAGER.getTemplate(r);
 			if (template == null) {
-				Treasure.logger.debug("could not find template -> {}", r);
+//				Treasure.logger.debug("could not find template -> {}", r);
+				Treasure.logger.debug("could not find random template");
+				return false;
 			}
 			
 			// find the offset block
@@ -139,7 +147,7 @@ public class StructurePitGenerator extends AbstractPitGenerator implements IStru
 			IStructureInfo info = new StructureInfo();
 		
 			// find the entrance block
-			ICoords entranceCoords = template.findCoords(random, Blocks.GOLD_BLOCK);
+			ICoords entranceCoords = template.findCoords(random, getMarkerBlock(StructureMarkers.ENTRANCE));
 			if (entranceCoords == null) {
 				Treasure.logger.debug("Unable to locate entrance position.");
 				return false;
@@ -152,7 +160,7 @@ public class StructurePitGenerator extends AbstractPitGenerator implements IStru
 			
 			// select a random rotation
 			Rotation rotation = Rotation.values()[random.nextInt(Rotation.values().length)];
-			rotation = Rotation.CLOCKWISE_90; // TEMP
+//			rotation = Rotation.COUNTERCLOCKWISE_90; // TEMP
 //			rotation = Rotation.NONE;
 			Treasure.logger.debug("rotation used -> {}", rotation);
 			
@@ -164,9 +172,7 @@ public class StructurePitGenerator extends AbstractPitGenerator implements IStru
 			// TODO perfrom rotation, mirror on specials map
 			// TODO test is same as what Coords.rotate creates
 			ICoords newEntrance = new Coords(TreasureTemplate.transformedBlockPos(placement, entranceCoords.toPos()));
-			ICoords gottschCoreCoords = entranceCoords.rotate90(size.getX());
-			Treasure.logger.debug("rotation of entrance -> {}: template -> {}, gottschcore -> {}", entranceCoords.toShortString(), 
-					newEntrance.toShortString(), gottschCoreCoords.toShortString());
+
 			
 			// TODO need to find the entire list in case there are more and they need to be erased after build
 			// TODO this is why using only Structure Data blocks would be ideal - they are removed natively
@@ -177,6 +183,11 @@ public class StructurePitGenerator extends AbstractPitGenerator implements IStru
 			BlockPos transformedSize = template.transformedSize(rotation);
 			Treasure.logger.debug("transformed size -> {}", transformedSize);
 			
+//			ICoords gottschCoreCoords = entranceCoords.rotate270(size.getZ());
+//			ICoords gottschCoreTransCoords = entranceCoords.rotate270(transformedSize.getZ());
+//			Treasure.logger.debug("rotation of entrance -> {}: template -> {}, gottschcore.size -> {}, gottschcore.transize -> {}", entranceCoords.toShortString(), 
+//					newEntrance.toShortString(), gottschCoreCoords.toShortString(), gottschCoreTransCoords.toShortString());
+			
 			ICoords roomCoords = alignToPit(spawnCoords, newEntrance, transformedSize, placement);
 			Treasure.logger.debug("aligned room coords -> {}", roomCoords.toShortString());
 			
@@ -186,9 +197,9 @@ public class StructurePitGenerator extends AbstractPitGenerator implements IStru
 			// TODO go back into build and remove any extra special blocks
 			// TODO have to remove the entrance because it is shifted?
 			for (ICoords c : template.getMapCoords()) {
-				BlockPos p = TreasureTemplate.transformedBlockPos(placement, c.toPos());
-				world.setBlockToAir(roomCoords.toPos().add(p));
-				Treasure.logger.debug("removing mapped block -> {} : {}", p, roomCoords.toPos().add(p));
+				ICoords p = TreasureTemplate.transformedCoords(placement, c);
+				world.setBlockToAir(roomCoords.toPos().add(p.toPos()));
+				Treasure.logger.debug("removing mapped block -> {} : {}", p, roomCoords.toPos().add(p.toPos()));
 			}
 			
 			// remove entrance
@@ -250,8 +261,10 @@ public class StructurePitGenerator extends AbstractPitGenerator implements IStru
 			startCoords = startCoords.add(1, 0, 0);
 			break;
 		case CLOCKWISE_180:
+			startCoords = startCoords.add(1, 0, 1);
 			break;
 		case COUNTERCLOCKWISE_90:
+			startCoords = startCoords.add(0, 0, 1);
 			break;
 		default:
 			break;
