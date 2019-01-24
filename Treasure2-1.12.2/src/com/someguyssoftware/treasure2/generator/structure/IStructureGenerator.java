@@ -20,6 +20,6 @@ public interface IStructureGenerator {
 	 * @param spawnCoords
 	 * @return
 	 */
-	public StructureInfo generate(World world, Random random, TreasureTemplate template, ICoords spawnCoords);
+	public IStructureInfo generate(World world, Random random, TreasureTemplate template, ICoords spawnCoords);
 
 }
