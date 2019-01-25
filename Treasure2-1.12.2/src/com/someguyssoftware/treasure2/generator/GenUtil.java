@@ -20,6 +20,7 @@ import com.someguyssoftware.treasure2.block.FogBlock;
 import com.someguyssoftware.treasure2.block.ITreasureBlock;
 import com.someguyssoftware.treasure2.block.TreasureBlocks;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
+import com.someguyssoftware.treasure2.enums.StructureMarkers;
 import com.someguyssoftware.treasure2.item.TreasureItems;
 import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
 
@@ -44,7 +45,16 @@ public class GenUtil {
 	protected static final int UNDERGROUND_OFFSET = 5;
 	protected static final int VERTICAL_MAX_DIFF = 2;
 	private static final int FOG_RADIUS = 5;
-		
+
+	/**
+	 * convenience method
+	 * @param offset
+	 * @return
+	 */
+	public static Block getMarkerBlock(StructureMarkers marker) {
+		return Treasure.TEMPLATE_MANAGER.getMarkerMap().get(marker);
+	}
+	
 	/**
 	 * 
 	 * @param world

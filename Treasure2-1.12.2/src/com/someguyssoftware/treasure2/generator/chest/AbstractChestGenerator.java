@@ -24,6 +24,7 @@ import com.someguyssoftware.treasure2.config.IChestConfig;
 import com.someguyssoftware.treasure2.enums.Category;
 import com.someguyssoftware.treasure2.enums.Pits;
 import com.someguyssoftware.treasure2.enums.Rarity;
+import com.someguyssoftware.treasure2.enums.StructureMarkers;
 import com.someguyssoftware.treasure2.generator.GenUtil;
 import com.someguyssoftware.treasure2.generator.pit.IPitGenerator;
 import com.someguyssoftware.treasure2.generator.pit.StructurePitGenerator;
@@ -121,8 +122,10 @@ public abstract class AbstractChestGenerator implements IChestGenerator {
 			
 			// 5. update the chest coords
 			if (pitGenerator instanceof IStructureInfoProvider) {
-				// TODO could extend IStructureInfoProvider for Treasure context that only records a single or main chest
-				List<ICoords> coordsList = (List<ICoords>)((IStructureInfoProvider)pitGenerator).getInfo().getMap().get(Blocks.CHEST);
+				List<ICoords> coordsList = (List<ICoords>)((IStructureInfoProvider)pitGenerator)
+						.getInfo()
+						.getMap()
+						.get(GenUtil.getMarkerBlock(StructureMarkers.CHEST));
 				chestCoords = coordsList.get(0);
 			}
 			else {
@@ -156,30 +159,18 @@ public abstract class AbstractChestGenerator implements IChestGenerator {
 			if (te == null) return false;
 			
 			// populate the chest with items
-			if (chest instanceof WitherChestBlock) {
-				Treasure.logger.debug("Generating loot from loot table for wither chest");
-//				List<ItemStack> stacks = TreasureLootTables.WITHER_CHEST_LOOT_TABLE.generateLootForPools(random, TreasureLootTables.CONTEXT);
-//				Treasure.logger.debug("Generated loot:");
-//				for (ItemStack stack : stacks) {
-//					Treasure.logger.debug(stack.getDisplayName());
-//				}
-				
-				lootTable.fillInventory(((AbstractTreasureChestTileEntity)te).getInventoryProxy(), 
-							random,
-							TreasureLootTables.CONTEXT);
-			}
-			else if (chest instanceof IMimicBlock) {
+//			if (chest instanceof WitherChestBlock) {
+//				Treasure.logger.debug("Generating loot from loot table for wither chest");
+//				lootTable.fillInventory(((AbstractTreasureChestTileEntity)te).getInventoryProxy(), 
+//							random,
+//							TreasureLootTables.CONTEXT);
+//			}
+//			else 
+			if (chest instanceof IMimicBlock) {
 				// don't fill
 			}
 			else {
-//				InventoryPopulator pop = new InventoryPopulator();
-//				pop.populate(((AbstractTreasureChestTileEntity)te).getInventoryProxy(), container);
 				Treasure.logger.debug("Generating loot from loot table for rarity {}", chestRarity);
-//				List<ItemStack> stacks = lootTable.generateLootFromPools(random, TreasureLootTables.CONTEXT);
-//				Treasure.logger.debug("Generated loot:");
-//				for (ItemStack stack : stacks) {
-//					Treasure.logger.debug("item -> {}, size -> {}", stack.getDisplayName(), stack.getCount());
-//				}				
 				lootTable.fillInventory(((AbstractTreasureChestTileEntity)te).getInventoryProxy(), 
 							random,
 							TreasureLootTables.CONTEXT);			
@@ -188,6 +179,7 @@ public abstract class AbstractChestGenerator implements IChestGenerator {
 			// add locks
 			addLocks(random, chest, (AbstractTreasureChestTileEntity)te, chestRarity);
 			
+			// TODO either if/else or in addMarkers to create an above ground structure instead of gravestones
 			// add markers (above chest or shaft)
 			addMarkers(world, random, markerCoords);
 
