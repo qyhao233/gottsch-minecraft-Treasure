@@ -62,7 +62,7 @@ public class StructurePitGenerator extends AbstractPitGenerator implements IStru
 	public StructurePitGenerator(IPitGenerator generator) {
 		this();
 		setGenerator(generator);
-		Treasure.logger.debug("using parent generator -> {}", getGenerator().getClass().getSimpleName());
+		Treasure.logger.debug("using parent generator -> {}", generator.getClass().getSimpleName());
 	}
 	
 	@Override
@@ -107,11 +107,13 @@ public class StructurePitGenerator extends AbstractPitGenerator implements IStru
 			}
 		}
 	
-		// generate shaft
+		// get distance to surface
 		int yDist = (surfaceCoords.getY() - spawnCoords.getY()) - 2;
 		Treasure.logger.debug("Distance to ySurface =" + yDist);
 	
 		ICoords nextCoords = null;
+		IStructureInfo info = null;
+		
 		if (yDist > 6) {
 			Treasure.logger.debug("generating structure room at -> {}", spawnCoords.toShortString());
 			
@@ -191,13 +193,17 @@ public class StructurePitGenerator extends AbstractPitGenerator implements IStru
 			Treasure.logger.debug("aligned room coords -> {}", roomCoords.toShortString());
 			
 			// generate the structure
-			IStructureInfo info = new StructureGenerator().generate(world, random, template, placement, roomCoords);
+			info = new StructureGenerator().generate(world, random, template, placement, roomCoords);
+			if (info == null) return false;			
+			Treasure.logger.debug("returned info -> {}", info);
 			setInfo(info);
 			
 			// interrogate info for spawners and any other special block processing (except chests that are handler by caller
 			List<ICoords> spawnerCoords = (List<ICoords>) info.getMap().get(GenUtil.getMarkerBlock(StructureMarkers.SPAWNER));
+			Treasure.logger.debug("spawner coords size -> {}", spawnerCoords.size());
 			List<ICoords> proximityCoords = (List<ICoords>) info.getMap().get(GenUtil.getMarkerBlock(StructureMarkers.PROXIMITY_SPAWNER));
-	
+			Treasure.logger.debug("proximity coords -> {}", proximityCoords.size());
+
 			/*
 			 *  TODO could lookup to some sort of map of structure -> spawner info
 			 *  ex.	uses a Guava Table:
@@ -207,16 +213,20 @@ public class StructurePitGenerator extends AbstractPitGenerator implements IStru
 			
 			// populate vanilla spawners
 			for (ICoords c : spawnerCoords) {
-				world.setBlockState(c.toPos(), Blocks.MOB_SPAWNER.getDefaultState());
-				TileEntityMobSpawner te = (TileEntityMobSpawner) world.getTileEntity(c.toPos());
+				Treasure.logger.debug("processing spawner coords -> {}", c.toShortString());
+				ICoords c2 = roomCoords.add(c);
+				world.setBlockState(c2.toPos(), Blocks.MOB_SPAWNER.getDefaultState());
+				TileEntityMobSpawner te = (TileEntityMobSpawner) world.getTileEntity(c2.toPos());
 				ResourceLocation r = DungeonHooks.getRandomDungeonMob(random);
 				te.getSpawnerBaseLogic().setEntityId(r);
 			}
 			
 			// populate proximity spawners
 			for (ICoords c : proximityCoords) {
-		    	world.setBlockState(c.toPos(), TreasureBlocks.PROXIMITY_SPAWNER.getDefaultState());
-		    	ProximitySpawnerTileEntity te = (ProximitySpawnerTileEntity) world.getTileEntity(c.toPos());
+				Treasure.logger.debug("processing proximity coords -> {}", c.toShortString());
+				ICoords c2 = roomCoords.add(c);
+		    	world.setBlockState(c2.toPos(), TreasureBlocks.PROXIMITY_SPAWNER.getDefaultState());
+		    	ProximitySpawnerTileEntity te = (ProximitySpawnerTileEntity) world.getTileEntity(c2.toPos());
 		    	ResourceLocation r = DungeonHooks.getRandomDungeonMob(random);
 		    	te.setMobName(r);
 		    	te.setMobNum(new Quantity(1, 2));
@@ -318,8 +328,13 @@ public class StructurePitGenerator extends AbstractPitGenerator implements IStru
 	/**
 	 * @param info2 the info to set
 	 */
-	protected void setInfo(IStructureInfo info2) {
-		this.info = info2;
+	protected void setInfo(IStructureInfo info) {
+		this.info = info;
+	}
+
+	@Override
+	public String toString() {
+		return "StructurePitGenerator [generator=" + generator + ", info=" + info + "]";
 	}
 	
 }

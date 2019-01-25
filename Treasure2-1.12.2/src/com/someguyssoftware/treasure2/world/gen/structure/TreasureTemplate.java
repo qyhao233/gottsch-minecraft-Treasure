@@ -506,6 +506,7 @@ public class TreasureTemplate extends Template {
 			}
 			this.blocks.add(new TreasureTemplate.BlockInfo(blockPos, blockState, nbttagcompound1));
 			
+			// TODO not reading in proximity spawners for some reason
 			// check if a scan block
 			Block block = blockState.getBlock();
 			if (scanForBlocks.contains(block)) {

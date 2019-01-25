@@ -50,13 +50,14 @@ public class StructureGenerator implements IStructureGenerator {
 		if (chestCoords != null) {
 			chestCoords = new Coords(TreasureTemplate.transformedBlockPos(placement, chestCoords.toPos()));
 		}
+		// TODO need to capture the facing or meta of the chest, perform the rotation on the facing  and save it in the Map with the pos... need a new object to hold more data
 		
 		// TODO make more generic of processing all specials and adding them to the StructureInfo
 		
 		// update StrucutreInfo
 		IStructureInfo info = new StructureInfo();
 		info.setCoords(spawnCoords);
-		info.setSize(new Coords(transformedSize));		
+		info.setSize(new Coords(transformedSize));
 		info.getMap().put(GenUtil.getMarkerBlock(StructureMarkers.ENTRANCE), entranceCoords);
 		info.getMap().put(GenUtil.getMarkerBlock(StructureMarkers.CHEST), chestCoords);
 		

@@ -51,6 +51,8 @@ public class TreasureTemplateManager {
 	List<String> locations = Arrays.asList(new String [] {
 			"treasure2:underground/basic1",
 			"treasure2:underground/basic2",
+			"treasure2:underground/basic3",
+			"treasure2:underground/basic4",
 	});
 
 	/*
@@ -75,7 +77,7 @@ public class TreasureTemplateManager {
         
         // setup standard list of markers
         markerMap = Maps.newHashMapWithExpectedSize(10);
-        markerMap.put(StructureMarkers.CHEST, Blocks.CHEST);
+        markerMap.put(CHEST, Blocks.CHEST);
         markerMap.put(StructureMarkers.BOSS_CHEST, Blocks.ENDER_CHEST);
         markerMap.put(StructureMarkers.SPAWNER, Blocks.MOB_SPAWNER);
         markerMap.put(StructureMarkers.ENTRANCE, Blocks.GOLD_BLOCK);
