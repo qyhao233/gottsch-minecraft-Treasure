@@ -3,6 +3,7 @@
  */
 package com.someguyssoftware.treasure2.generator.structure;
 
+import java.util.Map.Entry;
 import java.util.Random;
 
 import com.someguyssoftware.gottschcore.positional.Coords;
@@ -14,6 +15,7 @@ import com.someguyssoftware.treasure2.world.gen.structure.IStructureInfo;
 import com.someguyssoftware.treasure2.world.gen.structure.StructureInfo;
 import com.someguyssoftware.treasure2.world.gen.structure.TreasureTemplate;
 
+import net.minecraft.block.Block;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.template.PlacementSettings;
@@ -35,7 +37,7 @@ public class StructureGenerator implements IStructureGenerator {
 		for (ICoords coords : template.getMapCoords()) {
 			ICoords c = TreasureTemplate.transformedCoords(placement, coords);
 			world.setBlockToAir(spawnCoords.toPos().add(c.toPos()));
-			Treasure.logger.debug("removing mapped block -> {} : {}", c, spawnCoords.toPos().add(c.toPos()));
+//			Treasure.logger.debug("removing mapped block -> {} : {}", c, spawnCoords.toPos().add(c.toPos()));
 		}
 		
 		// get the transformed size
@@ -43,23 +45,26 @@ public class StructureGenerator implements IStructureGenerator {
 		// get the transformed entrance
 		ICoords entranceCoords = template.findCoords(random, GenUtil.getMarkerBlock(StructureMarkers.ENTRANCE));
 		if (entranceCoords != null) {
-			entranceCoords = new Coords(TreasureTemplate.transformedBlockPos(placement, entranceCoords.toPos()));
+			entranceCoords = new Coords(TreasureTemplate.transformedCoords(placement, entranceCoords));
 		}
 		// get the transformed chest
 		ICoords chestCoords = template.findCoords(random, GenUtil.getMarkerBlock(StructureMarkers.CHEST));
 		if (chestCoords != null) {
-			chestCoords = new Coords(TreasureTemplate.transformedBlockPos(placement, chestCoords.toPos()));
+			chestCoords = new Coords(TreasureTemplate.transformedCoords(placement, chestCoords));
 		}
+
 		// TODO need to capture the facing or meta of the chest, perform the rotation on the facing  and save it in the Map with the pos... need a new object to hold more data
-		
-		// TODO make more generic of processing all specials and adding them to the StructureInfo
-		
+				
 		// update StrucutreInfo
 		IStructureInfo info = new StructureInfo();
 		info.setCoords(spawnCoords);
 		info.setSize(new Coords(transformedSize));
-		info.getMap().put(GenUtil.getMarkerBlock(StructureMarkers.ENTRANCE), entranceCoords);
-		info.getMap().put(GenUtil.getMarkerBlock(StructureMarkers.CHEST), chestCoords);
+		// process all specials and adding them to the StructureInfo 
+		// TODO change to stream
+		for (Entry<Block, ICoords> entry : template.getMap().entries()) {
+			ICoords c = new Coords(TreasureTemplate.transformedCoords(placement, entry.getValue()));
+			info.getMap().put(entry.getKey(), c);
+		}
 		
 		return info;
 	}

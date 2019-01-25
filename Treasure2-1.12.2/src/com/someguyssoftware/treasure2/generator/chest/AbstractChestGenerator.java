@@ -108,7 +108,7 @@ public abstract class AbstractChestGenerator implements IChestGenerator {
 			if (pit == Pits.STRUCTURE_PIT) {
 				// select a pit from the subset
 				List<IPitGenerator> pitGens = ChestWorldGenerator.structurePitGenerators.values().stream().collect(Collectors.toList());
-				Treasure.logger.debug("pit gens size -> {}", pitGens.size());
+//				Treasure.logger.debug("pit gens size -> {}", pitGens.size());
 				IPitGenerator parentPit = pitGens.get(random.nextInt(pitGens.size()));				
 				// create a new pit instance (new instance as it contains state)
 				pitGenerator = new StructurePitGenerator(parentPit);
@@ -116,7 +116,7 @@ public abstract class AbstractChestGenerator implements IChestGenerator {
 			else {
 				pitGenerator = ChestWorldGenerator.pitGenerators.get(pit);
 			}
-			Treasure.logger.debug("Using Pit: {}, Gen: {}", pit, pitGenerator.getClass());
+//			Treasure.logger.debug("Using Pit: {}, Gen: {}", pit, pitGenerator.getClass());
 
 			// 3. build the pit
 			isGenerated = pitGenerator.generate(world, random, markerCoords, spawnCoords);
