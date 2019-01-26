@@ -114,8 +114,21 @@ public class TreasureTemplate extends Template {
 	 *            Flags to pass to
 	 *            {@link World#setBlockState(BlockPos, IBlockState, int)}
 	 */
+	@Override
 	public void addBlocksToWorld(World worldIn, BlockPos pos, PlacementSettings placementIn, int flags) {
-		this.addBlocksToWorld(worldIn, pos, new BlockRotationProcessor(pos, placementIn), placementIn, flags);
+		this.addBlocksToWorld(worldIn, pos, new BlockRotationProcessor(pos, placementIn), placementIn, Blocks.BEDROCK, flags);
+	}
+	
+	/**
+	 * 
+	 * @param worldIn
+	 * @param pos
+	 * @param placementIn
+	 * @param NULL_BLOCK
+	 * @param flags
+	 */
+	public void addBlocksToWorld(World worldIn, BlockPos pos, PlacementSettings placementIn, final Block NULL_BLOCK, int flags) {
+		this.addBlocksToWorld(worldIn, pos, new BlockRotationProcessor(pos, placementIn), placementIn, NULL_BLOCK, flags);
 	}
 
 	/**
@@ -133,27 +146,29 @@ public class TreasureTemplate extends Template {
 	 *            Flags to pass to
 	 *            {@link World#setBlockState(BlockPos, IBlockState, int)}
 	 */
-	public void addBlocksToWorld(World worldIn, BlockPos pos, @Nullable ITemplateProcessor templateProcessor, PlacementSettings placementIn, int flags) {
+	public void addBlocksToWorld(World worldIn, BlockPos pos, @Nullable ITemplateProcessor templateProcessor, PlacementSettings placementIn, final Block NULL_BLOCK, int flags) {
 		if ((!this.blocks.isEmpty() || !placementIn.getIgnoreEntities() && !this.entities.isEmpty()) && this.size.getX() >= 1 && this.size.getY() >= 1 && this.size.getZ() >= 1) {
-			Block block = placementIn.getReplacedBlock();
+			Block replacedBlock = placementIn.getReplacedBlock();
 			StructureBoundingBox structureboundingbox = placementIn.getBoundingBox();
 
-			for (TreasureTemplate.BlockInfo template$blockinfo : this.blocks) {
-				BlockPos blockpos = transformedBlockPos(placementIn, template$blockinfo.pos).add(pos);
+			for (TreasureTemplate.BlockInfo blockInfo : this.blocks) {
+				BlockPos blockpos = transformedBlockPos(placementIn, blockInfo.pos).add(pos);
 				// Forge: skip processing blocks outside BB to prevent cascading worldgen issues
 				if (structureboundingbox != null && !structureboundingbox.isVecInside(blockpos))
 					continue;
-				TreasureTemplate.BlockInfo template$blockinfo1 = templateProcessor != null ? templateProcessor.processBlock(worldIn, blockpos, template$blockinfo) : template$blockinfo;
+				TreasureTemplate.BlockInfo processedBlockInfo = templateProcessor != null ? templateProcessor.processBlock(worldIn, blockpos, blockInfo) : blockInfo;
 
-				if (template$blockinfo1 != null) {
-					Block block1 = template$blockinfo1.blockState.getBlock();
+				if (processedBlockInfo != null) {
+					Block processedBlock = processedBlockInfo.blockState.getBlock();
 
-					if ((block == null || block != block1) && (!placementIn.getIgnoreStructureBlock() || block1 != Blocks.STRUCTURE_BLOCK)
-							&& (structureboundingbox == null || structureboundingbox.isVecInside(blockpos))) {
-						IBlockState iblockstate = template$blockinfo1.blockState.withMirror(placementIn.getMirror());
+					if ((replacedBlock == null || replacedBlock != processedBlock) && (!placementIn.getIgnoreStructureBlock() || processedBlock != Blocks.STRUCTURE_BLOCK)
+							&& (structureboundingbox == null || structureboundingbox.isVecInside(blockpos))
+							&& processedBlock != NULL_BLOCK
+							) {
+						IBlockState iblockstate = processedBlockInfo.blockState.withMirror(placementIn.getMirror());
 						IBlockState iblockstate1 = iblockstate.withRotation(placementIn.getRotation());
 
-						if (template$blockinfo1.tileentityData != null) {
+						if (processedBlockInfo.tileentityData != null) {
 							TileEntity tileentity = worldIn.getTileEntity(blockpos);
 
 							if (tileentity != null) {
@@ -165,14 +180,14 @@ public class TreasureTemplate extends Template {
 							}
 						}
 
-						if (worldIn.setBlockState(blockpos, iblockstate1, flags) && template$blockinfo1.tileentityData != null) {
+						if (worldIn.setBlockState(blockpos, iblockstate1, flags) && processedBlockInfo.tileentityData != null) {
 							TileEntity tileentity2 = worldIn.getTileEntity(blockpos);
 
 							if (tileentity2 != null) {
-								template$blockinfo1.tileentityData.setInteger("x", blockpos.getX());
-								template$blockinfo1.tileentityData.setInteger("y", blockpos.getY());
-								template$blockinfo1.tileentityData.setInteger("z", blockpos.getZ());
-								tileentity2.readFromNBT(template$blockinfo1.tileentityData);
+								processedBlockInfo.tileentityData.setInteger("x", blockpos.getX());
+								processedBlockInfo.tileentityData.setInteger("y", blockpos.getY());
+								processedBlockInfo.tileentityData.setInteger("z", blockpos.getZ());
+								tileentity2.readFromNBT(processedBlockInfo.tileentityData);
 								tileentity2.mirror(placementIn.getMirror());
 								tileentity2.rotate(placementIn.getRotation());
 							}
@@ -182,7 +197,7 @@ public class TreasureTemplate extends Template {
 			}
 
 			for (TreasureTemplate.BlockInfo template$blockinfo2 : this.blocks) {
-				if (block == null || block != template$blockinfo2.blockState.getBlock()) {
+				if (replacedBlock == null || replacedBlock != template$blockinfo2.blockState.getBlock()) {
 					BlockPos blockpos1 = transformedBlockPos(placementIn, template$blockinfo2.pos).add(pos);
 
 					if (structureboundingbox == null || structureboundingbox.isVecInside(blockpos1)) {

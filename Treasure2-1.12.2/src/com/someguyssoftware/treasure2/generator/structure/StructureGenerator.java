@@ -31,7 +31,7 @@ public class StructureGenerator implements IStructureGenerator {
 			ICoords spawnCoords) {
 		
 		// generate the structure
-		template.addBlocksToWorld(world, spawnCoords.toPos(), placement, 3);
+		template.addBlocksToWorld(world, spawnCoords.toPos(), placement, GenUtil.getMarkerBlock(StructureMarkers.NULL), 3);
 		
 		// remove any extra special blocks
 		for (ICoords coords : template.getMapCoords()) {
