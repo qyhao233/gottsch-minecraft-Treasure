@@ -49,14 +49,22 @@ public class ProximitySpawnerTileEntity extends AbstractProximityTileEntity {
 
             Entity entity = EntityList.createEntityByIDFromName(getMobName(), world);
 
+            // NOTE 4D = spawn range
+            double x = (double)blockCoords.getX() + (world.rand.nextDouble() - world.rand.nextDouble()) * 4D + 0.5D;
+            double y = (double)(blockCoords.getY() + world.rand.nextInt(3) - 1);
+            double z = (double)blockCoords.getZ() + (world.rand.nextDouble() - world.rand.nextDouble()) * 4D + 0.5D;
+
+            entity.setLocationAndAngles(x, y, z, MathHelper.wrapDegrees(world.rand.nextFloat() * 360.0F), 0.0F);
+
             if (entity instanceof EntityLiving) {
-                EntityLiving entityliving = (EntityLiving)entity;
-                entity.setLocationAndAngles(blockCoords.getX(), blockCoords.getY(), blockCoords.getZ(), MathHelper.wrapDegrees(world.rand.nextFloat() * 360.0F), 0.0F);
-                entityliving.rotationYawHead = entityliving.rotationYaw;
-                entityliving.renderYawOffset = entityliving.rotationYaw;
-                entityliving.onInitialSpawn(world.getDifficultyForLocation(new BlockPos(entityliving)), (IEntityLivingData)null);
-                world.spawnEntity(entity);
-                entityliving.playLivingSound();
+            	EntityLiving entityLiving = (EntityLiving)entity;
+            	if (entityLiving.getCanSpawnHere() && entityLiving.isNotColliding()) {                
+	                entityLiving.rotationYawHead = entityLiving.rotationYaw;
+	                entityLiving.renderYawOffset = entityLiving.rotationYaw;
+	                entityLiving.onInitialSpawn(world.getDifficultyForLocation(new BlockPos(entityLiving)), (IEntityLivingData)null);
+	                world.spawnEntity(entity);
+	                entityLiving.playLivingSound();
+            	}
             }
     	}    	
     	// self destruct
