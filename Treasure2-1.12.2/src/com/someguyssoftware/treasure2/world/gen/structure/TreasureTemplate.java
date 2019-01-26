@@ -511,6 +511,7 @@ public class TreasureTemplate extends Template {
 			Block block = blockState.getBlock();
 			if (scanForBlocks.contains(block)) {
 				// add pos to map
+				Treasure.logger.debug("template map adding block -> {} with pos -> {}", block.getRegistryName(), blockPos);
 				map.put(block, new Coords(blockPos));
 			}
 		}
