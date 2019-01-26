@@ -60,90 +60,9 @@ public class TreasureTemplate extends Template {
 		return this.size;
 	}
 
-//	@Override
-//	public void setAuthor(String authorIn) {
-//		this.author = authorIn;
-//	}
-//
-//	@Override
-//	public String getAuthor() {
-//		return this.author;
-//	}
-
-//	/**
-//	 * takes blocks from the world and puts the data them into this template
-//	 */
-//	public void takeBlocksFromWorld(World worldIn, BlockPos startPos, BlockPos endPos, boolean takeEntities, @Nullable Block toIgnore) {
-//		if (endPos.getX() >= 1 && endPos.getY() >= 1 && endPos.getZ() >= 1) {
-//			BlockPos blockpos = startPos.add(endPos).add(-1, -1, -1);
-//			List<TreasureTemplate.BlockInfo> list = Lists.<TreasureTemplate.BlockInfo>newArrayList();
-//			List<TreasureTemplate.BlockInfo> list1 = Lists.<TreasureTemplate.BlockInfo>newArrayList();
-//			List<TreasureTemplate.BlockInfo> list2 = Lists.<TreasureTemplate.BlockInfo>newArrayList();
-//			BlockPos blockpos1 = new BlockPos(Math.min(startPos.getX(), blockpos.getX()), Math.min(startPos.getY(), blockpos.getY()), Math.min(startPos.getZ(), blockpos.getZ()));
-//			BlockPos blockpos2 = new BlockPos(Math.max(startPos.getX(), blockpos.getX()), Math.max(startPos.getY(), blockpos.getY()), Math.max(startPos.getZ(), blockpos.getZ()));
-//			this.size = endPos;
-//
-//			for (BlockPos.MutableBlockPos blockpos$mutableblockpos : BlockPos.getAllInBoxMutable(blockpos1, blockpos2)) {
-//				BlockPos blockpos3 = blockpos$mutableblockpos.subtract(blockpos1);
-//				IBlockState iblockstate = worldIn.getBlockState(blockpos$mutableblockpos);
-//
-//				if (toIgnore == null || toIgnore != iblockstate.getBlock()) {
-//					TileEntity tileentity = worldIn.getTileEntity(blockpos$mutableblockpos);
-//
-//					if (tileentity != null) {
-//						NBTTagCompound nbttagcompound = tileentity.writeToNBT(new NBTTagCompound());
-//						nbttagcompound.removeTag("x");
-//						nbttagcompound.removeTag("y");
-//						nbttagcompound.removeTag("z");
-//						list1.add(new TreasureTemplate.BlockInfo(blockpos3, iblockstate, nbttagcompound));
-//					} else if (!iblockstate.isFullBlock() && !iblockstate.isFullCube()) {
-//						list2.add(new TreasureTemplate.BlockInfo(blockpos3, iblockstate, (NBTTagCompound) null));
-//					} else {
-//						list.add(new TreasureTemplate.BlockInfo(blockpos3, iblockstate, (NBTTagCompound) null));
-//					}
-//				}
-//			}
-//
-//			this.blocks.clear();
-//			this.blocks.addAll(list);
-//			this.blocks.addAll(list1);
-//			this.blocks.addAll(list2);
-//
-//			if (takeEntities) {
-//				this.takeEntitiesFromWorld(worldIn, blockpos1, blockpos2.add(1, 1, 1));
-//			} else {
-//				this.entities.clear();
-//			}
-//		}
-//	}
-
 	/**
-	 * takes blocks from the world and puts the data them into this template
+	 * 
 	 */
-//	private void takeEntitiesFromWorld(World worldIn, BlockPos startPos, BlockPos endPos) {
-//		List<Entity> list = worldIn.<Entity>getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(startPos, endPos), new Predicate<Entity>() {
-//			public boolean apply(@Nullable Entity p_apply_1_) {
-//				return !(p_apply_1_ instanceof EntityPlayer);
-//			}
-//		});
-//		this.entities.clear();
-//
-//		for (Entity entity : list) {
-//			Vec3d vec3d = new Vec3d(entity.posX - (double) startPos.getX(), entity.posY - (double) startPos.getY(), entity.posZ - (double) startPos.getZ());
-//			NBTTagCompound nbttagcompound = new NBTTagCompound();
-//			entity.writeToNBTOptional(nbttagcompound);
-//			BlockPos blockpos;
-//
-//			if (entity instanceof EntityPainting) {
-//				blockpos = ((EntityPainting) entity).getHangingPosition().subtract(startPos);
-//			} else {
-//				blockpos = new BlockPos(vec3d);
-//			}
-//
-//			this.entities.add(new TreasureTemplate.EntityInfo(vec3d, blockpos, nbttagcompound));
-//		}
-//	}
-
 	public Map<BlockPos, String> getDataBlocks(BlockPos pos, PlacementSettings placementIn) {
 		Map<BlockPos, String> map = Maps.<BlockPos, String>newHashMap();
 		StructureBoundingBox structureboundingbox = placementIn.getBoundingBox();
@@ -167,15 +86,6 @@ public class TreasureTemplate extends Template {
 		return map;
 	}
 
-//	public BlockPos calculateConnectedPos(PlacementSettings placementIn, BlockPos p_186262_2_, PlacementSettings p_186262_3_, BlockPos p_186262_4_) {
-//		BlockPos blockpos = transformedBlockPos(placementIn, p_186262_2_);
-//		BlockPos blockpos1 = transformedBlockPos(p_186262_3_, p_186262_4_);
-//		return blockpos.subtract(blockpos1);
-//	}
-//
-//	public static BlockPos transformedBlockPos(PlacementSettings placementIn, BlockPos pos) {
-//		return transformedBlockPos(pos, placementIn.getMirror(), placementIn.getRotation());
-//	}
 
 	/**
 	 * This takes the data stored in this instance and puts them into the world.
@@ -353,43 +263,14 @@ public class TreasureTemplate extends Template {
     public static ICoords transformedCoords(PlacementSettings placement, ICoords coords) {
         return new Coords(transformedBlockPos(placement, coords.toPos()));
     }
-    
-	/**
-	 * 
-	 * @param pos
-	 * @param mirrorIn
-	 * @param rotationIn
-	 * @return
-	 */
-//	private static BlockPos transformedBlockPos(BlockPos pos, Mirror mirrorIn, Rotation rotationIn) {
-//		int i = pos.getX();
-//		int j = pos.getY();
-//		int k = pos.getZ();
-//		boolean flag = true;
-//
-//		switch (mirrorIn) {
-//		case LEFT_RIGHT:
-//			k = -k;
-//			break;
-//		case FRONT_BACK:
-//			i = -i;
-//			break;
-//		default:
-//			flag = false;
-//		}
-//
-//		switch (rotationIn) {
-//		case COUNTERCLOCKWISE_90:
-//			return new BlockPos(k, j, -i);
-//		case CLOCKWISE_90:
-//			return new BlockPos(-k, j, i);
-//		case CLOCKWISE_180:
-//			return new BlockPos(-i, j, -k);
-//		default:
-//			return flag ? new BlockPos(i, j, k) : pos;
-//		}
-//	}
 
+    /**
+     * 
+     * @param vec
+     * @param mirrorIn
+     * @param rotationIn
+     * @return
+     */
 	private static Vec3d transformedVec3d(Vec3d vec, Mirror mirrorIn, Rotation rotationIn) {
 		double d0 = vec.x;
 		double d1 = vec.y;

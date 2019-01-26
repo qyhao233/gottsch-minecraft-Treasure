@@ -111,7 +111,6 @@ public class StructurePitGenerator extends AbstractPitGenerator implements IStru
 		int yDist = (surfaceCoords.getY() - spawnCoords.getY()) - 2;
 //		Treasure.logger.debug("Distance to ySurface =" + yDist);
 	
-		ICoords nextCoords = null;
 		IStructureInfo info = null;
 		
 		if (yDist > 6) {
@@ -145,10 +144,7 @@ public class StructurePitGenerator extends AbstractPitGenerator implements IStru
 
 			// update the spawn coords with the offset
 			spawnCoords = spawnCoords.add(0, offset, 0);
-			
-//			// initialize StructureInfo
-//			IStructureInfo info = new StructureInfo();
-//		
+	
 			// find the entrance block
 			ICoords entranceCoords = template.findCoords(random, GenUtil.getMarkerBlock(StructureMarkers.ENTRANCE));
 			if (entranceCoords == null) {
@@ -160,27 +156,17 @@ public class StructurePitGenerator extends AbstractPitGenerator implements IStru
 			Rotation rotation = Rotation.values()[random.nextInt(Rotation.values().length)];
 			Treasure.logger.debug("rotation used -> {}", rotation);
 			
-			// TODO setup placement
+			// setup placement
 			PlacementSettings placement = new PlacementSettings();
 			placement.setRotation(rotation).setRandom(random);
 			
 			// NOTE these values are still relative to origin (spawnCoords);
 			ICoords newEntrance = new Coords(TreasureTemplate.transformedBlockPos(placement, entranceCoords.toPos()));
-			
-			// TODO need to find the entire list in case there are more and they need to be erased after build
-			// TODO this is why using only Structure Data blocks would be ideal - they are removed natively
-			// find the new chest block
-//			chestCoords = new Coords(TreasureTemplate.transformedBlockPos(placement, chestCoords.toPos()));
-			
-			// TODO adjust spawn coords to line up room entrance with pit
+		
+			/*
+			 *  adjust spawn coords to line up room entrance with pit
+			 */
 			BlockPos transformedSize = template.transformedSize(rotation);
-//			Treasure.logger.debug("transformed size -> {}", transformedSize);
-			
-//			ICoords gottschCoreCoords = entranceCoords.rotate270(size.getZ());
-//			ICoords gottschCoreTransCoords = entranceCoords.rotate270(transformedSize.getZ());
-//			Treasure.logger.debug("rotation of entrance -> {}: template -> {}, gottschcore.size -> {}, gottschcore.transize -> {}", entranceCoords.toShortString(), 
-//					newEntrance.toShortString(), gottschCoreCoords.toShortString(), gottschCoreTransCoords.toShortString());
-			
 			ICoords roomCoords = alignToPit(spawnCoords, newEntrance, transformedSize, placement);
 //			Treasure.logger.debug("aligned room coords -> {}", roomCoords.toShortString());
 			
@@ -192,9 +178,7 @@ public class StructurePitGenerator extends AbstractPitGenerator implements IStru
 			
 			// interrogate info for spawners and any other special block processing (except chests that are handler by caller
 			List<ICoords> spawnerCoords = (List<ICoords>) info.getMap().get(GenUtil.getMarkerBlock(StructureMarkers.SPAWNER));
-//			Treasure.logger.debug("spawner coords size -> {}", spawnerCoords.size());
 			List<ICoords> proximityCoords = (List<ICoords>) info.getMap().get(GenUtil.getMarkerBlock(StructureMarkers.PROXIMITY_SPAWNER));
-//			Treasure.logger.debug("proximity coords -> {}", proximityCoords.size());
 
 			/*
 			 *  TODO could lookup to some sort of map of structure -> spawner info
@@ -205,7 +189,6 @@ public class StructurePitGenerator extends AbstractPitGenerator implements IStru
 			
 			// populate vanilla spawners
 			for (ICoords c : spawnerCoords) {
-//				Treasure.logger.debug("processing spawner coords -> {}", c.toShortString());
 				ICoords c2 = roomCoords.add(c);
 				world.setBlockState(c2.toPos(), Blocks.MOB_SPAWNER.getDefaultState());
 				TileEntityMobSpawner te = (TileEntityMobSpawner) world.getTileEntity(c2.toPos());
@@ -215,7 +198,6 @@ public class StructurePitGenerator extends AbstractPitGenerator implements IStru
 			
 			// populate proximity spawners
 			for (ICoords c : proximityCoords) {
-//				Treasure.logger.debug("processing proximity coords -> {}", c.toShortString());
 				ICoords c2 = roomCoords.add(c);
 		    	world.setBlockState(c2.toPos(), TreasureBlocks.PROXIMITY_SPAWNER.getDefaultState());
 		    	ProximitySpawnerTileEntity te = (ProximitySpawnerTileEntity) world.getTileEntity(c2.toPos());
