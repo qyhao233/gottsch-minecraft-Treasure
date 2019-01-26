@@ -9,8 +9,10 @@ import com.someguyssoftware.gottschcore.GottschCore;
 import com.someguyssoftware.gottschcore.positional.Coords;
 import com.someguyssoftware.gottschcore.tileentity.AbstractModTileEntity;
 import com.someguyssoftware.gottschcore.world.WorldInfo;
+import com.someguyssoftware.treasure2.Treasure;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ITickable;
 import net.minecraft.world.World;
 
@@ -34,6 +36,33 @@ public abstract class AbstractProximityTileEntity extends AbstractModTileEntity 
 		setProximity(proximity);
 	}
 
+	/**
+	 * 
+	 */
+	@Override
+	public void readFromNBT(NBTTagCompound parentNBT) {
+		super.readFromNBT(parentNBT);
+		try {
+			// read the custom name
+			if (parentNBT.hasKey("proximity", 8)) {
+				this.proximity = parentNBT.getDouble("proximity");
+			}
+		}
+		catch(Exception e) {
+			Treasure.logger.error("Error reading AbstractProximity properties from NBT:",  e);
+		}
+	}
+	
+	/**
+	 * 
+	 */
+	@Override
+	public NBTTagCompound writeToNBT(NBTTagCompound tag) {
+	    super.writeToNBT(tag);
+	    tag.setDouble("proximity", getProximity());
+	    return tag;
+	}
+	
 	/* (non-Javadoc)
 	 * @see net.minecraft.util.ITickable#update()
 	 */
