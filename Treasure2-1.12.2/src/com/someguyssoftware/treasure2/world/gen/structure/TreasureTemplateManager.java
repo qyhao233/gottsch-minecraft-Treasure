@@ -53,6 +53,9 @@ public class TreasureTemplateManager {
 			"treasure2:underground/basic2",
 			"treasure2:underground/basic3",
 			"treasure2:underground/basic4",
+			"treasure2:underground/cave1",
+			"treasure2:underground/cobb1",
+			"treasure2:underground/crypt1",
 	});
 
 	/*
@@ -83,6 +86,7 @@ public class TreasureTemplateManager {
         markerMap.put(StructureMarkers.ENTRANCE, Blocks.GOLD_BLOCK);
         markerMap.put(StructureMarkers.OFFSET, Blocks.REDSTONE_BLOCK);
         markerMap.put(StructureMarkers.PROXIMITY_SPAWNER, Blocks.IRON_BLOCK);
+        markerMap.put(StructureMarkers.NULL, Blocks.BEDROCK);
         		
         // default scan list
         scanList = Arrays.asList(new Block[] {
