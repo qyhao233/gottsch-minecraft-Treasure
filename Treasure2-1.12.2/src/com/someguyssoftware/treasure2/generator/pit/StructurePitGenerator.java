@@ -121,10 +121,7 @@ public class StructurePitGenerator extends AbstractPitGenerator implements IStru
 			// select a random underground structure
 			List<Template> templates = Treasure.TEMPLATE_MANAGER.getTemplates().values().stream().collect(Collectors.toList());
 			TreasureTemplate template = (TreasureTemplate) templates.get(random.nextInt(templates.size()));
-//			ResourceLocation r =new ResourceLocation("treasure2:underground/basic1");
-//			TreasureTemplate template = (TreasureTemplate) Treasure.TEMPLATE_MANAGER.getTemplate(r);
 			if (template == null) {
-//				Treasure.logger.debug("could not find template -> {}", r);
 				Treasure.logger.debug("could not find random template");
 				return false;
 			}
