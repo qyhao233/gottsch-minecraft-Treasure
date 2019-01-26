@@ -53,7 +53,7 @@ public class TreasureTemplateManager {
 			"treasure2:underground/basic4",
 			"treasure2:underground/cave1",
 			"treasure2:underground/cobb1",
-			"treasure2:underground/crypt1",
+			"treasure2:underground/crypt1"
 	});
 
 	/*
