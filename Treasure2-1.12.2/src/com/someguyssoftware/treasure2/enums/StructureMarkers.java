@@ -15,5 +15,6 @@ public enum StructureMarkers {
 	BOSS_SPAWNER,
 	ENTRANCE,
 	EXIT,
-	OFFSET
+	OFFSET,
+	NULL
 }

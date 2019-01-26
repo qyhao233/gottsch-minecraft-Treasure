@@ -83,6 +83,7 @@ public class TreasureTemplateManager {
         markerMap.put(StructureMarkers.ENTRANCE, Blocks.GOLD_BLOCK);
         markerMap.put(StructureMarkers.OFFSET, Blocks.REDSTONE_BLOCK);
         markerMap.put(StructureMarkers.PROXIMITY_SPAWNER, Blocks.IRON_BLOCK);
+        markerMap.put(StructureMarkers.NULL, Blocks.BEDROCK);
         		
         // default scan list
         scanList = Arrays.asList(new Block[] {
