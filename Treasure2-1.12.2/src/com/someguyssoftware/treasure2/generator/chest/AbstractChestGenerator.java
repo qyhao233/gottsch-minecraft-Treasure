@@ -123,6 +123,7 @@ public abstract class AbstractChestGenerator implements IChestGenerator {
 			//			Treasure.logger.debug("Is pit generated: {}", isGenerated);
 			// 4. set default value of chest coords
 			chestCoords = new Coords(spawnCoords);
+			
 			// 5. update the chest coords
 			if (isGenerated && pitGenerator instanceof IStructureInfoProvider && ((IStructureInfoProvider)pitGenerator).getInfo() != null) {
 				IStructureInfo info =  ((IStructureInfoProvider)pitGenerator).getInfo();
@@ -162,14 +163,6 @@ public abstract class AbstractChestGenerator implements IChestGenerator {
 			TileEntity te = placeInWorld(world, random, chest, chestCoords);
 			if (te == null) return false;
 
-			// populate the chest with items
-			//			if (chest instanceof WitherChestBlock) {
-			//				Treasure.logger.debug("Generating loot from loot table for wither chest");
-			//				lootTable.fillInventory(((AbstractTreasureChestTileEntity)te).getInventoryProxy(), 
-			//							random,
-			//							TreasureLootTables.CONTEXT);
-			//			}
-			//			else 
 			if (chest instanceof IMimicBlock) {
 				// don't fill
 			}
@@ -350,18 +343,6 @@ public abstract class AbstractChestGenerator implements IChestGenerator {
 	 */
 	@Override
 	public List<TreasureLootTable> buildLootTableList(Rarity rarity) {
-		//		List<TreasureLootTable> tables = TreasureLootTables.CHEST_LOOT_TABLE_MAP.get(rarity);
-
-		// get all loot tables by column key
-		//		List<TreasureLootTable> tables = new ArrayList<>();
-		//		Map<String, List<TreasureLootTable>> mapOfLootTables = TreasureLootTables.CHEST_LOOT_TABLES_TABLE.column(rarity);
-		//		// convert to a single list
-		//		for(Entry<String, List<TreasureLootTable>> n : mapOfLootTables.entrySet()) {
-		//			tables.addAll(n.getValue());
-		//		}
-
-		//		return tables;
-
 		return TreasureLootTables.getLootTableByRarity(rarity);
 	}
 
