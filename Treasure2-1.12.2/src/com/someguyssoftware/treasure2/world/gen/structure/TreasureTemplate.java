@@ -51,7 +51,7 @@ public class TreasureTemplate extends Template {
 	private BlockPos size = BlockPos.ORIGIN;
 
 	/*
-	 * A map of block locations of all the specials within the template.
+	 * A map of block undergroundLocations of all the specials within the template.
 	 */
 	private final Multimap<Block, ICoords> map = ArrayListMultimap.create();
 	

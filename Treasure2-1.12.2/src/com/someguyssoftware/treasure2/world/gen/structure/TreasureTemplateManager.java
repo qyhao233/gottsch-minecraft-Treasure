@@ -6,6 +6,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -14,8 +15,11 @@ import javax.annotation.Nullable;
 
 import org.apache.commons.io.IOUtils;
 
+import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Maps;
+import com.google.common.collect.Table;
 import com.someguyssoftware.treasure2.Treasure;
+import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.enums.StructureMarkers;
 
 import net.minecraft.block.Block;
@@ -37,16 +41,27 @@ import static com.someguyssoftware.treasure2.enums.StructureMarkers.*;
  *
  */
 public class TreasureTemplateManager {
-	// TODO will need a better mapped system - something based on underground/above ground, rarity?
+	public enum StructureType {
+		ABOVEGROUND,
+		UNDERGROUND
+	};
+	
+	/*
+	 * templates is the master map where the key is the String representation resource location.
+	 */
 	private final Map<String, Template> templates = Maps.<String, Template>newHashMap();
 	/** the folder in the assets folder where the structure templates are found. */
 	private final String baseFolder;
 	private final DataFixer fixer;
+		
+	// TODO this could've been a multiMap
+	private final Map<StructureType, List<Template>> templatesByType = Maps.<StructureType, List<Template>>newHashMap();
+	private final Table<StructureType, Rarity, List<Template>> templateTable = HashBasedTable.create();
 	
 	/*
-	 * builtin locations for structures
+	 * builtin undergroundLocations for structures
 	 */
-	List<String> locations = Arrays.asList(new String [] {
+	List<String> undergroundLocations = Arrays.asList(new String [] {
 			"treasure2:underground/basic1",
 			"treasure2:underground/basic2",
 			"treasure2:underground/basic3",
@@ -76,6 +91,11 @@ public class TreasureTemplateManager {
         this.baseFolder = baseFolder;
         this.fixer = fixer;        
         
+        // init maps
+        for (StructureType t : StructureType.values()) {
+        	getTemplatesByType().put(t, new ArrayList<Template>(5));
+        }
+        
         // setup standard list of markers
         markerMap = Maps.newHashMapWithExpectedSize(10);
         markerMap.put(CHEST, Blocks.CHEST);
@@ -94,10 +114,21 @@ public class TreasureTemplateManager {
     			markerMap.get(OFFSET),
     			markerMap.get(PROXIMITY_SPAWNER)
     			});
-        // load all the structure templates
-        loadAll();
+        
+        // load all the underground structure templates
+        loadAll(undergroundLocations, StructureType.UNDERGROUND);
     }
 
+	/**
+	 * Convenience method.
+	 * @param type
+	 * @return
+	 */
+	public List<Template> getTemplatesByType(StructureType type) {
+		List<Template> templates = getTemplatesByType().get(type);
+		return templates;
+	}
+	
 	/**
 	 * 
 	 * @param server
@@ -105,7 +136,8 @@ public class TreasureTemplateManager {
 	 * @return
 	 */
 	public Template getTemplate(/*@Nullable MinecraftServer server, */ResourceLocation r) {
-		String s = r.getResourcePath();
+//		String s = r.getResourcePath();
+		String s = r.toString();
 
 		Template template = null;
 		if (this.templates.containsKey(s)) {
@@ -127,10 +159,28 @@ public class TreasureTemplateManager {
 	 */
 	public void loadAll() {
 		Treasure.logger.debug("loading all structures...");
-		for (String s : locations) {
+		for (String s : undergroundLocations) {
 			Treasure.logger.debug("loading from -> {}", s);
 			load(new ResourceLocation(s), scanList);
 		}
+	}
+	
+	/**
+	 * 
+	 * @param locations
+	 * @param type
+	 */
+	public void loadAll(List<String> locations, StructureType type) {
+		Treasure.logger.debug("loading all typed structures...");
+		for (String s : locations) {
+			Treasure.logger.debug("loading from -> {}", s);
+			Template template = load(new ResourceLocation(s), scanList);
+			
+			// add the id to the map
+			if (template != null) {
+				getTemplatesByType().get(type).add(template);
+			}
+		}	
 	}
 	
 	/**
@@ -141,13 +191,11 @@ public class TreasureTemplateManager {
 	 */
 	public Template load(/*@Nullable MinecraftServer server, */ResourceLocation templatePath, List<Block> scanForBlocks) {
 		String s = templatePath.getResourcePath();
-//
-//		if (this.templates.containsKey(s)) {
-//			return this.templates.get(s);
-//		} else {
-//			if (server == null) {
-//				this.readTemplateFromJar(templatePath);
-//			} else {
+		
+		if (this.getTemplates().containsKey(s)) {
+			return this.templates.get(s);
+		}
+
 		this.readTemplate(templatePath, scanForBlocks);
 		if (this.templates.get(s) != null) {
 			Treasure.logger.debug("Loaded structure from -> {}", templatePath.toString());
@@ -155,12 +203,8 @@ public class TreasureTemplateManager {
 		else {
 			Treasure.logger.debug("Unable to read structure from -> {}", templatePath.toString());
 		}
-		
-//			}
-
-//			return this.templates.containsKey(s) ? (Template) this.templates.get(s) : null;
-		return this.templates.get(s);
-//		}
+		return this.templates.containsKey(s) ? (Template) this.templates.get(s) : null;
+//		return this.templates.get(s);
 	}
 
 	/**
@@ -181,7 +225,7 @@ public class TreasureTemplateManager {
 
 			try {
 				inputstream = new FileInputStream(file1);
-				this.readTemplateFromStream(s, inputstream, scanForBlocks);
+				this.readTemplateFromStream(location.toString(), inputstream, scanForBlocks);
 				return true;
 			} catch (Throwable var10) {
 				flag = false;
@@ -205,7 +249,7 @@ public class TreasureTemplateManager {
 		try {
 			Treasure.logger.debug("attempting to open resource stream -> {}", "/assets/" + s + "/strucutres/" + s1 + ".nbt");
 			inputstream = MinecraftServer.class.getResourceAsStream("/assets/" + s + "/structures/" + s1 + ".nbt");
-			this.readTemplateFromStream(s1, inputstream, scanForBlocks);
+			this.readTemplateFromStream(id.toString(), inputstream, scanForBlocks);
 			return true;
 		} catch (Throwable var10) {
 			Treasure.logger.error("error reading resource: ", var10);
@@ -298,5 +342,19 @@ public class TreasureTemplateManager {
 
 	public Map<String, Template> getTemplates() {
 		return templates;
+	}
+
+	/**
+	 * @return the templateTable
+	 */
+	public Table<StructureType, Rarity, List<Template>> getTemplateTable() {
+		return templateTable;
+	}
+
+	/**
+	 * @return the templatesByType
+	 */
+	public Map<StructureType, List<Template>> getTemplatesByType() {
+		return templatesByType;
 	}
 }
