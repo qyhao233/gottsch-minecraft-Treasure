@@ -35,6 +35,7 @@ public class StructureGenerator implements IStructureGenerator {
 		
 		// remove any extra special blocks
 		for (ICoords coords : template.getMapCoords()) {
+			// TODO skip Offset blocks. (like a null block)
 			ICoords c = TreasureTemplate.transformedCoords(placement, coords);
 			world.setBlockToAir(spawnCoords.toPos().add(c.toPos()));
 //			Treasure.logger.debug("removing mapped block -> {} : {}", c, spawnCoords.toPos().add(c.toPos()));
@@ -59,7 +60,7 @@ public class StructureGenerator implements IStructureGenerator {
 		IStructureInfo info = new StructureInfo();
 		info.setCoords(spawnCoords);
 		info.setSize(new Coords(transformedSize));
-		// process all specials and adding them to the StructureInfo 
+		// process all specials and adding them to the StructureInfo
 		// TODO change to stream
 		for (Entry<Block, ICoords> entry : template.getMap().entries()) {
 			ICoords c = new Coords(TreasureTemplate.transformedCoords(placement, entry.getValue()));
