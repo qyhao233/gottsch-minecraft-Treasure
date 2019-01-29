@@ -11,8 +11,8 @@ import com.someguyssoftware.gottschcore.enums.Direction;
  */
 public class TreasureChestTypes {
 	public static final TreasureChestType CRATE;
-	public static TreasureChestType STANDARD;
-	public static TreasureChestType STANDARD2;
+	public static final TreasureChestType STANDARD;
+	public static final TreasureChestType STANDARD2;
 	public static TreasureChestType STRONGBOX;
 	public static TreasureChestType SAFE;
 	public static TreasureChestType SINGLE;
@@ -20,6 +20,7 @@ public class TreasureChestTypes {
 	public static TreasureChestType COMPRESSOR;
 	public static TreasureChestType ARMOIRE;
 	public static TreasureChestType SKULL;
+	public static final TreasureChestType TOP_SPLIT;
 
 		
 	static {
@@ -65,6 +66,12 @@ public class TreasureChestTypes {
 		
 		SKULL = new TreasureChestType(1).addSlots(
 				new LockSlot(0, Direction.EAST, 0.72F, 0.18F, 0.5F, 90F)
+			);
+		
+		// TODO fix the positions
+		TOP_SPLIT = new TreasureChestType(2).addSlots(
+				new LockSlot(0, Direction.UP, 0.5F, 0.95F, 0.05F, 0F),
+				new LockSlot(1, Direction.UP, 0.5F, 0.4F, 0.05F, 0F)
 			);
 	}
 }
