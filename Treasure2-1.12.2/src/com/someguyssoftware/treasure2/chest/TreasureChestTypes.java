@@ -70,8 +70,8 @@ public class TreasureChestTypes {
 		
 		// TODO fix the positions
 		TOP_SPLIT = new TreasureChestType(2).addSlots(
-				new LockSlot(0, Direction.UP, 0.5F, 0.95F, 0.25F, 0F),
-				new LockSlot(1, Direction.UP, 0.5F, 0.95F, 0.75F, 0F)
+				new LockSlot(0, Direction.UP, 0.5F, 0.95F, 0.25F, 90F),
+				new LockSlot(1, Direction.UP, 0.5F, 0.95F, 0.75F, 90F)
 			);
 	}
 }

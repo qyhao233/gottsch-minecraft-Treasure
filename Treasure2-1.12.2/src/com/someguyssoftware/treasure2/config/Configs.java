@@ -26,11 +26,14 @@ public class Configs {
 	public static Map<Wells, IWellConfig> wellConfigs = new HashMap<>();
 	public static IWitherTreeConfig defaultWitherTreeConfig;
 	public static IWitherTreeConfig witherTreeConfig;
-	
+	public static IWitchCloisterConfig defaultWitchCloisterConfig;
+	public static IWitchCloisterConfig witchCloisterConfig;
+			
 	static {
 		initDefaultChestConfigs();
 		initDefaultWellConfigs();
 		initDefaultWitherTreeConfig();
+		initDefaultWitchCloisterConfig();
 	}
 	
 	/**
@@ -52,6 +55,8 @@ public class Configs {
 		wellConfigs.put(Wells.WOOD_DRAW_WISHING_WELL, new WellConfig(mod.getInstance(), configDir, TREASURE_CONFIG_DIR, "wood-draw-wishing-well.cfg", defaultWellConfigs.get(Wells.WISHING_WELL)));
 
 		witherTreeConfig = new WitherTreeConfig(mod.getInstance(), configDir, TREASURE_CONFIG_DIR, "wither-tree.cfg", defaultWitherTreeConfig);
+		witchCloisterConfig = new WitchCloisterConfig(mod.getInstance(), configDir, TREASURE_CONFIG_DIR, "witch-cloister.cfg", defaultWitchCloisterConfig);
+
 	}
 	
 	/**
@@ -143,6 +148,14 @@ public class Configs {
 				.setMinSupportingTrees(5)
 				.setMaxSupportingTrees(15)
 				.setRawBiomeWhiteList(new String[] {"forest", "magical", "lush", "spooky", "dead", "jungle", "coniferous", "savanna"})
+				.setRawBiomeBlackList(new String[] {""});
+	}
+	
+	private static void initDefaultWitchCloisterConfig() {
+		defaultWitchCloisterConfig = new WitchCloisterConfig()		
+				.setChunksPerCloister(800)
+				.setGenProbability(90)
+				.setRawBiomeWhiteList(new String[] {"swamp"})
 				.setRawBiomeBlackList(new String[] {""});
 	}
 }

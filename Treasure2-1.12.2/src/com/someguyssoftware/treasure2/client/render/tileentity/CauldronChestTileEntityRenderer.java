@@ -82,7 +82,8 @@ public class CauldronChestTileEntityRenderer extends TreasureChestTileEntityRend
 		float lidRotation = cte.prevLidAngle + (cte.lidAngle - cte.prevLidAngle) * partialTicks;
 		lidRotation = 1.0F - lidRotation;
 		lidRotation = 1.0F - lidRotation * lidRotation * lidRotation;
-		model.getLid().rotateAngleZ = -(lidRotation * (float)Math.PI / getAngleModifier());
+		// NOTE positive rotation here (getLid() returns lidLeft property)
+		model.getLid().rotateAngleZ = (lidRotation * (float)Math.PI / getAngleModifier());
 
 		model.renderAll(te);
 
@@ -114,6 +115,13 @@ public class CauldronChestTileEntityRenderer extends TreasureChestTileEntityRend
 	 */
 	@Override
 	public void renderLocks(AbstractTreasureChestTileEntity te, double x, double y, double z) {
+		// get the chest rotation
+		int meta = 0;
+		if (te.hasWorld()) {
+			meta = te.getBlockMetadata();
+		}
+		int rotation = getRotation(meta); 
+		
 		// render locks
 		for (LockState lockState : te.getLockStates()) {
 			// Treasure.logger.debug("Render LS:" + lockState);
@@ -126,7 +134,11 @@ public class CauldronChestTileEntityRenderer extends TreasureChestTileEntityRend
 				// amount of offset to the x,z axises and not rotate() the item 
 				// - rotate() just spins it in place, not around the axis of the block
 				GlStateManager.translate((float) x + lockState.getSlot().getXOffset(), (float) y + lockState.getSlot().getYOffset(), (float) z + lockState.getSlot().getZOffset());
+				// rotate the locks on the x axis to lay flat
 				GlStateManager.rotate(lockState.getSlot().getRotation(), 1.0F, 0.0F, 0.0F); // NOTE changed from Y to X axis
+				// rotate lock to the correct direction that the block is facing.
+				GlStateManager.rotate((float)rotation, 0.0F, 1.0F, 0.0F);
+				
 				GlStateManager.scale(0.5F, 0.5F, 0.5F);
 				Minecraft.getMinecraft().getRenderItem().renderItem(lockStack, ItemCameraTransforms.TransformType.NONE);
 				GlStateManager.popMatrix();

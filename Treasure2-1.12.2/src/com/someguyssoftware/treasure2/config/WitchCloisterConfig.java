@@ -16,18 +16,16 @@ import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.Mod;
 
 /**
- * @author Mark Gottschling on Mar 25, 2018
+ * @author Mark Gottschling on Jan 29, 2019
  *
  */
-public class WitherTreeConfig implements IWitherTreeConfig {
+public class WitchCloisterConfig implements IWitchCloisterConfig {
 	private IMod mod;
 	private Configuration forgeConfiguration;
 	
-	private int chunksPerTree;
+	private boolean cloisterAllowed;
+	private int chunksPerCloister;
 	private double genProbability;
-	private int maxTrunkSize;
-	private int minSupportingTrees;
-	private int maxSupportingTrees;
 	
 	// biome type white/black lists
 	private  String[] rawBiomeWhiteList;
@@ -39,20 +37,20 @@ public class WitherTreeConfig implements IWitherTreeConfig {
 	/**
 	 * 
 	 */
-	public WitherTreeConfig() {
+	public WitchCloisterConfig() {
 		biomeWhiteList = new ArrayList<>(5);
 		biomeBlackList = new ArrayList<>(5);
 	}
-
+	
 	/**
+	 * @param defaultConfig 
+	 * @param string 
+	 * @param treasureConfigDir 
+	 * @param configDir 
+	 * @param mod 
 	 * 
-	 * @param instance
-	 * @param configDir
-	 * @param modDir
-	 * @param filename
-	 * @param defaults
 	 */
-	public WitherTreeConfig(IMod mod, File configDir, String modDir, String filename, IWitherTreeConfig defaults) {
+	public WitchCloisterConfig(IMod mod, File configDir, String modDir, String filename, IWitchCloisterConfig defaults) {
 		this();
 		this.mod = mod;
 		// build the path to the minecraft config directory
@@ -63,27 +61,24 @@ public class WitherTreeConfig implements IWitherTreeConfig {
 		Configuration configuration = load(configFile, defaults);
 		this.forgeConfiguration = configuration;
 	}
-	
+
 	/**
 	 * 
 	 * @param file
 	 * @param defaults
 	 * @return
 	 */
-	public Configuration load(File file, IWitherTreeConfig defaults) {
+	public Configuration load(File file, IWitchCloisterConfig defaults) {
 		// load the config file
-		Configuration config = IWitherTreeConfig.super.load(file);
+		Configuration config = IWitchCloisterConfig.super.load(file);
 		// ge the modid
 		String modid = mod.getClass().getAnnotation(Mod.class).modid();
 		
 		config.setCategoryComment("01-enable", "Enablements.");
-//        wellAllowed = config.getBoolean("wellAllowed", "01-enable", defaults.isWellAllowed(), "");
-// 
-//        // gen props
-    	chunksPerTree = config.getInt("chunksPerTree", "02-gen", defaults.getChunksPerTree(), 200, 32000, "");
-    	maxTrunkSize = config.getInt("maxTrunkSize", "02-gen", defaults.getMaxTrunkSize(), 7, 20, "");
-    	minSupportingTrees = config.getInt("minSupportingTrees", "02-gen", defaults.getMinSupportingTrees(), 0, 30, "");
-    	maxSupportingTrees = config.getInt("maxSupportingTrees", "02-gen", defaults.getMaxSupportingTrees(), 0, 30, "");
+        cloisterAllowed = config.getBoolean("cloisterAllowed", "01-enable", defaults.isCloisterAllowed(), "");
+ 
+        // gen props
+    	chunksPerCloister = config.getInt("chunksPerCloister", "02-gen", defaults.getChunksPerCloister(), 200, 32000, "");
     	genProbability = config.getFloat("genProbability", "02-gen", (float)defaults.getGenProbability(), 0.0F, 100.0F, "");
     	    	
         // white/black lists
@@ -102,7 +97,7 @@ public class WitherTreeConfig implements IWitherTreeConfig {
        
 		return config;
 	}
-
+	
 	/* (non-Javadoc)
 	 * @see com.someguyssoftware.treasure2.config.IBiomeListConfig#getBiomeWhiteList()
 	 */
@@ -136,7 +131,7 @@ public class WitherTreeConfig implements IWitherTreeConfig {
 	}
 
 	/* (non-Javadoc)
-	 * @see com.someguyssoftware.treasure2.config.IWitherTreeConfig#getRawBiomeBlackList()
+	 * @see com.someguyssoftware.treasure2.config.IWitchCloisterConfig#getRawBiomeBlackList()
 	 */
 	@Override
 	public String[] getRawBiomeBlackList() {
@@ -144,16 +139,16 @@ public class WitherTreeConfig implements IWitherTreeConfig {
 	}
 
 	/* (non-Javadoc)
-	 * @see com.someguyssoftware.treasure2.config.IWitherTreeConfig#setRawBiomeBlackList(java.lang.String[])
+	 * @see com.someguyssoftware.treasure2.config.IWitchCloisterConfig#setRawBiomeBlackList(java.lang.String[])
 	 */
 	@Override
-	public IWitherTreeConfig setRawBiomeBlackList(String[] rawBiomeBlackList) {
+	public IWitchCloisterConfig setRawBiomeBlackList(String[] rawBiomeBlackList) {
 		this.rawBiomeBlackList = rawBiomeBlackList;
 		return this;
 	}
 
 	/* (non-Javadoc)
-	 * @see com.someguyssoftware.treasure2.config.IWitherTreeConfig#getRawBiomeWhiteList()
+	 * @see com.someguyssoftware.treasure2.config.IWitchCloisterConfig#getRawBiomeWhiteList()
 	 */
 	@Override
 	public String[] getRawBiomeWhiteList() {
@@ -161,96 +156,62 @@ public class WitherTreeConfig implements IWitherTreeConfig {
 	}
 
 	/* (non-Javadoc)
-	 * @see com.someguyssoftware.treasure2.config.IWitherTreeConfig#setRawBiomeWhiteList(java.lang.String[])
+	 * @see com.someguyssoftware.treasure2.config.IWitchCloisterConfig#setRawBiomeWhiteList(java.lang.String[])
 	 */
 	@Override
-	public IWitherTreeConfig setRawBiomeWhiteList(String[] rawBiomeWhiteList) {
+	public IWitchCloisterConfig setRawBiomeWhiteList(String[] rawBiomeWhiteList) {
 		this.rawBiomeWhiteList = rawBiomeWhiteList;
 		return this;
 	}
 
-	/**
-	 * @return the chunksPerTree
+	/* (non-Javadoc)
+	 * @see com.someguyssoftware.treasure2.config.IWitchCloisterConfig#isCloisterAllowed()
 	 */
 	@Override
-	public int getChunksPerTree() {
-		return chunksPerTree;
+	public boolean isCloisterAllowed() {
+		return cloisterAllowed;
 	}
 
-	/**
-	 * @param chunksPerTree the chunksPerTree to set
+	/* (non-Javadoc)
+	 * @see com.someguyssoftware.treasure2.config.IWitchCloisterConfig#getChunksPerCloister()
 	 */
 	@Override
-	public IWitherTreeConfig setChunksPerTree(int chunksPerTree) {
-		this.chunksPerTree = chunksPerTree;
-		return this;
+	public int getChunksPerCloister() {
+		return chunksPerCloister;
 	}
 
-	/**
-	 * @return the genProbability
+	/* (non-Javadoc)
+	 * @see com.someguyssoftware.treasure2.config.IWitchCloisterConfig#getGenProbability()
 	 */
 	@Override
 	public double getGenProbability() {
 		return genProbability;
 	}
 
-	/**
-	 * @param genProbability the genProbability to set
+	/* (non-Javadoc)
+	 * @see com.someguyssoftware.treasure2.config.IWitchCloisterConfig#setCloisterAllowed(boolean)
 	 */
 	@Override
-	public IWitherTreeConfig setGenProbability(double genProbability) {
-		this.genProbability = genProbability;
+	public IWitchCloisterConfig setCloisterAllowed(boolean isAllowed) {
+		this.cloisterAllowed = isAllowed;
 		return this;
 	}
 
-	/**
-	 * @return the maxSupportingTrees
+	/* (non-Javadoc)
+	 * @see com.someguyssoftware.treasure2.config.IWitchCloisterConfig#setChunksPerCloister(int)
 	 */
 	@Override
-	public int getMaxSupportingTrees() {
-		return maxSupportingTrees;
-	}
-
-	/**
-	 * @param maxSupportingTrees the maxSupportingTrees to set
-	 */
-	@Override
-	public IWitherTreeConfig setMaxSupportingTrees(int maxSupportingTrees) {
-		this.maxSupportingTrees = maxSupportingTrees;
+	public IWitchCloisterConfig setChunksPerCloister(int chunksPerCloister) {
+		this.chunksPerCloister = chunksPerCloister;
 		return this;
 	}
 
-	/**
-	 * @return the maxTrunkSize
+	/* (non-Javadoc)
+	 * @see com.someguyssoftware.treasure2.config.IWitchCloisterConfig#setGenProbability(double)
 	 */
 	@Override
-	public int getMaxTrunkSize() {
-		return maxTrunkSize;
-	}
-
-	/**
-	 * @param maxTrunkSize the maxTrunkSize to set
-	 */
-	@Override
-	public IWitherTreeConfig setMaxTrunkSize(int maxTrunkSize) {
-		this.maxTrunkSize = maxTrunkSize;
-		return this;
-	}
-
-	/**
-	 * @return the minSupportingTrees
-	 */
-	@Override
-	public int getMinSupportingTrees() {
-		return minSupportingTrees;
-	}
-
-	/**
-	 * @param minSupportingTrees the minSupportingTrees to set
-	 */
-	@Override
-	public IWitherTreeConfig setMinSupportingTrees(int minSupportingTrees) {
-		this.minSupportingTrees = minSupportingTrees;
+	public IWitchCloisterConfig setGenProbability(double genProbability) {
+		this.genProbability = genProbability; 
 		return this;
 	}
 }

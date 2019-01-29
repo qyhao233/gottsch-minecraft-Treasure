@@ -171,13 +171,14 @@ public class TreasureTemplateManager {
 	 * @param type
 	 */
 	public void loadAll(List<String> locations, StructureType type) {
-		Treasure.logger.debug("loading all typed structures...");
+		Treasure.logger.debug("loading all typed structures -> {}", type.name());
 		for (String s : locations) {
 			Treasure.logger.debug("loading from -> {}", s);
 			Template template = load(new ResourceLocation(s), scanList);
-			
+			Treasure.logger.debug("loaded template  with key -> {} : {}", s, template);
 			// add the id to the map
 			if (template != null) {
+				Treasure.logger.debug("adding tempate to typed map -> {} : {}", type.name(), template);
 				getTemplatesByType().get(type).add(template);
 			}
 		}	
@@ -190,20 +191,20 @@ public class TreasureTemplateManager {
 	 * @return
 	 */
 	public Template load(/*@Nullable MinecraftServer server, */ResourceLocation templatePath, List<Block> scanForBlocks) {
-		String s = templatePath.getResourcePath();
+		String key = templatePath.toString();	//templatePath.getResourcePath();
 		
-		if (this.getTemplates().containsKey(s)) {
-			return this.templates.get(s);
+		if (this.getTemplates().containsKey(key)) {
+			return this.templates.get(key);
 		}
 
 		this.readTemplate(templatePath, scanForBlocks);
-		if (this.templates.get(s) != null) {
+		if (this.templates.get(key) != null) {
 			Treasure.logger.debug("Loaded structure from -> {}", templatePath.toString());
 		}
 		else {
 			Treasure.logger.debug("Unable to read structure from -> {}", templatePath.toString());
 		}
-		return this.templates.containsKey(s) ? (Template) this.templates.get(s) : null;
+		return this.templates.containsKey(key) ? (Template) this.templates.get(key) : null;
 //		return this.templates.get(s);
 	}
 

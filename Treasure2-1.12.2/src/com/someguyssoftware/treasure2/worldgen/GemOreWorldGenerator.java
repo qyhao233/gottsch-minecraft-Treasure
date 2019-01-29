@@ -72,17 +72,12 @@ public class GemOreWorldGenerator implements IWorldGenerator {
 		int xSpawn = chunkX * 16;
 		int zSpawn = chunkZ * 16;
 
-		// Treasure.logger.debug("chunks since last ore -> {}, minChunks -> {}",
-		// chunksSinceLastOre, TreasureConfig.minChunksPerGemOre);
-//		if (chunksSinceLastOre >= 1) {
 			int flip = RandomHelper.randomInt(0, 1);
-			// Treasure.logger.debug("flip -> {}", flip);
 
 			double prob = 0d;
 			int veinsPerChunk = 0;
 			int maxY, minY = 0;
 			WorldGenMinable gen = null;
-//			String gem = "";
 
 			// temp
 			if (flip == 0) {
@@ -92,7 +87,6 @@ public class GemOreWorldGenerator implements IWorldGenerator {
 				maxY = TreasureConfig.sapphireOreMaxY;
 				minY = TreasureConfig.sapphireOreMinY;
 				gen = sapphireGenerator;
-//				gem = "Sapphire";
 			} else {
 				// ruby
 				prob = TreasureConfig.rubyGenProbability;
