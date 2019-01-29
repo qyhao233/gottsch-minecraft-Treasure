@@ -4,10 +4,8 @@
 package com.someguyssoftware.treasure2.client.render.tileentity;
 
 import com.someguyssoftware.treasure2.client.model.CauldronChestModel;
-import com.someguyssoftware.treasure2.client.model.CrateChestModel;
 import com.someguyssoftware.treasure2.client.model.ITreasureChestModel;
 import com.someguyssoftware.treasure2.lock.LockState;
-import com.someguyssoftware.treasure2.tileentity.CrateChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
 import com.someguyssoftware.treasure2.tileentity.CauldronChestTileEntity;
 
@@ -44,7 +42,7 @@ public class CauldronChestTileEntityRenderer extends TreasureChestTileEntityRend
 	@Override
 	public void render(AbstractTreasureChestTileEntity te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
 
-		if (!(te instanceof CrateChestTileEntity)) return; // should never happen
+		if (!(te instanceof CauldronChestTileEntity)) return; // should never happen
 
 		// add the destory textures
 		if (destroyStage >= 0) {
