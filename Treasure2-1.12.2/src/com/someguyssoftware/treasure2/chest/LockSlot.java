@@ -43,7 +43,7 @@ public class LockSlot implements ILockSlot {
 	 */
 	@Override
 	public ILockSlot rotate(Rotate r) {
-		Direction newFace = getFace().rotate(r);
+		Direction newFace = (getFace() == Direction.UP || getFace() == Direction.DOWN) ? getFace() : getFace().rotate(r);
 		float x = 0F;
 		float z = 0F;
 		float rotation = 0F;

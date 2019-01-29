@@ -138,8 +138,8 @@ public class CauldronChestTileEntityRenderer extends TreasureChestTileEntityRend
 				GlStateManager.rotate(lockState.getSlot().getRotation(), 1.0F, 0.0F, 0.0F); // NOTE changed from Y to X axis
 				// rotate lock to the correct direction that the block is facing.
 				GlStateManager.rotate((float)rotation, 0.0F, 1.0F, 0.0F);
-				
-				GlStateManager.scale(0.5F, 0.5F, 0.5F);
+				// shrink the locks a bit
+				GlStateManager.scale(0.35F, 0.35F, 0.35F);
 				Minecraft.getMinecraft().getRenderItem().renderItem(lockStack, ItemCameraTransforms.TransformType.NONE);
 				GlStateManager.popMatrix();
 			}
