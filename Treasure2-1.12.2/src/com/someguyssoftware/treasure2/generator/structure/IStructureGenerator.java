@@ -6,6 +6,7 @@ import com.someguyssoftware.gottschcore.positional.ICoords;
 import com.someguyssoftware.treasure2.world.gen.structure.IStructureInfo;
 import com.someguyssoftware.treasure2.world.gen.structure.TreasureTemplate;
 
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.template.PlacementSettings;
 
@@ -20,5 +21,37 @@ public interface IStructureGenerator {
 	 * @return
 	 */
 	public IStructureInfo generate(World world, Random random, TreasureTemplate template, PlacementSettings settings, ICoords spawnCoords);
+
+	/**
+	 * NOTE not 100% sure that this  belongs here
+	 * @param coords
+	 * @param entranceCoords
+	 * @param size
+	 * @param placement
+	 * @return
+	 */
+	public static ICoords alignEntranceToCoords(ICoords coords, ICoords entranceCoords, BlockPos size, PlacementSettings placement) {
+		ICoords startCoords = null;
+		// NOTE work with rotations only for now
+		
+		// first offset coords by entrance
+		startCoords = coords.add(-entranceCoords.getX(), 0, -entranceCoords.getZ());
+		
+		// make adjustments for the rotation. REMEMBER that pits are 2x2
+		switch (placement.getRotation()) {
+		case CLOCKWISE_90:
+			startCoords = startCoords.add(1, 0, 0);
+			break;
+		case CLOCKWISE_180:
+			startCoords = startCoords.add(1, 0, 1);
+			break;
+		case COUNTERCLOCKWISE_90:
+			startCoords = startCoords.add(0, 0, 1);
+			break;
+		default:
+			break;
+		}
+		return startCoords;
+	}
 
 }
