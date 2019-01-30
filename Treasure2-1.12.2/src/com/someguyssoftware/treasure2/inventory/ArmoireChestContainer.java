@@ -4,7 +4,7 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.IInventory;
 
 /**
- * This is the base/standard container for chests that is similar configuration to that of a vanilla container.
+ * 
  * @author Mark Gottschling on Jan 16, 2018
  *
  */

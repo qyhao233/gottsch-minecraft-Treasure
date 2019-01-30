@@ -146,7 +146,6 @@ public class MimicChestBlock extends AbstractChestBlock {
 		/*
 		 * spawn the mimic
 		 */
-		// TODO need a generic base class for MimicEntity
     	EntityMob mimic = null;
 		try {
 			mimic = getMimicClass().getConstructor(World.class).newInstance(worldIn);

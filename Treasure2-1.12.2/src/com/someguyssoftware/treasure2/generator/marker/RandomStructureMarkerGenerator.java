@@ -41,7 +41,6 @@ public class RandomStructureMarkerGenerator implements IMarkerGenerator {
 	 * 
 	 */
 	public RandomStructureMarkerGenerator() {
-		// TODO Auto-generated constructor stub
 	}
 
 	/* (non-Javadoc)

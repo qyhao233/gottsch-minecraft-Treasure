@@ -20,7 +20,6 @@ public class WitchCloisterGenerator {
 	 * 
 	 */
 	public WitchCloisterGenerator() {
-		// TODO Auto-generated constructor stub
 	}
 
 	/**
