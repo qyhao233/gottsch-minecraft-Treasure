@@ -76,6 +76,7 @@ public class TreasureTemplateManager {
 	 */
 	List<String> abovegroundLocations = Arrays.asList(new String[] {
 			"treasure2:aboveground/crypt2",
+			"treasure2:aboveground/crypt3"
 	});
 	
 	/*
