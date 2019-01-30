@@ -332,11 +332,12 @@ public class TreasureBlocks {
 		CAULDRON_CHEST = new TreasureChestBlock(
 				Treasure.MODID,
 				TreasureConfig.CAULDRON_CHEST_ID,
+				Material.IRON,
 				CauldronChestTileEntity.class,
 				TreasureChestTypes.TOP_SPLIT,
 				Rarity.EPIC)
 				.setChestGuiID(GuiHandler.STANDARD_CHEST_GUIID)
-				.setBounds(stdChestBounds)
+//				.setBounds(stdChestBounds)
 				.setHardness(3.0F);
 		
 		// map the chests by rarity

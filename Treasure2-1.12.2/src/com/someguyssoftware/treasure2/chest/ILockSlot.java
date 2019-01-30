@@ -7,6 +7,7 @@ import com.someguyssoftware.gottschcore.enums.Direction;
 import com.someguyssoftware.gottschcore.enums.Rotate;
 import com.someguyssoftware.gottschcore.positional.Coords;
 import com.someguyssoftware.gottschcore.positional.ICoords;
+import com.someguyssoftware.treasure2.Treasure;
 
 import net.minecraft.nbt.NBTTagCompound;
 
@@ -47,6 +48,7 @@ public interface ILockSlot {
 			rotate = nbt.getFloat("rotation");
 		}
 		slot = new LockSlot(index, Direction.getByCode(face), x, y, z, rotate);
+//		Treasure.logger.debug("read slot from nbt -> {}", slot);
 		return slot;
 	}
 	

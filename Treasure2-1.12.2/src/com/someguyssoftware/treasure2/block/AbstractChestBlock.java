@@ -113,13 +113,16 @@ public abstract class AbstractChestBlock extends AbstractModContainerBlock imple
 		AbstractTreasureChestTileEntity chestTileEntity = null;
 		try {
 			chestTileEntity = (AbstractTreasureChestTileEntity) getTileEntityClass().newInstance();
+//			Treasure.logger.debug("created tile entry -> {}", chestTileEntity.getClass().getSimpleName());
 
 			// setup lock states
 			List<LockState> lockStates = new LinkedList<>();
 
 			for (int i = 0; i < chestType.getSlots().length; i++) {
 				LockState lockState = new LockState();
+				
 				lockState.setSlot(chestType.getSlots()[i]);
+//				Treasure.logger.debug("adding lock state -> {}", lockState);
 				// add in order of slot indexes
 				lockStates.add(lockState.getSlot().getIndex(), lockState);
 			}

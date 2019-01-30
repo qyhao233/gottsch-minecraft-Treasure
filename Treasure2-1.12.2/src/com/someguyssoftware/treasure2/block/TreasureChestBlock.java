@@ -87,7 +87,7 @@ public class TreasureChestBlock extends AbstractChestBlock {
 	 */
 	@Override
 	public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
-		Treasure.logger.debug("Placing chest from item");
+//		Treasure.logger.debug("Placing chest from item");
 
 		boolean shouldRotate = false;
 		boolean shouldUpdate = false;
