@@ -59,7 +59,7 @@ public class TreasureTemplateManager {
 	private final Table<StructureType, Rarity, List<Template>> templateTable = HashBasedTable.create();
 	
 	/*
-	 * builtin undergroundLocations for structures
+	 * builtin underground locations for structures
 	 */
 	List<String> undergroundLocations = Arrays.asList(new String [] {
 			"treasure2:underground/basic1",
@@ -71,6 +71,13 @@ public class TreasureTemplateManager {
 			"treasure2:underground/crypt1"
 	});
 
+	/**
+	 * builtin aboveground locations for structures
+	 */
+	List<String> abovegroundLocations = Arrays.asList(new String[] {
+			"treasure2:aboveground/crypt2",
+	});
+	
 	/*
 	 * standard list of blocks to scan for 
 	 */
@@ -117,6 +124,7 @@ public class TreasureTemplateManager {
         
         // load all the underground structure templates
         loadAll(undergroundLocations, StructureType.UNDERGROUND);
+        loadAll(abovegroundLocations, StructureType.ABOVEGROUND);
     }
 
 	/**
