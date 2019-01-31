@@ -49,6 +49,7 @@ public class TreasureLootTables {
 	public static TreasureLootTable WITHER_CHEST_LOOT_TABLE;
 	public static TreasureLootTable SKULL_CHEST_LOOT_TABLE;
 	public static TreasureLootTable GOLD_SKULL_CHEST_LOOT_TABLE;
+	public static TreasureLootTable CAULDRON_CHEST_LOOT_TABLE;
 
 	/*
 	 * customized loot table manager
@@ -78,7 +79,8 @@ public class TreasureLootTables {
 	private static final List<String> TABLES = ImmutableList.of(
 			"chests/wither_chest",
 			"chests/skull_chest",
-			"chests/gold_skull_chest"
+			"chests/gold_skull_chest",
+			"chests/cauldron_chest"
 			);
 
 	/*
