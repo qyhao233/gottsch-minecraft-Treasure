@@ -27,6 +27,7 @@ import com.someguyssoftware.treasure2.command.SpawnWellCommand;
 import com.someguyssoftware.treasure2.command.SpawnWitherTreeCommand;
 import com.someguyssoftware.treasure2.config.Configs;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
+import com.someguyssoftware.treasure2.enums.WorldGenerators;
 import com.someguyssoftware.treasure2.eventhandler.LogoutEventHandler;
 import com.someguyssoftware.treasure2.eventhandler.MimicEventHandler;
 import com.someguyssoftware.treasure2.eventhandler.PlayerEventHandler;
@@ -37,6 +38,7 @@ import com.someguyssoftware.treasure2.world.gen.structure.TreasureTemplateManage
 import com.someguyssoftware.treasure2.worldgen.ChestWorldGenerator;
 import com.someguyssoftware.treasure2.worldgen.GemOreWorldGenerator;
 import com.someguyssoftware.treasure2.worldgen.WellWorldGenerator;
+import com.someguyssoftware.treasure2.worldgen.WitchCloisterWorldGenerator;
 import com.someguyssoftware.treasure2.worldgen.WitherTreeWorldGenerator;
 
 import net.minecraft.client.Minecraft;
@@ -108,7 +110,7 @@ public class Treasure extends AbstractMod {
 	};
     
 	// forge world generators
-    public static final Map<String, IWorldGenerator> WORLD_GENERATORS = new HashMap<>();
+    public static final Map<WorldGenerators, IWorldGenerator> WORLD_GENERATORS = new HashMap<>();
     
     // template manager - TODO update
     public static TreasureTemplateManager TEMPLATE_MANAGER;
@@ -178,15 +180,17 @@ public class Treasure extends AbstractMod {
 		super.init(event);
 
 		// register world generators
-		WORLD_GENERATORS.put("chest", new ChestWorldGenerator());
-		WORLD_GENERATORS.put("well", new WellWorldGenerator());
-		WORLD_GENERATORS.put("witherTree", new WitherTreeWorldGenerator());
-		WORLD_GENERATORS.put("gem", new GemOreWorldGenerator());
+		WORLD_GENERATORS.put(WorldGenerators.CHEST, new ChestWorldGenerator());
+		WORLD_GENERATORS.put(WorldGenerators.WELL, new WellWorldGenerator());
+		WORLD_GENERATORS.put(WorldGenerators.WITHER_TREE, new WitherTreeWorldGenerator());
+		WORLD_GENERATORS.put(WorldGenerators.GEM, new GemOreWorldGenerator());
+		WORLD_GENERATORS.put(WorldGenerators.WITCH_CLOISTER, new WitchCloisterWorldGenerator());
 		int genWeight = 0;
-		for (Entry<String, IWorldGenerator> gen : WORLD_GENERATORS.entrySet()) {
+		for (Entry<WorldGenerators, IWorldGenerator> gen : WORLD_GENERATORS.entrySet()) {
 			GameRegistry.registerWorldGenerator(gen.getValue(), genWeight++);
 		}
 		
+		// TODO change path to const
 		TEMPLATE_MANAGER = new TreasureTemplateManager("mods/treasure2/structures", Minecraft.getMinecraft().getDataFixer());
 	}
 	
