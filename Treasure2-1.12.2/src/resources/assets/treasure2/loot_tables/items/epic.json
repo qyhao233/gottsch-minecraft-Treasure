@@ -35,6 +35,28 @@
 					"weight": 10				
 				},		
 				{
+					"entryName": "ender_chest",
+					"type": "item",
+					"name": "minecraft:ender_chest",
+					"weight": 10				
+				},
+                {
+                	"entryName": "villager_egg",
+                    "type": "item",
+                    "name": "minecraft:spawn_egg",
+                    "weight": 10,
+                    "functions": [
+                        {
+                            "function": "minecraft:set_count",
+                            "count": 1
+                        },
+						{
+							"function": "set_nbt",
+							"tag": "{EntityTag:{id:\"minecraft:villager\"}}"
+						}
+                    ]
+                },		
+				{
 					"entryName": "experience_bottle",
 					"type": "item",
 					"name": "minecraft:experience_bottle",
