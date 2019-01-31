@@ -262,9 +262,9 @@ public class FogBlock extends ModFallingBlock {
 	 */
 	private void checkFallable(World worldIn, BlockPos pos) {
 		if ((worldIn.isAirBlock(pos.down()) || canFallThrough(worldIn.getBlockState(pos.down()))) && pos.getY() >= 0) {
-			int i = 32;
+			final int AREA_SIZE = 32;
 
-			if (worldIn.isAreaLoaded(pos.add(-32, -32, -32), pos.add(32, 32, 32))) {
+			if (worldIn.isAreaLoaded(pos.add(-AREA_SIZE, -AREA_SIZE, -AREA_SIZE), pos.add(AREA_SIZE, AREA_SIZE, AREA_SIZE))) {
 				if (WorldInfo.isServerSide(worldIn)) {
 					EntityFallingBlock entityfallingblock = new EntityFallingBlock(worldIn, (double) pos.getX() + 0.5D,
 							(double) pos.getY(), (double) pos.getZ() + 0.5D, worldIn.getBlockState(pos).withProperty(CHECK_DECAY,(Boolean)true).withProperty(ACTIVATED, (Boolean)false));
@@ -393,20 +393,6 @@ public class FogBlock extends ModFallingBlock {
 	 */
 	@Override
 	public IBlockState getStateFromMeta(int meta) {
-//		boolean decay = false;
-//		boolean check = false;
-//		boolean activated = false;
-//		
-//		// TODO change to check the individual bits
-//		if (meta == 1) decay = true;
-//		else if (meta == 2) check = true;
-//		else if (meta ==3) { decay = check = true;}
-//		else if (meta ==4) { activated = true;}
-//		// TODO add a check for the last bit to see if it is activated.  the last bit isn't translated to a state--> need another method
-//		return this.getDefaultState()
-//				.withProperty(DECAYABLE, Boolean.valueOf(decay))
-//				.withProperty(CHECK_DECAY, Boolean.valueOf(check));
-
 		return this.getDefaultState()
 				.withProperty(DECAYABLE, Boolean.valueOf((meta&1)>0))
 				.withProperty(CHECK_DECAY, Boolean.valueOf((meta&2)>0))

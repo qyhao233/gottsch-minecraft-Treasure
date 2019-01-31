@@ -93,47 +93,6 @@ public class TreasureLootTable {
 	 * shuffles items by changing their order and splitting stacks
 	 */
 	private void shuffleItems(List<ItemStack> stacks, int emptySlotsSize, Random rand) {
-		// removing the splitting of stacks.
-		// TODO could process all items where count > 1 at the end, so that a stack of 30 arrows doesn't fill the entire chest
-		// before other items gets added.
-		
-//		List<ItemStack> list = Lists.<ItemStack>newArrayList();
-//		Iterator<ItemStack> iterator = stacks.iterator();
-//
-//		while (iterator.hasNext()) {
-//			ItemStack itemstack = iterator.next();
-//
-//			if (itemstack.isEmpty()) {
-//				iterator.remove();
-//			} 
-//			else if (itemstack.getCount() > 1) {
-//				list.add(itemstack);
-//				iterator.remove();
-//			}
-//		}
-//
-//		emptySlotsSize = emptySlotsSize - stacks.size();
-//
-//		while (emptySlotsSize > 0 && !list.isEmpty()) {
-//			ItemStack itemstack2 = list.remove(MathHelper.getInt(rand, 0, list.size() - 1));
-//			int i = MathHelper.getInt(rand, 1, itemstack2.getCount() / 2);
-//			ItemStack itemstack1 = itemstack2.splitStack(i);
-//
-//			if (itemstack2.getCount() > 1 && rand.nextBoolean()) {
-//				list.add(itemstack2);
-//			} 
-//			else {
-//				stacks.add(itemstack2);
-//			}
-//
-//			if (itemstack1.getCount() > 1 && rand.nextBoolean()) {
-//				list.add(itemstack1);
-//			} else {
-//				stacks.add(itemstack1);
-//			}
-//		}
-//
-//		stacks.addAll(list);
 		Collections.shuffle(stacks, rand);
 	}
 

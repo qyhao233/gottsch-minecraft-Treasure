@@ -18,6 +18,7 @@ import com.someguyssoftware.treasure2.generator.structure.IStructureGenerator;
 import com.someguyssoftware.treasure2.generator.structure.StructureGenerator;
 import com.someguyssoftware.treasure2.tileentity.ProximitySpawnerTileEntity;
 import com.someguyssoftware.treasure2.world.gen.structure.IStructureInfo;
+import com.someguyssoftware.treasure2.world.gen.structure.IStructureInfoProvider;
 import com.someguyssoftware.treasure2.world.gen.structure.TreasureTemplate;
 import com.someguyssoftware.treasure2.world.gen.structure.TreasureTemplateManager.StructureType;
 
@@ -35,13 +36,14 @@ import net.minecraftforge.common.DungeonHooks;
  * @author Mark Gottschling on Jan 28, 2019
  *
  */
-public class RandomStructureMarkerGenerator implements IMarkerGenerator {
+public class RandomStructureMarkerGenerator implements IMarkerGenerator, IStructureInfoProvider {
 
+	private IStructureInfo info;
+	
 	/**
 	 * 
 	 */
 	public RandomStructureMarkerGenerator() {
-		// TODO Auto-generated constructor stub
 	}
 
 	/* (non-Javadoc)
@@ -101,8 +103,11 @@ public class RandomStructureMarkerGenerator implements IMarkerGenerator {
 		
 		// generate the structure
 		IStructureInfo info = new StructureGenerator().generate(world, random, template, placement, spawnCoords);
-		if (info == null) return false;			
+		if (info == null) return false;
+		setInfo(info);
 		Treasure.logger.debug("returned info -> {}", info);
+		
+		// TODO add fog around the perimeter of the structure
 		
 		// interrogate info for spawners and any other special block processing (except chests that are handler by caller
 		List<ICoords> spawnerCoords = (List<ICoords>) info.getMap().get(GenUtil.getMarkerBlock(StructureMarkers.SPAWNER));
@@ -130,4 +135,12 @@ public class RandomStructureMarkerGenerator implements IMarkerGenerator {
 		return true;
 	}
 
+	@Override
+	public IStructureInfo getInfo() {
+		return info;
+	}
+	
+	private void setInfo(IStructureInfo info) {
+		this.info = info;
+	}
 }

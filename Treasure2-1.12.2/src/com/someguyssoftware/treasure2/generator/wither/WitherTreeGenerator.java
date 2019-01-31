@@ -60,6 +60,7 @@ public class WitherTreeGenerator {
 		TreasureBlocks.LOW_POISON_FOG
 	};
 	
+	@SuppressWarnings("unchecked")
 	static List<Direction>[] trunkMatrix = new ArrayList[4];
 	static List<Direction> supportTrunkMatrix = new ArrayList<>();
 	static List<Direction> topMatrix = new ArrayList<>();
@@ -226,14 +227,12 @@ public class WitherTreeGenerator {
 
 		// determine the size of the main trunk
 		int maxSize = RandomHelper.randomInt(random, 7, config.getMaxTrunkSize());
-//		Treasure.logger.debug("maxSize: {}", maxSize);
-		
+	
 		boolean hasLifeBeenAdded = false;
 		for (int y = 0; y < maxSize; y++) {
-			if (y == 2) { // TODO <-- select the right index and the face facing in the right direction
+			if (y == 2) { // Wither tree always points north
 				if (!hasLifeBeenAdded) {
 					world.setBlockState(coords.add(0, y, 0).toPos(), TreasureBlocks.WITHER_LOG_SOUL.getDefaultState());
-//					 Treasure.logger.debug("Wither Tree building life trunk @ " +  coords.add(0, y, 0).toShortString());
 					 hasLifeBeenAdded = true;
 					 continue;
 				}
@@ -241,7 +240,6 @@ public class WitherTreeGenerator {
 			
 			// add the trunk
 			world.setBlockState(coords.add(0, y, 0).toPos(), TreasureBlocks.WITHER_LOG.getDefaultState());
-//			 Treasure.logger.debug("Wither Tree Supporter building trunk @ " + coords.add(0, y, 0).toShortString());
 			 
 			 // add the branches/roots
 			 if (y ==0) {
@@ -280,13 +278,12 @@ public class WitherTreeGenerator {
 //			Treasure.logger.debug("maxSize: {}", maxSize);
 			
 			for (int y = 0; y < maxSize; y++) {
-				if (trunkIndex == 2 && y == 2) { // TODO <-- select the right index and the face facing in the right direction
+				if (trunkIndex == 2 && y == 2) {
 					if (!hasLifeBeenAdded) {
 						world.setBlockState(trunkCoords[trunkIndex].add(0, y, 0).toPos(), 
 								TreasureBlocks.WITHER_LOG_SOUL.getDefaultState()
 									.withProperty(WitherLogSoulBlock.APPEARANCE, WitherLogSoulBlock.Appearance.FACE)
 									.withProperty(WitherLogSoulBlock.FACING, EnumFacing.SOUTH));
-//						 Treasure.logger.debug("Wither Tree building life trunk @ " +  trunkCoords[trunkIndex].add(0, y, 0).toShortString());
 						 hasLifeBeenAdded = true;
 						 continue;
 					}
@@ -294,7 +291,6 @@ public class WitherTreeGenerator {
 				
 				// add the trunk
 				world.setBlockState(trunkCoords[trunkIndex].add(0, y, 0).toPos(), TreasureBlocks.WITHER_LOG.getDefaultState());
-//				 Treasure.logger.debug("Wither Tree building trunk @ " +  trunkCoords[trunkIndex].add(0, y, 0).toShortString());
 				 
 				 // add the decorations (branches, roots, top)
 				 if (y ==0) {
@@ -312,7 +308,6 @@ public class WitherTreeGenerator {
 			if (maxSize > 3) {
 				maxSize -= RandomHelper.randomInt(random, 1, 3);
 				maxSize = Math.max(3, maxSize);
-//				Treasure.logger.debug("master tree new maxSize: {}", maxSize);
 			}
 		}
 
@@ -329,8 +324,7 @@ public class WitherTreeGenerator {
 		if (direction != null) {
 			IBlockState state = TreasureBlocks.WITHER_BROKEN_LOG.getDefaultState().withProperty(WitherRootBlock.FACING, direction.toFacing());
 			// add the top log to the world
-			world.setBlockState(coords.add(0, y, 0).toPos(), state);
-//			 Treasure.logger.debug("Wither Tree building top log @ " +  coords.toShortString());			
+			world.setBlockState(coords.add(0, y, 0).toPos(), state);		
 		}
 	}
 	

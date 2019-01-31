@@ -84,10 +84,6 @@ public abstract class TreasureLootEntry {
 				alootcondition = new TreasureLootCondition[0];
 			}
 
-			// TODO change - this method is unnecessary - the called method does nothing
-			TreasureLootEntry ret = TreasureLootTableManager.deserializeJsonLootEntry(s, jsonobject, i, j, alootcondition);
-			if (ret != null) return ret;
-
 			if ("item".equals(s)) {
 				return TreasureLootEntryItem.deserialize(jsonobject, context, i, j, alootcondition);
 			}
@@ -116,7 +112,7 @@ public abstract class TreasureLootEntry {
 				jsonobject.add("conditions", context.serialize(lootEntry.conditions));
 			}
 
-			// TODO change - useless - can be removed
+			// get the entry type
 			String lootEntryType = TreasureLootTableManager.getLootEntryType(lootEntry);
 			
 			if (lootEntryType != null) jsonobject.addProperty("type", lootEntryType);

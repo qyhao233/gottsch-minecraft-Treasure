@@ -150,11 +150,6 @@ public class TreasureLootTableManager {
 						}
 
 						try {
-							// return
-							// net.minecraftforge.common.ForgeHooks.loadLootTable(TreasureLootTableManager.GSON_INSTANCE,
-							// resource, s, true, TreasureLootTableManager.this);
-							// return null;
-							// TODO change
 							return TreasureLootTableManager.hookLoadLootTable(TreasureLootTableManager.GSON_INSTANCE, resource, s, true, TreasureLootTableManager.this);
 
 						} catch (IllegalArgumentException | JsonParseException jsonparseexception) {
@@ -301,14 +296,14 @@ public class TreasureLootTableManager {
 		return ctx.validateEntryName(name);
 	}
 
-	// NOTE useless method
-	public static TreasureLootEntry deserializeJsonLootEntry(String type, JsonObject json, int weight, int quality, TreasureLootCondition[] conditions) {
-		return null;
-	}
-
+	/**
+	 * For future expansion
+	 * @param entry
+	 * @return
+	 */
 	public static String getLootEntryType(TreasureLootEntry entry) {
 		return null;
-	} // Companion to above function
+	}
 
 	/**
 	 * 

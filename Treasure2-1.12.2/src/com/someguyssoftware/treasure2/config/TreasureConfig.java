@@ -223,9 +223,7 @@ public class TreasureConfig extends AbstractConfig {
 	public static int rubyOreMaxY;
 	public static int rubyOreMinY;
 	public static int rubyOreVeinSize;	
-	
-	// TODO add wells properties
-	
+
 	// TODO add wandering antiquities peddler properties
 	
 	// TODO add treasure/unique items properties

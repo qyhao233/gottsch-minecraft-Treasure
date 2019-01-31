@@ -84,6 +84,10 @@ public class SpawnMarkerOnlyCommand extends CommandBase {
     				markerGen = new GravestoneMarkerGenerator();
     			}    			
     			boolean isGen = markerGen.generate(world, random, spawnCoords);
+    			
+    			if (markerGen instanceof IStructureInfoProvider) {
+    				// TODO add fog?
+    			}
     		}
 		}
 		catch(Exception e) {
