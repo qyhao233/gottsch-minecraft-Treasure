@@ -61,7 +61,7 @@ public class ChestWorldGenerator implements IWorldGenerator {
 	private Map<Rarity, Integer> chunksSinceLastRarityChest;
 	
 	// the chest generators
-	private Map<Rarity, AbstractChestGenerator> generators = new HashMap<>();
+//	private Map<Rarity, AbstractChestGenerator> generators = new HashMap<>();
 	private Map<Rarity, RandomWeightedCollection<IChestGenerator>> gens = new HashMap<>();
 	
 	// TODO probably should be moved to AbstractChestGenerator
@@ -89,11 +89,11 @@ public class ChestWorldGenerator implements IWorldGenerator {
 		}
 
 		// setup the chest  generators
-		generators.put(Rarity.COMMON, new CommonChestGenerator());
-		generators.put(Rarity.UNCOMMON, new UncommonChestGenerator());
-		generators.put(Rarity.SCARCE, new ScarceChestGenerator());
-		generators.put(Rarity.RARE, new RareChestGenerator());
-		generators.put(Rarity.EPIC, new EpicChestGenerator());
+//		generators.put(Rarity.COMMON, new CommonChestGenerator());
+//		generators.put(Rarity.UNCOMMON, new UncommonChestGenerator());
+//		generators.put(Rarity.SCARCE, new ScarceChestGenerator());
+//		generators.put(Rarity.RARE, new RareChestGenerator());
+//		generators.put(Rarity.EPIC, new EpicChestGenerator());
 				
 		gens.put(Rarity.COMMON, new RandomWeightedCollection<>());
 		gens.put(Rarity.UNCOMMON, new RandomWeightedCollection<>());
@@ -316,16 +316,16 @@ public class ChestWorldGenerator implements IWorldGenerator {
 	/**
 	 * @return the generators
 	 */
-	public Map<Rarity, AbstractChestGenerator> getGenerators() {
-		return generators;
-	}
+//	public Map<Rarity, AbstractChestGenerator> getGenerators() {
+//		return generators;
+//	}
 
 	/**
 	 * @param generators the generators to set
 	 */
-	public void setGenerators(Map<Rarity, AbstractChestGenerator> generators) {
-		this.generators = generators;
-	}
+//	public void setGenerators(Map<Rarity, AbstractChestGenerator> generators) {
+//		this.generators = generators;
+//	}
 
 	/**
 	 * @return the gens

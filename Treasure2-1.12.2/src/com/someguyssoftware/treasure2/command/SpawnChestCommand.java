@@ -6,21 +6,16 @@ package com.someguyssoftware.treasure2.command;
 import java.util.List;
 import java.util.Random;
 
-import com.someguyssoftware.gottschcore.random.RandomHelper;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.block.AbstractChestBlock;
-import com.someguyssoftware.treasure2.block.TreasureBlocks;
-import com.someguyssoftware.treasure2.config.Configs;
 import com.someguyssoftware.treasure2.enums.Rarity;
-import com.someguyssoftware.treasure2.generator.chest.CommonChestGenerator;
+import com.someguyssoftware.treasure2.enums.WorldGenerators;
 import com.someguyssoftware.treasure2.generator.chest.IChestGenerator;
-import com.someguyssoftware.treasure2.generator.chest.SkullChestGenerator;
 import com.someguyssoftware.treasure2.loot.TreasureLootTable;
 import com.someguyssoftware.treasure2.loot.TreasureLootTables;
 import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
 import com.someguyssoftware.treasure2.worldgen.ChestWorldGenerator;
 
-import net.minecraft.block.Block;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
@@ -29,7 +24,6 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
-import net.minecraft.world.storage.loot.LootTable;
 
 /**
  * 
@@ -74,7 +68,7 @@ public class SpawnChestCommand extends CommandBase {
     			Random random = new Random();
     			
 				// get the chest world generator
-				ChestWorldGenerator chestGens = (ChestWorldGenerator) Treasure.WORLD_GENERATORS.get("chest");
+				ChestWorldGenerator chestGens = (ChestWorldGenerator) Treasure.WORLD_GENERATORS.get(WorldGenerators.CHEST);
 				// get the rarity chest generator
 //				IChestGenerator gen = chestGens.getGenerators().get(rarity);
 				IChestGenerator gen = chestGens.getGens().get(rarity).next();

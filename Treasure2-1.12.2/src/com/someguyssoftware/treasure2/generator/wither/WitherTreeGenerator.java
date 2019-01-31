@@ -95,7 +95,6 @@ public class WitherTreeGenerator {
 	 * 
 	 */
 	public WitherTreeGenerator() {
-		// TODO Auto-generated constructor stub
 	}
 
 	/**

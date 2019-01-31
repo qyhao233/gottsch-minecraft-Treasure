@@ -91,7 +91,7 @@ public class RandomStructureMarkerGenerator implements IMarkerGenerator {
 		BlockPos transformedSize = template.transformedSize(rotation);
 		spawnCoords = IStructureGenerator.alignEntranceToCoords(spawnCoords, newEntrance, transformedSize, placement);
 				
-		// if offset is 2 or less, then determine if the solid ground percentage is validsd
+		// if offset is 2 or less, then determine if the solid ground percentage is valid
 		if (offset >= -2) {
 			if (!WorldInfo.isSolidBase(world, spawnCoords, transformedSize.getX(), transformedSize.getZ(), 70)) {
 				Treasure.logger.debug("Coords -> [{}] does not meet {}% solid base requirements for size -> {} x {}", 70, spawnCoords.toShortString(), transformedSize.getX(), transformedSize.getY());

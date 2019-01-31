@@ -7,9 +7,11 @@ import java.util.Map.Entry;
 
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.enums.Rarity;
+import com.someguyssoftware.treasure2.enums.WorldGenerators;
 import com.someguyssoftware.treasure2.worldgen.ChestWorldGenerator;
 import com.someguyssoftware.treasure2.worldgen.GemOreWorldGenerator;
 import com.someguyssoftware.treasure2.worldgen.WellWorldGenerator;
+import com.someguyssoftware.treasure2.worldgen.WitchCloisterWorldGenerator;
 import com.someguyssoftware.treasure2.worldgen.WitherTreeWorldGenerator;
 
 import net.minecraft.nbt.NBTTagCompound;
@@ -50,10 +52,11 @@ public class GenDataPersistence extends WorldSavedData {
 		Treasure.logger.debug("Loading Treasure! saved gen data...");
 
 		// get the world generators
-		ChestWorldGenerator chestGen = (ChestWorldGenerator) Treasure.WORLD_GENERATORS.get("chest");
-		WellWorldGenerator wellGen = (WellWorldGenerator) Treasure.WORLD_GENERATORS.get("well");
-		WitherTreeWorldGenerator witherGen = (WitherTreeWorldGenerator) Treasure.WORLD_GENERATORS.get("witherTree");
-		GemOreWorldGenerator gemGen = (GemOreWorldGenerator) Treasure.WORLD_GENERATORS.get("gem");
+		ChestWorldGenerator chestGen = (ChestWorldGenerator) Treasure.WORLD_GENERATORS.get(WorldGenerators.CHEST);
+		WellWorldGenerator wellGen = (WellWorldGenerator) Treasure.WORLD_GENERATORS.get(WorldGenerators.WELL);
+		WitherTreeWorldGenerator witherGen = (WitherTreeWorldGenerator) Treasure.WORLD_GENERATORS.get(WorldGenerators.WITHER_TREE);
+		GemOreWorldGenerator gemGen = (GemOreWorldGenerator) Treasure.WORLD_GENERATORS.get(WorldGenerators.GEM);
+		WitchCloisterWorldGenerator witchGen = (WitchCloisterWorldGenerator) Treasure.WORLD_GENERATORS.get(WorldGenerators.WITCH_CLOISTER);
 		
 		// treasure
 		NBTTagCompound treasureGen = tag.getCompoundTag("treasureGenerator");
@@ -75,6 +78,11 @@ public class GenDataPersistence extends WorldSavedData {
 		
 		///// Gem Ore /////
 		gemGen.setChunksSinceLastOre(treasureGen.getInteger("chunksSinceLastOre"));
+		
+		///// Witch Cloister /////
+		if (witchGen != null) {
+			witchGen.setChunksSinceLastCloister(treasureGen.getInteger("chunksSinceLastCloister"));
+		}
 	}
 
 	/*
@@ -91,7 +99,7 @@ public class GenDataPersistence extends WorldSavedData {
 			
 			///// Chests //////
 			// get the chest world generator
-			ChestWorldGenerator chestGen = (ChestWorldGenerator) Treasure.WORLD_GENERATORS.get("chest");
+			ChestWorldGenerator chestGen = (ChestWorldGenerator) Treasure.WORLD_GENERATORS.get(WorldGenerators.CHEST);
 			
 			// add the chest gen last count to the treasure compound
 			treasureGen.setInteger("chunksSinceLastChest", chestGen.getChunksSinceLastChest());
@@ -112,70 +120,27 @@ public class GenDataPersistence extends WorldSavedData {
 			
 			///// Wells ////
 			// get the well world generator
-			WellWorldGenerator wellGen = (WellWorldGenerator) Treasure.WORLD_GENERATORS.get("well");
+			WellWorldGenerator wellGen = (WellWorldGenerator) Treasure.WORLD_GENERATORS.get(WorldGenerators.WELL);
 			
 			// add the chest gen last count to the treasure compound
 			treasureGen.setInteger("chunksSinceLastWell", wellGen.getChunksSinceLastWell());
 			
 			//// Wither Tree /////
-			WitherTreeWorldGenerator witherGen = (WitherTreeWorldGenerator) Treasure.WORLD_GENERATORS.get("witherTree");
+			WitherTreeWorldGenerator witherGen = (WitherTreeWorldGenerator) Treasure.WORLD_GENERATORS.get(WorldGenerators.WITHER_TREE);
 			
 			// add the chest gen last count to the treasure compound
 			treasureGen.setInteger("chunksSinceLastTree", witherGen.getChunksSinceLastTree());
 			
 			//// Gem Ore ////
 
-			GemOreWorldGenerator gemGen = (GemOreWorldGenerator) Treasure.WORLD_GENERATORS.get("gem");
+			GemOreWorldGenerator gemGen = (GemOreWorldGenerator) Treasure.WORLD_GENERATORS.get(WorldGenerators.GEM);
 			treasureGen.setInteger("chunksSinceLastOre", gemGen.getChunksSinceLastOre());
 			
-			// write the Dungeon Registry to NBT
-//			NBTTagList registryTagList = new NBTTagList();
-//			for (DungeonInfo info : DungeonRegistry.getInstance().getEntries()) {
-//				NBTTagCompound infoTag = new NBTTagCompound();
-//
-//				if (info != null) {
-//					if (info.getCoords() != null) {
-//						infoTag.setInteger("x", info.getCoords().getX());
-//						infoTag.setInteger("y", info.getCoords().getY());
-//						infoTag.setInteger("z", info.getCoords().getZ());
-//					}
-//					infoTag.setInteger("minX", info.getMinX());
-//					infoTag.setInteger("minY", info.getMinY());
-//					infoTag.setInteger("minZ", info.getMinZ());
-//					infoTag.setInteger("maxX", info.getMaxX());
-//					infoTag.setInteger("maxY", info.getMaxY());
-//					infoTag.setInteger("maxZ", info.getMaxZ());
-//					
-//					infoTag.setInteger("levels", info.getLevels());
-//					if (info.getThemeName() != null) {
-//						infoTag.setString("theme", info.getThemeName());
-//					}
-//					if (info.getPattern() != null) {
-//						infoTag.setString("pattern", info.getPattern().name());
-//					}
-//					if (info.getSize() != null) {
-//						infoTag.setString("size", info.getSize().name());
-//					}
-//					if (info.getLevelSize() != null) {
-//						infoTag.setString("levelSize", info.getLevelSize().name());
-//					}
-//					if (info.getDirection() != null) {
-//						infoTag.setString("direction", info.getDirection().name());
-//					}
-//					if (info.getBossChestCoords() != null) {
-//						infoTag.setInteger("bossChestX", info.getBossChestCoords().getX());
-//						infoTag.setInteger("bossChestY", info.getBossChestCoords().getY());
-//						infoTag.setInteger("bossChestZ", info.getBossChestCoords().getZ());
-//					}
-//
-//				}
-//				
-//				// add the poi to the list
-//				registryTagList.appendTag(infoTag);
-//			}
-//			
-//			// add the poi regsitry to the main tag
-//			tag.setTag("registry", registryTagList);	
+			//// Witch Cloister ////
+			WitchCloisterWorldGenerator witchGen = (WitchCloisterWorldGenerator) Treasure.WORLD_GENERATORS.get(WorldGenerators.WITCH_CLOISTER);
+			if (witchGen != null) {
+				treasureGen.setInteger("chunksSinceLastCloister", witchGen.getChunksSinceLastCloister());
+			}		
 		}
 		catch(Exception e) {
 			e.printStackTrace();

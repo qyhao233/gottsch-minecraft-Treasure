@@ -69,6 +69,9 @@ public abstract class AbstractChestGenerator implements IChestGenerator {
 		IPitGenerator pitGenerator = null;
 		boolean isGenerated = false;
 
+		// TODO all this generation code could be rolled up into a method
+		
+		// TODO what is this check doing just hanging out?
 		RandomHelper.checkProbability(random, config.getGenProbability());
 
 		// 1. determine y-coord of land for markers

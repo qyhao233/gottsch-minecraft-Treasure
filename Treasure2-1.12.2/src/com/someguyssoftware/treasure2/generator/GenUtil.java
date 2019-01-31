@@ -19,9 +19,11 @@ import com.someguyssoftware.treasure2.block.AbstractChestBlock;
 import com.someguyssoftware.treasure2.block.FogBlock;
 import com.someguyssoftware.treasure2.block.ITreasureBlock;
 import com.someguyssoftware.treasure2.block.TreasureBlocks;
+import com.someguyssoftware.treasure2.chest.ChestInfo;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.enums.StructureMarkers;
 import com.someguyssoftware.treasure2.item.TreasureItems;
+import com.someguyssoftware.treasure2.registry.ChestRegistry;
 import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
 
 import net.minecraft.block.Block;
@@ -646,4 +648,35 @@ public class GenUtil {
 //		
 //		Treasure.logger.info(String.format("CHEATER! Obsidian Key generated @ %d %d %d", nearestChestCoords.getX(), nearestChestCoords.getY(), nearestChestCoords.getZ()));
 //	}
+	/**
+	 * 
+	 * @param world
+	 * @param pos
+	 * @param minDistance
+	 * @return
+	 */
+	public static boolean isRegisteredChestWithinDistance(World world, ICoords coords, int minDistance) {
+
+		double minDistanceSq = minDistance * minDistance;
+
+		// get a list of chests
+		List<ChestInfo> infos = ChestRegistry.getInstance().getEntries();
+
+		if (infos == null || infos.size() == 0) {
+			Treasure.logger.debug("Unable to locate the Chest Registry or the Registry doesn't contain any values");
+			return false;
+		}
+
+		Treasure.logger.debug("Min distance Sq -> {}", minDistanceSq);
+		for (ChestInfo info : infos) {
+			// calculate the distance to the poi
+			double distance = coords.getDistanceSq(info.getCoords());
+			Treasure.logger.debug("Chest dist^2: " + distance);
+			if (distance < minDistanceSq) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 }
