@@ -116,7 +116,8 @@ public class TreasureTemplateManager {
         		
         // default scan list
         scanList = Arrays.asList(new Block[] {
-    			markerMap.get(CHEST), 
+    			markerMap.get(CHEST),
+    			markerMap.get(BOSS_CHEST),
     			markerMap.get(SPAWNER),
     			markerMap.get(ENTRANCE),
     			markerMap.get(OFFSET),

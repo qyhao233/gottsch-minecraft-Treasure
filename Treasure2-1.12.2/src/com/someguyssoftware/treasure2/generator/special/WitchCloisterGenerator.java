@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Random;
 
 import com.someguyssoftware.gottschcore.Quantity;
+import com.someguyssoftware.gottschcore.positional.Coords;
 import com.someguyssoftware.gottschcore.positional.ICoords;
 import com.someguyssoftware.gottschcore.world.WorldInfo;
 import com.someguyssoftware.treasure2.Treasure;
@@ -38,6 +39,12 @@ public class WitchCloisterGenerator {
 
 	private static final String WITCH_CLOISTER_LOCATION = "treasure:special/witch-cloister";
 
+	private static final String[] WITCH_CLOISTER_LOCATIONS = {
+			"treasure:special/witch-cloister-base",
+			"treasure:special/witch-cloister-mid",
+			"treasure:special/witch-cloister-top"
+	};
+	
 	/**
 	 * 
 	 */
@@ -64,8 +71,10 @@ public class WitchCloisterGenerator {
 			return false;
 		}
 		
-		// 2. get template
-		TreasureTemplate template = (TreasureTemplate) Treasure.TEMPLATE_MANAGER.getTemplate(new ResourceLocation(WITCH_CLOISTER_LOCATION));
+		// 2. get base template which is on the ground
+//		TreasureTemplate template = (TreasureTemplate) Treasure.TEMPLATE_MANAGER.getTemplate(new ResourceLocation(WITCH_CLOISTER_LOCATION));
+		TreasureTemplate template = (TreasureTemplate) Treasure.TEMPLATE_MANAGER.getTemplate(new ResourceLocation(WITCH_CLOISTER_LOCATIONS[0]));
+
 		if (template == null) {
 			Treasure.logger.debug("could not find random template");
 			return false;
@@ -81,6 +90,13 @@ public class WitchCloisterGenerator {
 		// 4. update the spawn coords with the offset
 		ICoords spawnCoords = surfaceCoords.add(0, offset, 0);
 		
+		// 4.5 find the entrance block
+		ICoords entranceCoords = template.findCoords(random, GenUtil.getMarkerBlock(StructureMarkers.ENTRANCE));
+		if (entranceCoords == null) {
+			Treasure.logger.debug("Unable to locate entrance position.");
+			return false;
+		}
+		
 		// 5. select a rotation
 		Rotation rotation = Rotation.values()[random.nextInt(Rotation.values().length)];
 		Treasure.logger.debug("witch cloister rotation used -> {}", rotation);
@@ -88,6 +104,9 @@ public class WitchCloisterGenerator {
 		// 6. setup placement
 		PlacementSettings placement = new PlacementSettings();
 		placement.setRotation(rotation).setRandom(random);
+		
+		// 6.5 update the entrance
+		entranceCoords = new Coords(TreasureTemplate.transformedBlockPos(placement, entranceCoords.toPos()));
 		
 		// 7. get the transformed size
 		BlockPos transformedSize = template.transformedSize(rotation);
@@ -112,12 +131,51 @@ public class WitchCloisterGenerator {
 		// interrogate info for spawners and any other special block processing (except chests that are handler by caller
 		List<ICoords> spawnerCoords = (List<ICoords>) info.getMap().get(GenUtil.getMarkerBlock(StructureMarkers.SPAWNER));
 		List<ICoords> proximityCoords = (List<ICoords>) info.getMap().get(GenUtil.getMarkerBlock(StructureMarkers.PROXIMITY_SPAWNER));
-		List<ICoords> coordsList = (List<ICoords>) info.getMap().get(GenUtil.getMarkerBlock(StructureMarkers.CHEST));
-		
+		List<ICoords> chestCoordsList = (List<ICoords>) info.getMap().get(GenUtil.getMarkerBlock(StructureMarkers.CHEST));
+		List<ICoords> bossChestCoordsList = (List<ICoords>) info.getMap().get(GenUtil.getMarkerBlock(StructureMarkers.BOSS_CHEST));
+
+		// TODO load and place mid structure (repeating find specials and add to master)
+		for (int i = 1; i < WITCH_CLOISTER_LOCATIONS.length; i++) {
+			// get template
+			template = (TreasureTemplate) Treasure.TEMPLATE_MANAGER.getTemplate(new ResourceLocation(WITCH_CLOISTER_LOCATIONS[i]));
+			// get the entrance coords of the next piece of structure
+			ICoords subStructEntranceCoords = template.findCoords(random, GenUtil.getMarkerBlock(StructureMarkers.ENTRANCE));
+			if (entranceCoords == null) {
+				Treasure.logger.debug("Unable to locate entrance position.");
+				return false;
+			}
+			// update the rotate entrance coords
+			subStructEntranceCoords = new Coords(TreasureTemplate.transformedBlockPos(placement, subStructEntranceCoords.toPos()));
+			// determine spawn coords for structure
+			ICoords subSpawnCoords = spawnCoords
+					.add(entranceCoords.getX(), 0, entranceCoords.getZ())
+					.add(-subStructEntranceCoords.getX(), 0, -subStructEntranceCoords.getZ());
+			
+			// build the struct
+			IStructureInfo subInfo = new StructureGenerator().generate(world, random, template, placement, subSpawnCoords);
+			if (subInfo == null) {
+				Treasure.logger.debug("Witch cloister sub structure did not return structure info.");
+			}
+			else {
+				Treasure.logger.debug("returned info -> {}", info);
+			}
+			
+			/*
+			 *  TODO all these coords are relative to the structure that they were a part of which isn't necessarily the same dimensions
+			 *  of the base structure. so they are need to be coverted to be relative to the spawnCoords BEFORE being added to the master lists.
+			 *  (function: (subSpawnCoords - spawnCoords) + markerCoords
+			 */
+			// find and add specials to master
+			spawnerCoords.addAll((List<ICoords>) subInfo.getMap().get(GenUtil.getMarkerBlock(StructureMarkers.SPAWNER)));
+			proximityCoords.addAll((List<ICoords>) info.getMap().get(GenUtil.getMarkerBlock(StructureMarkers.PROXIMITY_SPAWNER)));
+			chestCoordsList.addAll((List<ICoords>) info.getMap().get(GenUtil.getMarkerBlock(StructureMarkers.CHEST)));
+			bossChestCoordsList.addAll((List<ICoords>) info.getMap().get(GenUtil.getMarkerBlock(StructureMarkers.BOSS_CHEST)));
+		}
+
 		/*
 		 * to get the correct coords to an of the mapped specials, you must use info.getCoords() because the spawn coords may have shifted to align with the shaft
 		 */
-		ICoords chestCoords = spawnCoords.add(coordsList.get(0));
+		ICoords bossChestCoords = spawnCoords.add(bossChestCoordsList.get(0));
 		
 		/*
 		 * 11. Add mobs
@@ -157,9 +215,11 @@ public class WitchCloisterGenerator {
 	    	te.setProximity(10D);
 		}
 		
+		// TODO find the boss chest and regular chests
+		
 		// add chest
 		CauldronChestGenerator chestGen = new CauldronChestGenerator();
-		chestGen.generate(world, random, chestCoords, Rarity.EPIC, Configs.chestConfigs.get(Rarity.EPIC)); 
+		chestGen.generate(world, random, bossChestCoords, Rarity.EPIC, Configs.chestConfigs.get(Rarity.EPIC)); 
 		
 		return true;
 	}
