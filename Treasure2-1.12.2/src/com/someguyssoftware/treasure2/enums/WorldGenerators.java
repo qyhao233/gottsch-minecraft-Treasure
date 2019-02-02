@@ -13,7 +13,7 @@ public enum WorldGenerators {
 	WELL("well"),
 	GEM("gem"),
 	WITHER_TREE("witherTree"),
-	WITCH_CLOISTER("witch cloister");
+	WITCH_DEN("witch den");
 	
 	private String value;
 	

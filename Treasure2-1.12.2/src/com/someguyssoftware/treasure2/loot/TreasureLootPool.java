@@ -16,7 +16,6 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
-import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.loot.conditions.TreasureLootCondition;
 import com.someguyssoftware.treasure2.loot.conditions.TreasureLootConditionManager;
 

@@ -12,9 +12,9 @@ import com.someguyssoftware.gottschcore.random.RandomHelper;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.chest.ChestInfo;
 import com.someguyssoftware.treasure2.config.Configs;
-import com.someguyssoftware.treasure2.config.IWitchCloisterConfig;
+import com.someguyssoftware.treasure2.config.IWitchDenConfig;
 import com.someguyssoftware.treasure2.enums.Rarity;
-import com.someguyssoftware.treasure2.generator.special.WitchCloisterGenerator;
+import com.someguyssoftware.treasure2.generator.special.WitchDenGenerator;
 import com.someguyssoftware.treasure2.persistence.GenDataPersistence;
 import com.someguyssoftware.treasure2.registry.ChestRegistry;
 
@@ -29,22 +29,22 @@ import net.minecraftforge.fml.common.IWorldGenerator;
  * @author Mark Gottschling on Jan 29, 2019
  *
  */
-public class WitchCloisterWorldGenerator implements IWorldGenerator {
+public class WitchDenWorldGenerator implements IWorldGenerator {
 	// TODO move to WorldInfo in GottschCore
 	// the number of blocks of half a chunk (radius) (a chunk is 16x16)
 	public static final int CHUNK_RADIUS = 8;
 
-	private int chunksSinceLastCloister;
-	private WitchCloisterGenerator generator;
+	private int chunksSinceLastDen;
+	private WitchDenGenerator generator;
 
 	/**
 	 * 
 	 */
-	public WitchCloisterWorldGenerator() {
+	public WitchDenWorldGenerator() {
 		try {
 			init();
 		} catch (Exception e) {
-			Treasure.logger.error("Unable to instantiate WitchCloisterGenerator:", e);
+			Treasure.logger.error("Unable to instantiate WitchDenGenerator:", e);
 		}
 	}
 
@@ -53,10 +53,10 @@ public class WitchCloisterWorldGenerator implements IWorldGenerator {
 	 */
 	private void init() {
 		// intialize chunks since last array
-		chunksSinceLastCloister = 0;
+		chunksSinceLastDen = 0;
 
 		// setup the generator
-		generator = new WitchCloisterGenerator();
+		generator = new WitchDenGenerator();
 	}
 
 	/**
@@ -84,19 +84,19 @@ public class WitchCloisterWorldGenerator implements IWorldGenerator {
 	private void generateSurface(World world, Random random, int chunkX, int chunkZ) {
 
 		// increment the chunk counts
-		chunksSinceLastCloister++;
+		chunksSinceLastDen++;
 
 		boolean isGenerated = false;	
 
 		// get the config
-		IWitchCloisterConfig cloisterConfig = Configs.witchCloisterConfig;
-		if (cloisterConfig == null) {
-			Treasure.logger.warn("Unable to locate a config for wither tree {}.", cloisterConfig);
+		IWitchDenConfig denConfig = Configs.witchDenConfig;
+		if (denConfig == null) {
+			Treasure.logger.warn("Unable to locate a config for wither tree {}.", denConfig);
 			return;
 		}
 
 		// test if min chunks was met
-		if (chunksSinceLastCloister > cloisterConfig.getChunksPerCloister()) {
+		if (chunksSinceLastDen > denConfig.getChunksPerDen()) {
 			//			Treasure.logger.debug(String.format("Gen: pass first test: chunksSinceLast: %d, minChunks: %d", chunksSinceLastTree, TreasureConfig.minChunksPerWell));
 
 			/*
@@ -114,22 +114,22 @@ public class WitchCloisterWorldGenerator implements IWorldGenerator {
 			// if not the correct biome, reset the count
 			Biome biome = world.getBiome(coords.toPos());
 
-			if (!BiomeHelper.isBiomeAllowed(biome, cloisterConfig.getBiomeWhiteList(), cloisterConfig.getBiomeBlackList())) {
+			if (!BiomeHelper.isBiomeAllowed(biome, denConfig.getBiomeWhiteList(), denConfig.getBiomeBlackList())) {
 				if (Treasure.logger.isDebugEnabled()) {
 					if (world.isRemote) {
-						Treasure.logger.debug("{} is not a valid biome @ {} for Witch Cloister", biome.getBiomeName(), coords.toShortString());
+						Treasure.logger.debug("{} is not a valid biome @ {} for Witch Den", biome.getBiomeName(), coords.toShortString());
 					}
 					else {
-						Treasure.logger.debug("Biome is not valid @ {} for Witch Cloister", coords.toShortString());
+						Treasure.logger.debug("Biome is not valid @ {} for Witch Den", coords.toShortString());
 					}
 				}
-				chunksSinceLastCloister = 0;
+				chunksSinceLastDen = 0;
 				return;
 			}
 
 			// 2. test if well meets the probability criteria
-			if (!RandomHelper.checkProbability(random, cloisterConfig.getGenProbability())) {
-				Treasure.logger.debug("Witch Cloister does not meet generate probability.");
+			if (!RandomHelper.checkProbability(random, denConfig.getGenProbability())) {
+				Treasure.logger.debug("Witch Den does not meet generate probability.");
 				return;
 			}
 
@@ -140,11 +140,11 @@ public class WitchCloisterWorldGenerator implements IWorldGenerator {
 //			}
 
 			// increment chunks since last common chest regardless of successful generation - makes more rare and realistic and configurable generation.
-			chunksSinceLastCloister = 0;   	    	
+			chunksSinceLastDen = 0;   	    	
 
 			// generate the well
-			Treasure.logger.debug("Attempting to generate a Witch Cloister");
-			isGenerated = generator.generate(world, random, coords, cloisterConfig); 
+			Treasure.logger.debug("Attempting to generate a Witch Den");
+			isGenerated = generator.generate(world, random, coords, denConfig); 
 
 			if (isGenerated) {
 				// add to registry
@@ -182,17 +182,17 @@ public class WitchCloisterWorldGenerator implements IWorldGenerator {
 
 
 	/**
-	 * @return the chunksSinceLastCloister
+	 * @return the chunksSinceLastDen
 	 */
-	public int getChunksSinceLastCloister() {
-		return chunksSinceLastCloister;
+	public int getChunksSinceLastDen() {
+		return chunksSinceLastDen;
 	}
 
 	/**
 	 * 
-	 * @param chunksSinceLastCloister
+	 * @param chunksSinceLastDen
 	 */
-	public void setChunksSinceLastCloister(int chunksSinceLast) {
-		this.chunksSinceLastCloister = chunksSinceLast;
+	public void setChunksSinceLastDen(int chunksSinceLast) {
+		this.chunksSinceLastDen = chunksSinceLast;
 	}
 }

@@ -11,7 +11,7 @@ import com.someguyssoftware.treasure2.enums.WorldGenerators;
 import com.someguyssoftware.treasure2.worldgen.ChestWorldGenerator;
 import com.someguyssoftware.treasure2.worldgen.GemOreWorldGenerator;
 import com.someguyssoftware.treasure2.worldgen.WellWorldGenerator;
-import com.someguyssoftware.treasure2.worldgen.WitchCloisterWorldGenerator;
+import com.someguyssoftware.treasure2.worldgen.WitchDenWorldGenerator;
 import com.someguyssoftware.treasure2.worldgen.WitherTreeWorldGenerator;
 
 import net.minecraft.nbt.NBTTagCompound;
@@ -56,7 +56,7 @@ public class GenDataPersistence extends WorldSavedData {
 		WellWorldGenerator wellGen = (WellWorldGenerator) Treasure.WORLD_GENERATORS.get(WorldGenerators.WELL);
 		WitherTreeWorldGenerator witherGen = (WitherTreeWorldGenerator) Treasure.WORLD_GENERATORS.get(WorldGenerators.WITHER_TREE);
 		GemOreWorldGenerator gemGen = (GemOreWorldGenerator) Treasure.WORLD_GENERATORS.get(WorldGenerators.GEM);
-		WitchCloisterWorldGenerator witchGen = (WitchCloisterWorldGenerator) Treasure.WORLD_GENERATORS.get(WorldGenerators.WITCH_CLOISTER);
+		WitchDenWorldGenerator witchGen = (WitchDenWorldGenerator) Treasure.WORLD_GENERATORS.get(WorldGenerators.WITCH_DEN);
 		
 		// treasure
 		NBTTagCompound treasureGen = tag.getCompoundTag("treasureGenerator");
@@ -79,9 +79,9 @@ public class GenDataPersistence extends WorldSavedData {
 		///// Gem Ore /////
 		gemGen.setChunksSinceLastOre(treasureGen.getInteger("chunksSinceLastOre"));
 		
-		///// Witch Cloister /////
+		///// Witch Den /////
 		if (witchGen != null) {
-			witchGen.setChunksSinceLastCloister(treasureGen.getInteger("chunksSinceLastCloister"));
+			witchGen.setChunksSinceLastDen(treasureGen.getInteger("chunksSinceLastDen"));
 		}
 	}
 
@@ -136,10 +136,10 @@ public class GenDataPersistence extends WorldSavedData {
 			GemOreWorldGenerator gemGen = (GemOreWorldGenerator) Treasure.WORLD_GENERATORS.get(WorldGenerators.GEM);
 			treasureGen.setInteger("chunksSinceLastOre", gemGen.getChunksSinceLastOre());
 			
-			//// Witch Cloister ////
-			WitchCloisterWorldGenerator witchGen = (WitchCloisterWorldGenerator) Treasure.WORLD_GENERATORS.get(WorldGenerators.WITCH_CLOISTER);
+			//// Witch Den ////
+			WitchDenWorldGenerator witchGen = (WitchDenWorldGenerator) Treasure.WORLD_GENERATORS.get(WorldGenerators.WITCH_DEN);
 			if (witchGen != null) {
-				treasureGen.setInteger("chunksSinceLastCloister", witchGen.getChunksSinceLastCloister());
+				treasureGen.setInteger("chunksSinceLastDen", witchGen.getChunksSinceLastDen());
 			}		
 		}
 		catch(Exception e) {

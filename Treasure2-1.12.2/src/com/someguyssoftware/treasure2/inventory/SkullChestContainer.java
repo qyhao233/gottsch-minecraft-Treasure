@@ -1,6 +1,5 @@
 package com.someguyssoftware.treasure2.inventory;
 
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.IInventory;
 

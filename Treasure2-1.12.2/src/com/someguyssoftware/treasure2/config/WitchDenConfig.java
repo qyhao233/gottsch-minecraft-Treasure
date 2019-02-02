@@ -13,18 +13,17 @@ import com.someguyssoftware.gottschcore.mod.IMod;
 import com.someguyssoftware.treasure2.Treasure;
 
 import net.minecraftforge.common.config.Configuration;
-import net.minecraftforge.fml.common.Mod;
 
 /**
  * @author Mark Gottschling on Jan 29, 2019
  *
  */
-public class WitchCloisterConfig implements IWitchCloisterConfig {
-	private IMod mod;
-	private Configuration forgeConfiguration;
+public class WitchDenConfig implements IWitchDenConfig {
+//	private IMod mod;
+//	private Configuration forgeConfiguration;
 	
-	private boolean cloisterAllowed;
-	private int chunksPerCloister;
+	private boolean denAllowed;
+	private int chunksPerDen;
 	private double genProbability;
 	
 	// biome type white/black lists
@@ -37,7 +36,7 @@ public class WitchCloisterConfig implements IWitchCloisterConfig {
 	/**
 	 * 
 	 */
-	public WitchCloisterConfig() {
+	public WitchDenConfig() {
 		biomeWhiteList = new ArrayList<>(5);
 		biomeBlackList = new ArrayList<>(5);
 	}
@@ -50,16 +49,16 @@ public class WitchCloisterConfig implements IWitchCloisterConfig {
 	 * @param mod 
 	 * 
 	 */
-	public WitchCloisterConfig(IMod mod, File configDir, String modDir, String filename, IWitchCloisterConfig defaults) {
+	public WitchDenConfig(IMod mod, File configDir, String modDir, String filename, IWitchDenConfig defaults) {
 		this();
-		this.mod = mod;
+//		this.mod = mod;
 		// build the path to the minecraft config directory
 		String configPath = (new StringBuilder()).append(configDir).append("/").append(modDir).append("/").toString();
 		// create the config file
 		File configFile = new File((new StringBuilder()).append(configPath).append(filename).toString());
 		// load the config file
 		Configuration configuration = load(configFile, defaults);
-		this.forgeConfiguration = configuration;
+//		this.forgeConfiguration = configuration;
 	}
 
 	/**
@@ -68,17 +67,15 @@ public class WitchCloisterConfig implements IWitchCloisterConfig {
 	 * @param defaults
 	 * @return
 	 */
-	public Configuration load(File file, IWitchCloisterConfig defaults) {
+	public Configuration load(File file, IWitchDenConfig defaults) {
 		// load the config file
-		Configuration config = IWitchCloisterConfig.super.load(file);
-		// ge the modid
-		String modid = mod.getClass().getAnnotation(Mod.class).modid();
-		
+		Configuration config = IWitchDenConfig.super.load(file);
+	
 		config.setCategoryComment("01-enable", "Enablements.");
-        cloisterAllowed = config.getBoolean("cloisterAllowed", "01-enable", defaults.isCloisterAllowed(), "");
+        denAllowed = config.getBoolean("denAllowed", "01-enable", defaults.isDenAllowed(), "");
  
         // gen props
-    	chunksPerCloister = config.getInt("chunksPerCloister", "02-gen", defaults.getChunksPerCloister(), 200, 32000, "");
+    	chunksPerDen = config.getInt("chunksPerDen", "02-gen", defaults.getChunksPerDen(), 200, 32000, "");
     	genProbability = config.getFloat("genProbability", "02-gen", (float)defaults.getGenProbability(), 0.0F, 100.0F, "");
     	    	
         // white/black lists
@@ -131,7 +128,7 @@ public class WitchCloisterConfig implements IWitchCloisterConfig {
 	}
 
 	/* (non-Javadoc)
-	 * @see com.someguyssoftware.treasure2.config.IWitchCloisterConfig#getRawBiomeBlackList()
+	 * @see com.someguyssoftware.treasure2.config.IWitchDenConfig#getRawBiomeBlackList()
 	 */
 	@Override
 	public String[] getRawBiomeBlackList() {
@@ -139,16 +136,16 @@ public class WitchCloisterConfig implements IWitchCloisterConfig {
 	}
 
 	/* (non-Javadoc)
-	 * @see com.someguyssoftware.treasure2.config.IWitchCloisterConfig#setRawBiomeBlackList(java.lang.String[])
+	 * @see com.someguyssoftware.treasure2.config.IWitchDenConfig#setRawBiomeBlackList(java.lang.String[])
 	 */
 	@Override
-	public IWitchCloisterConfig setRawBiomeBlackList(String[] rawBiomeBlackList) {
+	public IWitchDenConfig setRawBiomeBlackList(String[] rawBiomeBlackList) {
 		this.rawBiomeBlackList = rawBiomeBlackList;
 		return this;
 	}
 
 	/* (non-Javadoc)
-	 * @see com.someguyssoftware.treasure2.config.IWitchCloisterConfig#getRawBiomeWhiteList()
+	 * @see com.someguyssoftware.treasure2.config.IWitchDenConfig#getRawBiomeWhiteList()
 	 */
 	@Override
 	public String[] getRawBiomeWhiteList() {
@@ -156,32 +153,32 @@ public class WitchCloisterConfig implements IWitchCloisterConfig {
 	}
 
 	/* (non-Javadoc)
-	 * @see com.someguyssoftware.treasure2.config.IWitchCloisterConfig#setRawBiomeWhiteList(java.lang.String[])
+	 * @see com.someguyssoftware.treasure2.config.IWitchDenConfig#setRawBiomeWhiteList(java.lang.String[])
 	 */
 	@Override
-	public IWitchCloisterConfig setRawBiomeWhiteList(String[] rawBiomeWhiteList) {
+	public IWitchDenConfig setRawBiomeWhiteList(String[] rawBiomeWhiteList) {
 		this.rawBiomeWhiteList = rawBiomeWhiteList;
 		return this;
 	}
 
 	/* (non-Javadoc)
-	 * @see com.someguyssoftware.treasure2.config.IWitchCloisterConfig#isCloisterAllowed()
+	 * @see com.someguyssoftware.treasure2.config.IWitchDenConfig#isDenAllowed()
 	 */
 	@Override
-	public boolean isCloisterAllowed() {
-		return cloisterAllowed;
+	public boolean isDenAllowed() {
+		return denAllowed;
 	}
 
 	/* (non-Javadoc)
-	 * @see com.someguyssoftware.treasure2.config.IWitchCloisterConfig#getChunksPerCloister()
+	 * @see com.someguyssoftware.treasure2.config.IWitchDenConfig#getChunksPerDen()
 	 */
 	@Override
-	public int getChunksPerCloister() {
-		return chunksPerCloister;
+	public int getChunksPerDen() {
+		return chunksPerDen;
 	}
 
 	/* (non-Javadoc)
-	 * @see com.someguyssoftware.treasure2.config.IWitchCloisterConfig#getGenProbability()
+	 * @see com.someguyssoftware.treasure2.config.IWitchDenConfig#getGenProbability()
 	 */
 	@Override
 	public double getGenProbability() {
@@ -189,28 +186,28 @@ public class WitchCloisterConfig implements IWitchCloisterConfig {
 	}
 
 	/* (non-Javadoc)
-	 * @see com.someguyssoftware.treasure2.config.IWitchCloisterConfig#setCloisterAllowed(boolean)
+	 * @see com.someguyssoftware.treasure2.config.IWitchDenConfig#setDenAllowed(boolean)
 	 */
 	@Override
-	public IWitchCloisterConfig setCloisterAllowed(boolean isAllowed) {
-		this.cloisterAllowed = isAllowed;
+	public IWitchDenConfig setDenAllowed(boolean isAllowed) {
+		this.denAllowed = isAllowed;
 		return this;
 	}
 
 	/* (non-Javadoc)
-	 * @see com.someguyssoftware.treasure2.config.IWitchCloisterConfig#setChunksPerCloister(int)
+	 * @see com.someguyssoftware.treasure2.config.IWitchDenConfig#setChunksPerDen(int)
 	 */
 	@Override
-	public IWitchCloisterConfig setChunksPerCloister(int chunksPerCloister) {
-		this.chunksPerCloister = chunksPerCloister;
+	public IWitchDenConfig setChunksPerDen(int chunksPerDen) {
+		this.chunksPerDen = chunksPerDen;
 		return this;
 	}
 
 	/* (non-Javadoc)
-	 * @see com.someguyssoftware.treasure2.config.IWitchCloisterConfig#setGenProbability(double)
+	 * @see com.someguyssoftware.treasure2.config.IWitchDenConfig#setGenProbability(double)
 	 */
 	@Override
-	public IWitchCloisterConfig setGenProbability(double genProbability) {
+	public IWitchDenConfig setGenProbability(double genProbability) {
 		this.genProbability = genProbability; 
 		return this;
 	}

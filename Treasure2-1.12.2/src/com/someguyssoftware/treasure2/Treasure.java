@@ -38,7 +38,7 @@ import com.someguyssoftware.treasure2.world.gen.structure.TreasureTemplateManage
 import com.someguyssoftware.treasure2.worldgen.ChestWorldGenerator;
 import com.someguyssoftware.treasure2.worldgen.GemOreWorldGenerator;
 import com.someguyssoftware.treasure2.worldgen.WellWorldGenerator;
-import com.someguyssoftware.treasure2.worldgen.WitchCloisterWorldGenerator;
+import com.someguyssoftware.treasure2.worldgen.WitchDenWorldGenerator;
 import com.someguyssoftware.treasure2.worldgen.WitherTreeWorldGenerator;
 
 import net.minecraft.client.Minecraft;
@@ -184,7 +184,7 @@ public class Treasure extends AbstractMod {
 		WORLD_GENERATORS.put(WorldGenerators.WELL, new WellWorldGenerator());
 		WORLD_GENERATORS.put(WorldGenerators.WITHER_TREE, new WitherTreeWorldGenerator());
 		WORLD_GENERATORS.put(WorldGenerators.GEM, new GemOreWorldGenerator());
-		WORLD_GENERATORS.put(WorldGenerators.WITCH_CLOISTER, new WitchCloisterWorldGenerator());
+		WORLD_GENERATORS.put(WorldGenerators.WITCH_DEN, new WitchDenWorldGenerator());
 		int genWeight = 0;
 		for (Entry<WorldGenerators, IWorldGenerator> gen : WORLD_GENERATORS.entrySet()) {
 			GameRegistry.registerWorldGenerator(gen.getValue(), genWeight++);

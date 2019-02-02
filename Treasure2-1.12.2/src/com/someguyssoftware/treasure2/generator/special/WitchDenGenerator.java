@@ -14,7 +14,7 @@ import com.someguyssoftware.gottschcore.world.WorldInfo;
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.block.TreasureBlocks;
 import com.someguyssoftware.treasure2.config.Configs;
-import com.someguyssoftware.treasure2.config.IWitchCloisterConfig;
+import com.someguyssoftware.treasure2.config.IWitchDenConfig;
 import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.enums.StructureMarkers;
 import com.someguyssoftware.treasure2.generator.GenUtil;
@@ -36,20 +36,20 @@ import net.minecraft.world.gen.structure.template.PlacementSettings;
  * @author Mark Gottschling on Jan 29, 2019
  *
  */
-public class WitchCloisterGenerator {
+public class WitchDenGenerator {
 
-	private static final String WITCH_CLOISTER_LOCATION = "treasure:special/witch-cloister";
+	private static final String WITCH_DEN_LOCATION = "treasure:special/witch-den";
 
-	private static final String[] WITCH_CLOISTER_LOCATIONS = {
-			"treasure:special/witch-cloister-base",
-			"treasure:special/witch-cloister-mid",
-			"treasure:special/witch-cloister-top"
+	private static final String[] WITCH_DEN_LOCATIONS = {
+			"treasure:special/witch-den-base",
+			"treasure:special/witch-den-mid",
+			"treasure:special/witch-den-top"
 	};
 	
 	/**
 	 * 
 	 */
-	public WitchCloisterGenerator() {
+	public WitchDenGenerator() {
 		
 	}
 
@@ -61,7 +61,7 @@ public class WitchCloisterGenerator {
 	 * @param config
 	 * @return
 	 */
-	public boolean generate(World world, Random random, ICoords coords, IWitchCloisterConfig config) {
+	public boolean generate(World world, Random random, ICoords coords, IWitchDenConfig config) {
 		ICoords surfaceCoords = null;
 
 		// 1. determine y-coord of land for markers
@@ -73,8 +73,8 @@ public class WitchCloisterGenerator {
 		}
 		
 		// 2. get base template which is on the ground
-//		TreasureTemplate template = (TreasureTemplate) Treasure.TEMPLATE_MANAGER.getTemplate(new ResourceLocation(WITCH_CLOISTER_LOCATION));
-		TreasureTemplate template = (TreasureTemplate) Treasure.TEMPLATE_MANAGER.getTemplate(new ResourceLocation(WITCH_CLOISTER_LOCATIONS[0]));
+//		TreasureTemplate template = (TreasureTemplate) Treasure.TEMPLATE_MANAGER.getTemplate(new ResourceLocation(WITCH_DEN_LOCATION));
+		TreasureTemplate template = (TreasureTemplate) Treasure.TEMPLATE_MANAGER.getTemplate(new ResourceLocation(WITCH_DEN_LOCATIONS[0]));
 
 		if (template == null) {
 			Treasure.logger.debug("could not find random template");
@@ -100,7 +100,7 @@ public class WitchCloisterGenerator {
 		
 		// 5. select a rotation
 		Rotation rotation = Rotation.values()[random.nextInt(Rotation.values().length)];
-		Treasure.logger.debug("witch cloister rotation used -> {}", rotation);
+		Treasure.logger.debug("witch den rotation used -> {}", rotation);
 				
 		// 6. setup placement
 		PlacementSettings placement = new PlacementSettings();
@@ -112,7 +112,7 @@ public class WitchCloisterGenerator {
 		// 7. get the transformed size
 		BlockPos transformedSize = template.transformedSize(rotation);
 		
-		// 8. check if there is solid ground at spawn corods (not on surface since cloister should be set into the ground/swamp)
+		// 8. check if there is solid ground at spawn corods (not on surface since den should be set into the ground/swamp)
 		if (!WorldInfo.isSolidBase(world, spawnCoords, transformedSize.getX(), transformedSize.getZ(), 75)) {
 			Treasure.logger.debug("Coords -> [{}] does not meet {}% solid base requirements for size -> {} x {}", 75, spawnCoords.toShortString(), transformedSize.getX(), transformedSize.getY());
 			return false;
@@ -121,7 +121,7 @@ public class WitchCloisterGenerator {
 		// 9. generate the structure
 		IStructureInfo info = new StructureGenerator().generate(world, random, template, placement, spawnCoords);
 		if (info == null) {
-			Treasure.logger.debug("Witch cloister did not return structure info -> {}", spawnCoords);
+			Treasure.logger.debug("Witch den did not return structure info -> {}", spawnCoords);
 			return false;			
 		}
 		Treasure.logger.debug("returned info -> {}", info);
@@ -136,9 +136,9 @@ public class WitchCloisterGenerator {
 		List<ICoords> bossChestCoordsList = (List<ICoords>) info.getMap().get(GenUtil.getMarkerBlock(StructureMarkers.BOSS_CHEST));
 
 		// TODO load and place mid structure (repeating find specials and add to master)
-		for (int i = 1; i < WITCH_CLOISTER_LOCATIONS.length; i++) {
+		for (int i = 1; i < WITCH_DEN_LOCATIONS.length; i++) {
 			// get template
-			template = (TreasureTemplate) Treasure.TEMPLATE_MANAGER.getTemplate(new ResourceLocation(WITCH_CLOISTER_LOCATIONS[i]));
+			template = (TreasureTemplate) Treasure.TEMPLATE_MANAGER.getTemplate(new ResourceLocation(WITCH_DEN_LOCATIONS[i]));
 			// get the entrance coords of the next piece of structure
 			ICoords subStructEntranceCoords = template.findCoords(random, GenUtil.getMarkerBlock(StructureMarkers.ENTRANCE));
 			if (entranceCoords == null) {
@@ -155,7 +155,7 @@ public class WitchCloisterGenerator {
 			// build the struct
 			IStructureInfo subInfo = new StructureGenerator().generate(world, random, template, placement, subSpawnCoords);
 			if (subInfo == null) {
-				Treasure.logger.debug("Witch cloister sub structure did not return structure info.");
+				Treasure.logger.debug("Witch den sub structure did not return structure info.");
 			}
 			else {
 				Treasure.logger.debug("returned info -> {}", info);

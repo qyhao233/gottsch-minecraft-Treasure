@@ -12,7 +12,7 @@ import net.minecraftforge.common.config.Configuration;
  * @author Mark Gottschling on Jan 29, 2019
  *
  */
-public interface IWitchCloisterConfig extends IBiomeListConfig {
+public interface IWitchDenConfig extends IBiomeListConfig {
 	/**
 	 * Loads the Forge mod Configuration file.
 	 * @param file
@@ -24,21 +24,21 @@ public interface IWitchCloisterConfig extends IBiomeListConfig {
 		return config;
 	}
 	
-	public boolean isCloisterAllowed();
-	public int getChunksPerCloister();
+	public boolean isDenAllowed();
+	public int getChunksPerDen();
 	public double getGenProbability();
 
-	IWitchCloisterConfig setCloisterAllowed(boolean wellAllowed);
+	IWitchDenConfig setDenAllowed(boolean wellAllowed);
 
-	IWitchCloisterConfig setChunksPerCloister(int chunksPerWell);
+	IWitchDenConfig setChunksPerDen(int chunksPerWell);
 
-	IWitchCloisterConfig setGenProbability(double genProbability);
+	IWitchDenConfig setGenProbability(double genProbability);
 
 	String[] getRawBiomeBlackList();
 
-	IWitchCloisterConfig setRawBiomeBlackList(String[] rawBiomeBlackList);
+	IWitchDenConfig setRawBiomeBlackList(String[] rawBiomeBlackList);
 
 	String[] getRawBiomeWhiteList();
 
-	IWitchCloisterConfig setRawBiomeWhiteList(String[] rawBiomeWhiteList); 
+	IWitchDenConfig setRawBiomeWhiteList(String[] rawBiomeWhiteList); 
 }
