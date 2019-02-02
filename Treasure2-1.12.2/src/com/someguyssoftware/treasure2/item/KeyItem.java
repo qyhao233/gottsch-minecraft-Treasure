@@ -194,7 +194,7 @@ public class KeyItem extends ModItem {
 //					}
 //				}
 				lockState = fitsFirstLock(tcte.getLockStates());
-				if (lockState != null) {
+				if (lockState != null && lockState != LockState.EMPTY_LOCKSTATE) {
 					fitsLock = true;
 				}
 				
@@ -274,7 +274,7 @@ public class KeyItem extends ModItem {
 				}
 			}
 		}
-		return null; // <-- TODO should return EMPTY_LOCKSTATE
+		return LockState.EMPTY_LOCKSTATE; 	//null;
 	}
 	
 	/**

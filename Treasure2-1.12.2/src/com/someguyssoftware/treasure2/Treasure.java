@@ -112,7 +112,7 @@ public class Treasure extends AbstractMod {
 	// forge world generators
     public static final Map<WorldGenerators, IWorldGenerator> WORLD_GENERATORS = new HashMap<>();
     
-    // template manager - TODO update
+    // template manager
     public static TreasureTemplateManager TEMPLATE_MANAGER;
     
 	/**
@@ -189,9 +189,8 @@ public class Treasure extends AbstractMod {
 		for (Entry<WorldGenerators, IWorldGenerator> gen : WORLD_GENERATORS.entrySet()) {
 			GameRegistry.registerWorldGenerator(gen.getValue(), genWeight++);
 		}
-		
-		// TODO change path to const
-		TEMPLATE_MANAGER = new TreasureTemplateManager("mods/treasure2/structures", Minecraft.getMinecraft().getDataFixer());
+
+		TEMPLATE_MANAGER = new TreasureTemplateManager(TreasureConfig.CUSTOM_STRUCTURE_FOLDER, Minecraft.getMinecraft().getDataFixer());
 	}
 	
 	/**

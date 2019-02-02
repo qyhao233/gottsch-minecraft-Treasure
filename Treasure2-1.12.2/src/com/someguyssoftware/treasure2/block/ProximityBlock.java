@@ -23,7 +23,6 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 /**
- * TODO move to GottschCore
  * An invisible non-collision block (like AIR) that creates an IProximityTileEntity.
  * @author Mark Gottschling on Jan 17, 2019
  *

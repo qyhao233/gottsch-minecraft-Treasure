@@ -176,7 +176,7 @@ public class KeyRingItem extends ModItem {
 						Treasure.logger.debug("key fits lock: {}", lockState);
 
 						// TODO move to a method in KeyItem
-						if (lockState != null) {
+						if (lockState != null && lockState != LockState.EMPTY_LOCKSTATE) {
 							if (key.unlock(lockState.getLock())) {
 								LockItem lock = lockState.getLock();
 								// remove the lock

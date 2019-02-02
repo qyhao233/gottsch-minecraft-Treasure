@@ -674,10 +674,6 @@ public class TreasureBlocks {
 				ITEM_BLOCKS.add(item);
 			}
 
-			// TODO for gravestone and anything with variants, probably need to use this method instead of the the register model method
-			//	        ModelLoader.setCustomModelResourceLocation(chestItem, type.ordinal(),
-			//	        		new ModelResourceLocation(chestItem.getRegistryName(), "variant=" + type.getName()));
-
 			// register the tile entities
 			//			GameRegistry.registerTileEntity(AbstractTreasureChestTileEntity.class, "treasureChestTileEntity");
 			GameRegistry.registerTileEntity(WoodChestTileEntity.class, new ResourceLocation(Treasure.MODID+":"+TreasureConfig.WOOD_CHEST_TE_ID));

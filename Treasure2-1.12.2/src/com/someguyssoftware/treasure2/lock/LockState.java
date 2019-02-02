@@ -21,6 +21,8 @@ public class LockState {
 //	private Item lockItem; // item or just LockItem ?
 	private LockItem lockItem;
 	
+	public static final LockState EMPTY_LOCKSTATE = new LockState();
+	
 	/**
 	 * 
 	 */
