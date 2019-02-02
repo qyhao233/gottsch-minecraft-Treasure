@@ -107,8 +107,6 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 				if (entityplayer.openContainer instanceof ContainerChest) {
 					IInventory iinventory = ((ContainerChest) entityplayer.openContainer).getLowerChestInventory();
 
-					// TODO proxy goes here:  if (iinventory == this.getProxy() 
-					// NOTE this doesn't seem to work with the inventory proxy
                     if (iinventory == this.getInventoryProxy()) {
                         ++this.numPlayersUsing;
                     }

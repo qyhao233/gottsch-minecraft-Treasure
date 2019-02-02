@@ -36,9 +36,6 @@ import net.minecraftforge.common.DungeonHooks;
 
 
 /**
- * TODO should a structure pit generator be of a different class than a regular pit generator?
- * -- The return value has to be different -> a class containing the StructureInfo and the result.
- * -- Looks like I will have to load the template, get the list of pos, rotate manually, and scan manually.
  * Generates lava blocks outside the main pit to prevent players from digging down on the edges
  * @author Mark Gottschling on Dec 9, 2018
  *

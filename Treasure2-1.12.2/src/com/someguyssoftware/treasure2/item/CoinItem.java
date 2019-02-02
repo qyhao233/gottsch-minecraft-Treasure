@@ -87,8 +87,6 @@ public class CoinItem extends ModItem {
 		// get the position
 		ICoords coords = new Coords(entityItem.getPosition());
 		Cube cube = new Cube(world, coords);
-//		Block block = world.getBlockState(coords).getBlock();
-		Block block = cube.toBlock();
 		int numWishingWellBlocks = 0;
 		// check if in water
 		if (cube.equalsBlock(Blocks.WATER)) {
@@ -109,45 +107,15 @@ public class CoinItem extends ModItem {
 			List<TreasureLootTable> lootTables = new ArrayList<>();
 			if (numWishingWellBlocks >=2) {
 				Random random = new Random();
-				List<Rarity> rarityList = null;
 				// determine coin type
 				if (getCoin() == Coins.SILVER) {
-//					rarityList = Arrays.asList(new Rarity[] {Rarity.UNCOMMON, Rarity.SCARCE});
-//					lootTables.addAll(TreasureLootTables.CHEST_LOOT_TABLE_MAP.get(Rarity.UNCOMMON));
-//					lootTables.addAll(TreasureLootTables.CHEST_LOOT_TABLE_MAP.get(Rarity.SCARCE));
 					lootTables.addAll(TreasureLootTables.getLootTableByRarity(Rarity.UNCOMMON));
 					lootTables.addAll(TreasureLootTables.getLootTableByRarity(Rarity.SCARCE));
 				}
 				else if (getCoin() == Coins.GOLD) {					
-//					rarityList = Arrays.asList(new Rarity[] {Rarity.SCARCE, Rarity.RARE});
-//					lootTables.addAll(TreasureLootTables.CHEST_LOOT_TABLE_MAP.get(Rarity.SCARCE));
-//					lootTables.addAll(TreasureLootTables.CHEST_LOOT_TABLE_MAP.get(Rarity.RARE));
 					lootTables.addAll(TreasureLootTables.getLootTableByRarity(Rarity.SCARCE));
 					lootTables.addAll(TreasureLootTables.getLootTableByRarity(Rarity.RARE));
 				}
-				
-//				// select a container
-//				LootContainer container = DbManager.getInstance().selectContainer(random, rarityList);
-//				if (container == null || container == LootContainer.EMPTY_CONTAINER) {
-//					Treasure.logger.warn("Unable to select a container.");
-//					return false;
-//				}
-//				
-//				// select a group from the container
-//				List<LootContainerHasGroup> containerGroups = DbManager.getInstance().getGroupsByContainer(container.getId());
-//				if (containerGroups == null || containerGroups.size() == 0) {
-//					Treasure.logger.warn("Container {} does not contain any groups.", container.getName());
-//					return false;
-//				}
-//				LootContainerHasGroup containerGroup = containerGroups.get(random.nextInt(containerGroups.size()));
-//				
-//				// select the item group
-//				List<LootGroupHasItem> groupItems = DbManager.getInstance().getItemsByGroup(containerGroup);
-//				
-//				// selecct a single item
-//				LootGroupHasItem item = groupItems.get(random.nextInt(groupItems.size()));
-				
-				// TODO create a context
 				
 				// select a table
 				TreasureLootTable table = lootTables.get(RandomHelper.randomInt(random, 0, lootTables.size()-1));
@@ -157,7 +125,6 @@ public class CoinItem extends ModItem {
 				ItemStack stack = list.get(list.size()-1);
 				
 				// spawn the item 
-//				ItemStack stack = InventoryPopulator.toItemStack(random,  item);
 				if (stack != null) {
 					InventoryHelper.spawnItemStack(world, (double)coords.getX(), (double)coords.getY()+1, (double)coords.getZ(), stack);
 				}
