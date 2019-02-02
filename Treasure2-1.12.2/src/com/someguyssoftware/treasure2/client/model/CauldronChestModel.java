@@ -1,6 +1,5 @@
 package com.someguyssoftware.treasure2.client.model;
 
-import com.someguyssoftware.treasure2.lock.LockState;
 import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
 
 import net.minecraft.client.model.ModelBase;

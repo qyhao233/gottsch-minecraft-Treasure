@@ -7,7 +7,6 @@ import java.awt.Color;
 
 import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.inventory.CompressorChestContainer;
-import com.someguyssoftware.treasure2.inventory.StandardChestContainer;
 import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
 
 import net.minecraft.client.Minecraft;

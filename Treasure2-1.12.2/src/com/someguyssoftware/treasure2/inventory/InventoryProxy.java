@@ -3,7 +3,6 @@
  */
 package com.someguyssoftware.treasure2.inventory;
 
-import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.block.TreasureChestBlock;
 import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
 

@@ -13,12 +13,10 @@ import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.loot.TreasureLootContext;
 import com.someguyssoftware.treasure2.loot.conditions.ModPresent;
 import com.someguyssoftware.treasure2.loot.conditions.TreasureLootCondition;
-import com.someguyssoftware.treasure2.loot.conditions.TreasureLootConditionManager;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.JsonUtils;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.storage.loot.RandomValueRange;
 
 /**
  * 

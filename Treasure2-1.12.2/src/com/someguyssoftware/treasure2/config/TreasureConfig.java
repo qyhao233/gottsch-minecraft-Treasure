@@ -9,7 +9,6 @@ import com.someguyssoftware.gottschcore.config.AbstractConfig;
 import com.someguyssoftware.gottschcore.mod.IMod;
 import com.someguyssoftware.treasure2.Treasure;
 
-import net.minecraft.block.material.MapColor;
 import net.minecraftforge.common.config.Configuration;
 
 /**

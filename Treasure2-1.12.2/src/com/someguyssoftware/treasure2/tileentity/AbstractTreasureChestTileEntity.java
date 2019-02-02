@@ -11,7 +11,6 @@ import javax.annotation.Nullable;
 import com.someguyssoftware.gottschcore.tileentity.AbstractModTileEntity;
 import com.someguyssoftware.gottschcore.world.WorldInfo;
 import com.someguyssoftware.treasure2.Treasure;
-import com.someguyssoftware.treasure2.block.TreasureChestBlock;
 import com.someguyssoftware.treasure2.inventory.InventoryProxy;
 import com.someguyssoftware.treasure2.lock.LockState;
 

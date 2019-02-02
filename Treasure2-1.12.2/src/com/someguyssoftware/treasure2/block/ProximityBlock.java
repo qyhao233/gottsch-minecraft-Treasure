@@ -7,7 +7,6 @@ import javax.annotation.Nullable;
 
 import com.someguyssoftware.gottschcore.block.ModBlock;
 import com.someguyssoftware.treasure2.tileentity.AbstractProximityTileEntity;
-import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity;
 
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.MapColor;

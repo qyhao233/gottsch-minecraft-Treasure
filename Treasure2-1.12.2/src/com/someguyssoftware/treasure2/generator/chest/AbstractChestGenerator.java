@@ -4,7 +4,6 @@
 package com.someguyssoftware.treasure2.generator.chest;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
@@ -18,7 +17,6 @@ import com.someguyssoftware.treasure2.block.AbstractChestBlock;
 import com.someguyssoftware.treasure2.block.IMimicBlock;
 import com.someguyssoftware.treasure2.block.TreasureBlocks;
 import com.someguyssoftware.treasure2.block.TreasureChestBlock;
-import com.someguyssoftware.treasure2.block.WitherChestBlock;
 import com.someguyssoftware.treasure2.chest.TreasureChestType;
 import com.someguyssoftware.treasure2.config.Configs;
 import com.someguyssoftware.treasure2.config.IChestConfig;
@@ -43,13 +41,8 @@ import com.someguyssoftware.treasure2.world.gen.structure.IStructureInfoProvider
 import com.someguyssoftware.treasure2.worldgen.ChestWorldGenerator;
 
 import net.minecraft.block.Block;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Rotation;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.structure.template.TemplateManager;
-import net.minecraft.world.gen.structure.template.Template;
 
 /**
  * @author Mark Gottschling on Feb 1, 2018
