@@ -5,11 +5,9 @@ package com.someguyssoftware.treasure2.item;
 
 import java.util.List;
 import java.util.Random;
-import java.util.stream.Collectors;
 
 import com.someguyssoftware.gottschcore.random.RandomHelper;
 import com.someguyssoftware.treasure2.Treasure;
-import com.someguyssoftware.treasure2.enums.Category;
 import com.someguyssoftware.treasure2.enums.Rarity;
 
 import net.minecraft.client.util.ITooltipFlag;

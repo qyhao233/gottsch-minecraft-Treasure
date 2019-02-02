@@ -7,16 +7,12 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.google.common.collect.Lists;
 import com.someguyssoftware.gottschcore.biome.BiomeHelper;
 import com.someguyssoftware.gottschcore.biome.BiomeTypeHolder;
-import com.someguyssoftware.gottschcore.config.AbstractConfig;
 import com.someguyssoftware.gottschcore.mod.IMod;
-import com.someguyssoftware.treasure2.Treasure;
 
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.Mod;
-import scala.actors.threadpool.Arrays;
 
 /**
  * Based off of GottschCore IConfig/AbstractConfig class but does not inherit from it to avoid all the extraneous properties

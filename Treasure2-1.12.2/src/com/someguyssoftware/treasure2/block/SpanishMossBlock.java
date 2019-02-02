@@ -3,12 +3,8 @@
  */
 package com.someguyssoftware.treasure2.block;
 
-import com.someguyssoftware.gottschcore.cube.Cube;
-import com.someguyssoftware.gottschcore.positional.Coords;
-
 import net.minecraft.block.BlockBush;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 

@@ -3,9 +3,7 @@ package com.someguyssoftware.treasure2.generator.pit;
 import java.util.Random;
 
 import com.someguyssoftware.gottschcore.positional.ICoords;
-import com.someguyssoftware.gottschcore.random.RandomWeightedCollection;
 
-import net.minecraft.block.Block;
 import net.minecraft.world.World;
 
 public interface IPitGenerator {

@@ -6,9 +6,7 @@ package com.someguyssoftware.treasure2.worldgen;
 import java.util.Random;
 
 import com.google.common.base.Predicate;
-import com.someguyssoftware.gottschcore.positional.Coords;
 import com.someguyssoftware.gottschcore.random.RandomHelper;
-import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.block.TreasureBlocks;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.persistence.GenDataPersistence;
