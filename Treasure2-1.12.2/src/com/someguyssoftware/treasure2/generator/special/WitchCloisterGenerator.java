@@ -5,6 +5,7 @@ package com.someguyssoftware.treasure2.generator.special;
 
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 import com.someguyssoftware.gottschcore.Quantity;
 import com.someguyssoftware.gottschcore.positional.Coords;
@@ -161,15 +162,26 @@ public class WitchCloisterGenerator {
 			}
 			
 			/*
-			 *  TODO all these coords are relative to the structure that they were a part of which isn't necessarily the same dimensions
+			 *  all these coords are relative to the structure that they were a part of which isn't necessarily the same dimensions
 			 *  of the base structure. so they are need to be coverted to be relative to the spawnCoords BEFORE being added to the master lists.
 			 *  (function: (subSpawnCoords - spawnCoords) + markerCoords
 			 */
 			// find and add specials to master
-			spawnerCoords.addAll((List<ICoords>) subInfo.getMap().get(GenUtil.getMarkerBlock(StructureMarkers.SPAWNER)));
-			proximityCoords.addAll((List<ICoords>) info.getMap().get(GenUtil.getMarkerBlock(StructureMarkers.PROXIMITY_SPAWNER)));
-			chestCoordsList.addAll((List<ICoords>) info.getMap().get(GenUtil.getMarkerBlock(StructureMarkers.CHEST)));
-			bossChestCoordsList.addAll((List<ICoords>) info.getMap().get(GenUtil.getMarkerBlock(StructureMarkers.BOSS_CHEST)));
+			List<ICoords> subSpawnList = (List<ICoords>) subInfo.getMap().get(GenUtil.getMarkerBlock(StructureMarkers.SPAWNER))
+					.stream().map(o -> o.add(subSpawnCoords.delta(spawnCoords))).collect(Collectors.toList());
+			spawnerCoords.addAll(subSpawnList);
+			
+			List<ICoords> subProximityList = (List<ICoords>) info.getMap().get(GenUtil.getMarkerBlock(StructureMarkers.PROXIMITY_SPAWNER))
+					.stream().map(o -> o.add(subSpawnCoords.delta(spawnCoords))).collect(Collectors.toList());
+			proximityCoords.addAll(subProximityList);			
+			
+			List<ICoords> subChestList = (List<ICoords>) info.getMap().get(GenUtil.getMarkerBlock(StructureMarkers.CHEST))
+					.stream().map(o -> o.add(subSpawnCoords.delta(spawnCoords))).collect(Collectors.toList());
+			chestCoordsList.addAll(subChestList);
+			
+			List<ICoords> subBossChestList = (List<ICoords>) info.getMap().get(GenUtil.getMarkerBlock(StructureMarkers.BOSS_CHEST))
+					.stream().map(o -> o.add(subSpawnCoords.delta(spawnCoords))).collect(Collectors.toList());
+			bossChestCoordsList.addAll(subBossChestList);
 		}
 
 		/*
