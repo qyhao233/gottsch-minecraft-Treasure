@@ -69,8 +69,6 @@ public class SpawnPitOnlyCommand extends CommandBase {
     			ICoords surfaceCoords = WorldInfo.getDryLandSurfaceCoords(world, new Coords(x, WorldInfo.getHeightValue(world, spawnCoords), z));
     			Treasure.logger.debug("spawn coords @ {}", spawnCoords.toShortString());
     			Treasure.logger.debug("surfaceCoords @ {}", surfaceCoords.toShortString());
-    			ChestWorldGenerator chestGen = new ChestWorldGenerator();
-//    			IPitGenerator pitGen = chestGen.pitGenerators.get(pit);
     			IPitGenerator pitGen = null;
     			if (pit == Pits.STRUCTURE_PIT) {
     				// select a pit from the subset

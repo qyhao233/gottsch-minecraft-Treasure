@@ -5,12 +5,8 @@ package com.someguyssoftware.treasure2.loot;
 
 import java.lang.reflect.Type;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import com.google.common.collect.Lists;
 import com.google.gson.JsonDeserializationContext;
@@ -25,10 +21,6 @@ import com.someguyssoftware.treasure2.Treasure;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.JsonUtils;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.storage.loot.LootContext;
-import net.minecraft.world.storage.loot.LootPool;
-import net.minecraft.world.storage.loot.LootTable;
 
 /**
  * @author Mark Gottschling on Jun 30, 2018

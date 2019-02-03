@@ -211,7 +211,7 @@ public class GenUtil {
 //				};
 		
 		int x = coords.getX();
-		int y = coords.getY();
+//		int y = coords.getY();
 		int z = coords.getZ();
 		
 		// for the number of markers configured
@@ -228,7 +228,7 @@ public class GenUtil {
 		
 		// loop through each marker
 		for (int i = 0; i < numberOfMarkers; i++) {
-			boolean isSkeleton = false;
+//			boolean isSkeleton = false;
 
 			// generator random x, z
 			int xSpawn = x + (random.nextInt(gridSize) * (random.nextInt(3) -1)); // -1|0|1
@@ -276,8 +276,8 @@ public class GenUtil {
 			EnumFacing[] horizontals = EnumFacing.HORIZONTALS;
 			EnumFacing facing = horizontals[random.nextInt(horizontals.length)];
 			
-			int xOffset = 0;
-			int zOffset = 0;
+//			int xOffset = 0;
+//			int zOffset = 0;
 //			if (isSkeleton) {
 //				switch(facing) {
 //					//case 2: // north
@@ -318,7 +318,7 @@ public class GenUtil {
 			if (TreasureConfig.enableFog && RandomHelper.checkProbability(random, TreasureConfig.gravestoneFogProbability)) {
 				List<FogBlock> fogDensity = new ArrayList<>(5);
 				// randomize the size of the fog
-				int fogSize = RandomHelper.randomInt(2, 4);
+				int fogSize = RandomHelper.randomInt(1, 4);
 				// populate the fog density list
 				for (int f = 0; f < fogSize; f++) fogDensity.add(TreasureBlocks.MED_FOG_BLOCK);
 				fogDensity.add(TreasureBlocks.LOW_FOG_BLOCK);
@@ -326,9 +326,8 @@ public class GenUtil {
 				addFog(world, random, spawnCoords, fogDensity.toArray(new FogBlock[] {}));
 			}
 			
-//			Treasure.logger.info("Placed marker @ " + spawnPos);
 			isSuccess = true;
-		} // end of for
+		}
 		
 		return isSuccess;
 	}
