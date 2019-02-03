@@ -9,8 +9,10 @@ import com.someguyssoftware.gottschcore.world.WorldInfo;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockFaceShape;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
@@ -37,6 +39,11 @@ public class SkeletonBlock extends SkullAndBonesBlock {
 		this.setDefaultState(this.blockState.getBaseState().withProperty(PART, SkeletonBlock.EnumPartType.BOTTOM));
 	}
 
+	@Override
+	protected BlockStateContainer createBlockState() {
+		return new BlockStateContainer(this, new IProperty[] {FACING, PART});
+	}
+	
 	/**
 	 * Called when a neighboring block was changed and marks that this state should
 	 * perform any checks during a neighbor change. Cases may include when redstone

@@ -554,7 +554,6 @@ public class TreasureBlocks {
 					GRAVESTONE3_POLISHED_DIORITE,
 					GRAVESTONE3_OBSIDIAN,
 					SKULL_CROSSBONES,
-					SKELETON,
 					WISHING_WELL_BLOCK,
 					FOG_BLOCK,
 					HIGH_FOG_BLOCK,
@@ -593,6 +592,7 @@ public class TreasureBlocks {
 			registry.register(GOLD_SKULL_CHEST);
 			registry.register(CAULDRON_CHEST);
 			registry.register(PROXIMITY_SPAWNER);
+			registry.register(SKELETON);
 
 			// map the block by rarity
 			for (Block block : blocks) {

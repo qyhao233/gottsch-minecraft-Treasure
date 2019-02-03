@@ -41,12 +41,12 @@ public class SkullAndBonesBlock extends CardinalDirectionFacadeBlock implements 
 		setSoundType(SoundType.STONE);
 		setCreativeTab(Treasure.TREASURE_TAB);
 		setHardness(3.0F);
-//		setBoundingBox(
-//				new AxisAlignedBB(0F, 0F, 0F, 1F, 1F, 1F), 	// N
-//				new AxisAlignedBB(0F, 0F, 0F, 1F, 1F, 1F),  	// E
-//				new AxisAlignedBB(0F, 0F, 0F, 1F, 1F, 1F),  	// S
-//				new AxisAlignedBB(0F, 0F, 0F, 1F, 1F, 1F)	// W
-//				);
+		setBoundingBox(
+				new AxisAlignedBB(0F, 0F, 0F, 1F, 1F, 1F), 	// N
+				new AxisAlignedBB(0F, 0F, 0F, 1F, 1F, 1F),  	// E
+				new AxisAlignedBB(0F, 0F, 0F, 1F, 1F, 1F),  	// S
+				new AxisAlignedBB(0F, 0F, 0F, 1F, 1F, 1F)	// W
+				);
 	}
 
 	  /**
