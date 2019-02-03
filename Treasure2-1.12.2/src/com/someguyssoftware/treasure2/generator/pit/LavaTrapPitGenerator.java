@@ -124,6 +124,7 @@ public class LavaTrapPitGenerator extends AbstractPitGenerator {
 	 * @param block
 	 * @return
 	 */
+	@SuppressWarnings("deprecation")
 	private ICoords build3WideLayer(World world, Random random, ICoords coords, Block block) {
 //		Treasure.logger.debug("Building 3 wide layer from {} @ {} ", block.getUnlocalizedName(), coords.toShortString());
 		IBlockState blockState = block.getDefaultState();

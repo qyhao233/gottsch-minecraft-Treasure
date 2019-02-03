@@ -10,10 +10,10 @@ import com.someguyssoftware.treasure2.client.gui.inventory.SkullChestGui;
 import com.someguyssoftware.treasure2.client.gui.inventory.StandardChestGui;
 import com.someguyssoftware.treasure2.client.gui.inventory.StrongboxChestGui;
 import com.someguyssoftware.treasure2.client.gui.inventory.WitherChestGui;
-import com.someguyssoftware.treasure2.inventory.KeyRingInventory;
-import com.someguyssoftware.treasure2.inventory.SkullChestContainer;
 import com.someguyssoftware.treasure2.inventory.CompressorChestContainer;
 import com.someguyssoftware.treasure2.inventory.KeyRingContainer;
+import com.someguyssoftware.treasure2.inventory.KeyRingInventory;
+import com.someguyssoftware.treasure2.inventory.SkullChestContainer;
 import com.someguyssoftware.treasure2.inventory.StandardChestContainer;
 import com.someguyssoftware.treasure2.inventory.StrongboxChestContainer;
 import com.someguyssoftware.treasure2.inventory.WitherChestContainer;
@@ -22,10 +22,8 @@ import com.someguyssoftware.treasure2.tileentity.AbstractTreasureChestTileEntity
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.IGuiHandler;

@@ -10,7 +10,6 @@ import com.someguyssoftware.treasure2.enums.Rarity;
 import com.someguyssoftware.treasure2.loot.TreasureLootTable;
 
 import net.minecraft.world.World;
-import net.minecraft.world.storage.loot.LootTable;
 
 public interface IChestGenerator {
 

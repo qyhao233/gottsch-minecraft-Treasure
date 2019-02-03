@@ -54,7 +54,6 @@ public class GravestoneMarkerGenerator implements IMarkerGenerator {
 		}
 		
 		int x = coords.getX();
-		int y = coords.getY();
 		int z = coords.getZ();
 		
 		// for the number of markers configured

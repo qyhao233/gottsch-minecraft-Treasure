@@ -30,6 +30,7 @@ public class TreasureLootFunctionManager {
 
 	public static <T extends TreasureLootFunction> void registerFunction(TreasureLootFunction.Serializer<? extends T> serializer) {
 		ResourceLocation resourcelocation = serializer.getFunctionName();
+		@SuppressWarnings("unchecked")
 		Class<T> oclass = (Class<T>) serializer.getFunctionClass();
 
 		if (NAME_TO_SERIALIZER_MAP.containsKey(resourcelocation)) {
@@ -43,7 +44,7 @@ public class TreasureLootFunctionManager {
 	}
 
 	public static TreasureLootFunction.Serializer<?> getSerializerForName(ResourceLocation location) {
-		TreasureLootFunction.Serializer<?> serializer = (TreasureLootFunction.Serializer) NAME_TO_SERIALIZER_MAP.get(location);
+		TreasureLootFunction.Serializer<?> serializer = (TreasureLootFunction.Serializer<?>) NAME_TO_SERIALIZER_MAP.get(location);
 
 		if (serializer == null) {
 			throw new IllegalArgumentException("Unknown TreasureLoot item function '" + location + "'");
@@ -53,7 +54,8 @@ public class TreasureLootFunctionManager {
 	}
 
 	public static <T extends TreasureLootFunction> TreasureLootFunction.Serializer<T> getSerializerFor(T functionClass) {
-		TreasureLootFunction.Serializer<T> serializer = (TreasureLootFunction.Serializer) CLASS_TO_SERIALIZER_MAP.get(functionClass.getClass());
+		@SuppressWarnings("unchecked")
+		TreasureLootFunction.Serializer<T> serializer = (TreasureLootFunction.Serializer<T>) CLASS_TO_SERIALIZER_MAP.get(functionClass.getClass());
 
 		if (serializer == null) {
 			throw new IllegalArgumentException("Unknown TreasureLoot item function " + functionClass);

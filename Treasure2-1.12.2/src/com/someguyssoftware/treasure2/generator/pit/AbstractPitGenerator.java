@@ -234,6 +234,7 @@ public abstract class AbstractPitGenerator implements IPitGenerator {
 		
 		 // determine the direction the logs are facing - north/south (8) or east/west (4)
 		int meta = random.nextInt() % 2 == 0 ? 8 : 4;
+		@SuppressWarnings("deprecation")
 		IBlockState blockState = block.getStateFromMeta(meta);
 				
 		// core 4-square

@@ -111,8 +111,6 @@ public class MimicChestBlock extends AbstractChestBlock {
 	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn,
 			EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 
-		AbstractTreasureChestTileEntity te = (AbstractTreasureChestTileEntity) worldIn.getTileEntity(pos);
-
 		// exit if on the client
 		if (WorldInfo.isClientSide(worldIn)) {			
 			return true;
@@ -135,9 +133,11 @@ public class MimicChestBlock extends AbstractChestBlock {
 		case SOUTH:
 			yaw = 0.0F;
 			break;
+		default:
+			yaw = 180.0F;
+			break;
 		}
-//		Treasure.logger.debug("Mimic yaw -> {}", yaw);
-		
+
 		// remove the tile entity
 		worldIn.setBlockToAir(pos);
 		
@@ -155,9 +155,9 @@ public class MimicChestBlock extends AbstractChestBlock {
 	    	 EntityLiving entityLiving = (EntityLiving)mimic;
    	 
 	    	 // TODO why doesn't this set the initial rotation!!!
-	         entityLiving.setLocationAndAngles((double)pos.getX() + 0.5D,  (double)pos.getY(), (double)pos.getZ() + 0.5D, 45F, 0.0F);
+	         entityLiving.setLocationAndAngles((double)pos.getX() + 0.5D,  (double)pos.getY(), (double)pos.getZ() + 0.5D, yaw, 0.0F);
 	    	 worldIn.spawnEntity(entityLiving);
-	         entityLiving.setLocationAndAngles((double)pos.getX() + 0.5D,  (double)pos.getY(), (double)pos.getZ() + 0.5D, 45F, 0.0F);
+	         entityLiving.setLocationAndAngles((double)pos.getX() + 0.5D,  (double)pos.getY(), (double)pos.getZ() + 0.5D, yaw, 0.0F);
 		}
 
 		// remove the tile entity 

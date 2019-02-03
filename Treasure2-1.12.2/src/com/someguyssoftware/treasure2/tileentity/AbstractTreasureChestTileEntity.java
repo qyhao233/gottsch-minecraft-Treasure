@@ -97,7 +97,6 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 
 		if (WorldInfo.isServerSide(world) && this.numPlayersUsing != 0 && (this.ticksSinceSync + i + j + k) % 200 == 0) {
 			this.numPlayersUsing = 0;
-			float f = 5.0F;
 
 			for (EntityPlayer entityplayer : this.world.getEntitiesWithinAABB(EntityPlayer.class,
 					new AxisAlignedBB((double) ((float) i - 5.0F), (double) ((float) j - 5.0F),
@@ -135,8 +134,6 @@ public abstract class AbstractTreasureChestTileEntity extends AbstractModTileEnt
 			if (this.lidAngle > 1.0F) {
 				this.lidAngle = 1.0F;
 			}
-
-			float f3 = 0.5F;
 
 			if (this.lidAngle < 0.5F && f2 >= 0.5F) {
 				double d3 = (double) i + 0.5D;

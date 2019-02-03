@@ -42,6 +42,7 @@ public class TreasureLootConditionManager {
 	
 	public static <T extends TreasureLootCondition> void registerCondition(TreasureLootCondition.Serializer<? extends T> condition) {
 		ResourceLocation resourcelocation = condition.getLootTableLocation();
+		@SuppressWarnings("unchecked")
 		Class<T> oclass = (Class<T>) condition.getConditionClass();
 
 		if (NAME_TO_SERIALIZER_MAP.containsKey(resourcelocation)) {
@@ -78,7 +79,7 @@ public class TreasureLootConditionManager {
 	}
 
 	public static TreasureLootCondition.Serializer<?> getSerializerForName(ResourceLocation location) {
-		TreasureLootCondition.Serializer<?> serializer = (TreasureLootCondition.Serializer) NAME_TO_SERIALIZER_MAP.get(location);
+		TreasureLootCondition.Serializer<?> serializer = (TreasureLootCondition.Serializer<?>) NAME_TO_SERIALIZER_MAP.get(location);
 
 		if (serializer == null) {
 			throw new IllegalArgumentException("Unknown loot item condition '" + location + "'");
@@ -87,8 +88,14 @@ public class TreasureLootConditionManager {
 		}
 	}
 
+	/**
+	 * 
+	 * @param conditionClass
+	 * @return
+	 */
 	public static <T extends TreasureLootCondition> TreasureLootCondition.Serializer<T> getSerializerFor(T conditionClass) {
-		TreasureLootCondition.Serializer<T> serializer = (TreasureLootCondition.Serializer) CLASS_TO_SERIALIZER_MAP.get(conditionClass.getClass());
+		@SuppressWarnings("unchecked")
+		TreasureLootCondition.Serializer<T> serializer = (TreasureLootCondition.Serializer<T>) CLASS_TO_SERIALIZER_MAP.get(conditionClass.getClass());
 
 		if (serializer == null) {
 			throw new IllegalArgumentException("Unknown loot item condition " + conditionClass);

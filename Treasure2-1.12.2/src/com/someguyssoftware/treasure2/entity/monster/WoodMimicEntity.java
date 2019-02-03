@@ -4,7 +4,6 @@
 package com.someguyssoftware.treasure2.entity.monster;
 
 import net.minecraft.entity.EntityLiving;
-import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.datafix.DataFixer;
 import net.minecraft.world.World;

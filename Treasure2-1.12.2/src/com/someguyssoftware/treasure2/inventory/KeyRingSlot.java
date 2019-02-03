@@ -8,7 +8,6 @@ import com.someguyssoftware.treasure2.item.KeyItem;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntityFurnace;
 
 /**
  * @author Mark Gottschling on Mar 12, 2018

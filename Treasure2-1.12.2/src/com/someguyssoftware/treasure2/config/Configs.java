@@ -63,7 +63,6 @@ public class Configs {
 	 * 
 	 * @return
 	 */
-	@SuppressWarnings("unchecked")
 	private static void  initDefaultChestConfigs() {
 		
 		defaultChestConfigs.put(Rarity.COMMON, new ChestConfig()
@@ -126,7 +125,6 @@ public class Configs {
 	/**
 	 * 
 	 */
-	@SuppressWarnings("unchecked")
 	private static void  initDefaultWellConfigs() {
 		defaultWellConfigs.put(Wells.WISHING_WELL,  new WellConfig()
 				.setWellAllowed(true)

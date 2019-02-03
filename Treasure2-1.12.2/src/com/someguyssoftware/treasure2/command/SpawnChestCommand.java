@@ -3,7 +3,6 @@
  */
 package com.someguyssoftware.treasure2.command;
 
-import java.util.List;
 import java.util.Random;
 
 import com.someguyssoftware.treasure2.Treasure;
@@ -19,7 +18,6 @@ import com.someguyssoftware.treasure2.worldgen.ChestWorldGenerator;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
@@ -113,8 +111,8 @@ public class SpawnChestCommand extends CommandBase {
     					player.sendMessage(new TextComponentString("Unable to select a lootTable."));
     				}
     				
-    				Treasure.logger.debug("Generating loot from loot table for rarity {}", rarity);
-    				List<ItemStack> stacks = lootTable.generateLootFromPools(new Random(), TreasureLootTables.CONTEXT);
+//    				Treasure.logger.debug("Generating loot from loot table for rarity {}", rarity);
+//    				List<ItemStack> stacks = lootTable.generateLootFromPools(new Random(), TreasureLootTables.CONTEXT);
 //    				Treasure.logger.debug("Generated loot:");
 //    				for (ItemStack stack : stacks) {
 //    					Treasure.logger.debug(stack.getDisplayName());

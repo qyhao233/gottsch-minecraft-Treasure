@@ -13,7 +13,6 @@ import com.someguyssoftware.treasure2.generator.marker.GravestoneMarkerGenerator
 import com.someguyssoftware.treasure2.generator.marker.IMarkerGenerator;
 import com.someguyssoftware.treasure2.generator.marker.RandomStructureMarkerGenerator;
 import com.someguyssoftware.treasure2.world.gen.structure.IStructureInfoProvider;
-import com.someguyssoftware.treasure2.worldgen.ChestWorldGenerator;
 
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
@@ -66,7 +65,6 @@ public class SpawnMarkerOnlyCommand extends CommandBase {
     			ICoords surfaceCoords = WorldInfo.getDryLandSurfaceCoords(world, new Coords(x, WorldInfo.getHeightValue(world, spawnCoords), z));
     			Treasure.logger.debug("spawn coords @ {}", spawnCoords.toShortString());
     			Treasure.logger.debug("surfaceCoords @ {}", surfaceCoords.toShortString());
-    			ChestWorldGenerator chestGen = new ChestWorldGenerator();
 
     			IMarkerGenerator markerGen =  null;
     			if (markerName.toUpperCase().equals("RANDOM_STRUCT")) {
