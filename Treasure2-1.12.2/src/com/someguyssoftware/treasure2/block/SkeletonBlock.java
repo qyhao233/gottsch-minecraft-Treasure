@@ -109,9 +109,9 @@ public class SkeletonBlock extends SkullAndBonesBlock {
 	 * Convert the given metadata into a BlockState for this Block
 	 */
 	public IBlockState getStateFromMeta(int meta) {
-		EnumFacing enumfacing = EnumFacing.getHorizontal(meta);
-		return (meta & 8) > 0 ? this.getDefaultState().withProperty(PART, SkeletonBlock.EnumPartType.TOP).withProperty(FACING, enumfacing)
-				: this.getDefaultState().withProperty(PART, SkeletonBlock.EnumPartType.BOTTOM).withProperty(FACING, enumfacing);
+		IBlockState blockState = super.getStateFromMeta(meta);
+		return (meta & 8) > 0 ? blockState.withProperty(PART, SkeletonBlock.EnumPartType.TOP)
+				: blockState.withProperty(PART, SkeletonBlock.EnumPartType.BOTTOM);
 	}
 
 	/**
@@ -119,7 +119,8 @@ public class SkeletonBlock extends SkullAndBonesBlock {
 	 */
 	public int getMetaFromState(IBlockState state) {
 		int i = 0;
-		i = i | ((EnumFacing) state.getValue(FACING)).getHorizontalIndex();
+//		i = i | ((EnumFacing) state.getValue(FACING)).getHorizontalIndex();
+		i = i | super.getMetaFromState(state);
 
 		if (state.getValue(PART) == SkeletonBlock.EnumPartType.TOP) {
 			i |= 8;

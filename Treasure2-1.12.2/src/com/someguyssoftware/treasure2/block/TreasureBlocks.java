@@ -403,7 +403,7 @@ public class TreasureBlocks {
 		
 		// TODO change bounds
 		SKELETON = new SkeletonBlock(Treasure.MODID, TreasureConfig.SKELETON_ID, Material.ROCK).setBounds(stdChestBounds);
-
+		
 		// add all the gravestones to the list
 		gravestones = new ArrayList<>();
 		gravestones.add(GRAVESTONE1_STONE);
@@ -587,12 +587,12 @@ public class TreasureBlocks {
 			};
 			registry.registerAll(blocks);	
 			// register speciality chests separately (so they aren't in the rarity map)
+			registry.register(SKELETON); // something is up with this block - probably the getState(), getMeta() methods
 			registry.register(WITHER_CHEST);
 			registry.register(SKULL_CHEST);
 			registry.register(GOLD_SKULL_CHEST);
 			registry.register(CAULDRON_CHEST);
 			registry.register(PROXIMITY_SPAWNER);
-			registry.register(SKELETON);
 
 			// map the block by rarity
 			for (Block block : blocks) {

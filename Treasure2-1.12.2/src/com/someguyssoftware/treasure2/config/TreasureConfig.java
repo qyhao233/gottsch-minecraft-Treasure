@@ -181,6 +181,7 @@ public class TreasureConfig extends AbstractConfig {
 	 */
 	public static final String MODS_FOLDER = "mods";
 	public static final String CUSTOM_STRUCTURE_FOLDER = MODS_FOLDER + "/treasure2/structures";
+	public static final String DUNGEONS2_MODID = "dungeons2";
 	
 	public static String treasureFolder;
 	public static boolean enableKeyBreaks = true;

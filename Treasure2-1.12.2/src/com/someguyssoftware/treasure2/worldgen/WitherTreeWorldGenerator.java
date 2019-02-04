@@ -3,7 +3,6 @@
  */
 package com.someguyssoftware.treasure2.worldgen;
 
-import java.util.List;
 import java.util.Random;
 
 import com.someguyssoftware.gottschcore.biome.BiomeHelper;
@@ -31,7 +30,7 @@ import net.minecraftforge.fml.common.IWorldGenerator;
  * @author Mark Gottschling on Mar 25, 2018
  *
  */
-public class WitherTreeWorldGenerator implements IWorldGenerator {
+public class WitherTreeWorldGenerator implements IWorldGenerator, ITreasureWorldGenerator {
 	// TODO move to WorldInfo in GottschCore
 	// the number of blocks of half a chunk (radius) (a chunk is 16x16)
 	public static final int CHUNK_RADIUS = 8;
@@ -141,11 +140,11 @@ public class WitherTreeWorldGenerator implements IWorldGenerator {
 //					Treasure.logger.debug("Wither Tree MEETS generate probability!");
 //				}
 
-	 			// 3. check against all registered chests
-	 			if (isRegisteredChestWithinDistance(world, coords, TreasureConfig.minDistancePerChest)) {
-					Treasure.logger.debug("The distance to the nearest treasure chest is less than the minimun required.");
-	 				return;
-	 			}
+     			// 3. check against all registered chests
+     			if (!isValidChestLocation(world, coords, TreasureConfig.minDistancePerChest)) {
+   					Treasure.logger.debug("The location is too close to another register world object.");
+     				return;
+     			}
 
 				// increment chunks since last common chest regardless of successful generation - makes more rare and realistic and configurable generation.
 				chunksSinceLastTree = 0;   	    	
@@ -188,36 +187,6 @@ public class WitherTreeWorldGenerator implements IWorldGenerator {
 	@SuppressWarnings("unused")
 	private void generateEnd(World world, Random random, int i, int j) {}
 
-	/**
-	 * 
-	 * @param world
-	 * @param pos
-	 * @param minDistance
-	 * @return
-	 */
-	public boolean isRegisteredChestWithinDistance(World world, ICoords coords, int minDistance) {
-
-		double minDistanceSq = minDistance * minDistance;
-
-		// get a list of dungeons
-		List<ChestInfo> infos = ChestRegistry.getInstance().getEntries();
-
-		if (infos == null || infos.size() == 0) {
-			Treasure.logger.debug("Unable to locate the Chest Registry or the Registry doesn't contain any values");
-			return false;
-		}
-
-		Treasure.logger.debug("Min distance Sq -> {}", minDistanceSq);
-		for (ChestInfo info : infos) {
-			// calculate the distance to the poi
-			double distance = coords.getDistanceSq(info.getCoords());
-			Treasure.logger.debug("Chest dist^2: " + distance);
-			if (distance < minDistanceSq) {
-				return true;
-			}
-		}
-		return false;
-	}
 
 	/**
 	 * @return the chunksSinceLastTree
