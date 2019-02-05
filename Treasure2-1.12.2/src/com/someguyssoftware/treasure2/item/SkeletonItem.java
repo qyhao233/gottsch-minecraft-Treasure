@@ -50,6 +50,7 @@ public class SkeletonItem extends ModItem {
 			return EnumActionResult.SUCCESS;
 		} 
 		else if (facingIn != EnumFacing.UP) {
+			Treasure.logger.debug("Skeleton item: facing up... fail.");
 			return EnumActionResult.FAIL;
 		} 
 		else {
@@ -65,13 +66,17 @@ public class SkeletonItem extends ModItem {
 			EnumFacing facing = EnumFacing.getHorizontal(i);
 			BlockPos pos = posIn.offset(facing);
 			ItemStack itemStack = player.getHeldItem(hand);
-
+			Treasure.logger.debug("Can edit 1 -> {} @ {}", player.canPlayerEdit(posIn, facingIn, itemStack), posIn);
+			Treasure.logger.debug("Can edit 2 -> {} @ {}", player.canPlayerEdit(pos, facingIn, itemStack), pos);
 			if (player.canPlayerEdit(posIn, facingIn, itemStack) && player.canPlayerEdit(pos, facingIn, itemStack)) {
+				Treasure.logger.debug("Can edit block -> {}", pos);
 				IBlockState state2 = worldIn.getBlockState(pos);
 				boolean flag1 = state2.getBlock().isReplaceable(worldIn, pos);
 				boolean flag2 = flag || worldIn.isAirBlock(posIn);
 				boolean flag3 = flag1 || worldIn.isAirBlock(pos);
-
+				Treasure.logger.debug("Flag1 -> {}", flag1);
+				Treasure.logger.debug("Flag2 -> {}", flag2);
+				Treasure.logger.debug("Flag3 -> {}", flag3);
 				if (flag2 && flag3 && worldIn.getBlockState(posIn.down()).isTopSolid() && worldIn.getBlockState(pos.down()).isTopSolid()) {
 					IBlockState skeletonState = TreasureBlocks.SKELETON.getDefaultState().withProperty(BlockBed.FACING, facing)
 							.withProperty(SkeletonBlock.PART, SkeletonBlock.EnumPartType.BOTTOM);
