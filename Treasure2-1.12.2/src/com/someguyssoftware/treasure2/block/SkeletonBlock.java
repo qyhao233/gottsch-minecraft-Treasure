@@ -6,6 +6,7 @@ package com.someguyssoftware.treasure2.block;
 import java.util.Random;
 
 import com.someguyssoftware.gottschcore.world.WorldInfo;
+import com.someguyssoftware.treasure2.Treasure;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -52,11 +53,12 @@ public class SkeletonBlock extends SkullAndBonesBlock {
 	 */
 	public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos) {
 		EnumFacing enumfacing = (EnumFacing) state.getValue(FACING);
-
+Treasure.logger.debug("in neighbor changed.");
 		if (state.getValue(PART) == SkeletonBlock.EnumPartType.BOTTOM) {
 			// if the head is something other than SkeletonBlock, indicating that is has
 			// been destroyed
 			if (worldIn.getBlockState(pos.offset(enumfacing)).getBlock() != this) {
+				Treasure.logger.debug("block has been destroyed for some reason");
 				worldIn.setBlockToAir(pos);
 			}
 		}

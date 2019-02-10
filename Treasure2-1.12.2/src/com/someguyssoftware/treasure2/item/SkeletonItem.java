@@ -11,7 +11,6 @@ import com.someguyssoftware.treasure2.block.TreasureBlocks;
 
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockBed;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -77,12 +76,20 @@ public class SkeletonItem extends ModItem {
 				Treasure.logger.debug("Flag1 -> {}", flag1);
 				Treasure.logger.debug("Flag2 -> {}", flag2);
 				Treasure.logger.debug("Flag3 -> {}", flag3);
-				if (flag2 && flag3 && worldIn.getBlockState(posIn.down()).isTopSolid() && worldIn.getBlockState(pos.down()).isTopSolid()) {
-					IBlockState skeletonState = TreasureBlocks.SKELETON.getDefaultState().withProperty(BlockBed.FACING, facing)
+				Treasure.logger.debug("is Top Solid (posIn) -> {} @ {}", worldIn.getBlockState(posIn.down()).isTopSolid(), posIn.down());
+				Treasure.logger.debug("is Top Solid (pos) -> {} @ {}", worldIn.getBlockState(pos.down()).isTopSolid(), pos.down());
+				Treasure.logger.debug("is Side Solid (posIn) -> {} @ {}", worldIn.getBlockState(posIn.down()).isSideSolid(worldIn, posIn.down(), EnumFacing.UP));
+				Treasure.logger.debug("is Side Solid (pos) -> {} @ {}", worldIn.getBlockState(pos.down()).isSideSolid(worldIn, pos.down(), EnumFacing.UP));
+//				if (flag2 && flag3 && worldIn.getBlockState(posIn.down()).isTopSolid() && worldIn.getBlockState(pos.down()).isTopSolid()) {
+				if (flag2 && flag3 && worldIn.getBlockState(posIn.down()).isSideSolid(worldIn, posIn.down(), EnumFacing.UP) && 
+						worldIn.getBlockState(pos.down()).isSideSolid(worldIn, pos.down(), EnumFacing.UP)) { 
+					IBlockState skeletonState = TreasureBlocks.SKELETON.getDefaultState().withProperty(SkeletonBlock.FACING, facing)
 							.withProperty(SkeletonBlock.PART, SkeletonBlock.EnumPartType.BOTTOM);
 					
 					worldIn.setBlockState(posIn, skeletonState, 10);
-					worldIn.setBlockState(pos, skeletonState.withProperty(BlockBed.PART, BlockBed.EnumPartType.HEAD), 10);
+					Treasure.logger.debug("placing skeleton bottom");
+					worldIn.setBlockState(pos, skeletonState.withProperty(SkeletonBlock.PART, SkeletonBlock.EnumPartType.TOP), 10);
+					Treasure.logger.debug("placing skeleton top");
 					SoundType soundtype = skeletonState.getBlock().getSoundType(skeletonState, worldIn, posIn, player);
 					worldIn.playSound((EntityPlayer) null, posIn, soundtype.getPlaceSound(), SoundCategory.BLOCKS, (soundtype.getVolume() + 1.0F) / 2.0F, soundtype.getPitch() * 0.8F);
 
