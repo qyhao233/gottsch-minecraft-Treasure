@@ -65,27 +65,16 @@ public class SkeletonItem extends ModItem {
 			EnumFacing facing = EnumFacing.getHorizontal(i);
 			BlockPos pos = posIn.offset(facing);
 			ItemStack itemStack = player.getHeldItem(hand);
-			Treasure.logger.debug("Can edit 1 -> {} @ {}", player.canPlayerEdit(posIn, facingIn, itemStack), posIn);
-			Treasure.logger.debug("Can edit 2 -> {} @ {}", player.canPlayerEdit(pos, facingIn, itemStack), pos);
 			if (player.canPlayerEdit(posIn, facingIn, itemStack) && player.canPlayerEdit(pos, facingIn, itemStack)) {
-				Treasure.logger.debug("Can edit block -> {}", pos);
 				IBlockState state2 = worldIn.getBlockState(pos);
 				boolean flag1 = state2.getBlock().isReplaceable(worldIn, pos);
 				boolean flag2 = flag || worldIn.isAirBlock(posIn);
 				boolean flag3 = flag1 || worldIn.isAirBlock(pos);
-				Treasure.logger.debug("Flag1 -> {}", flag1);
-				Treasure.logger.debug("Flag2 -> {}", flag2);
-				Treasure.logger.debug("Flag3 -> {}", flag3);
-				Treasure.logger.debug("is Top Solid (posIn) -> {} @ {}", worldIn.getBlockState(posIn.down()).isTopSolid(), posIn.down());
-				Treasure.logger.debug("is Top Solid (pos) -> {} @ {}", worldIn.getBlockState(pos.down()).isTopSolid(), pos.down());
-				Treasure.logger.debug("is Side Solid (posIn) -> {} @ {}", worldIn.getBlockState(posIn.down()).isSideSolid(worldIn, posIn.down(), EnumFacing.UP));
-				Treasure.logger.debug("is Side Solid (pos) -> {} @ {}", worldIn.getBlockState(pos.down()).isSideSolid(worldIn, pos.down(), EnumFacing.UP));
-//				if (flag2 && flag3 && worldIn.getBlockState(posIn.down()).isTopSolid() && worldIn.getBlockState(pos.down()).isTopSolid()) {
 				if (flag2 && flag3 && worldIn.getBlockState(posIn.down()).isSideSolid(worldIn, posIn.down(), EnumFacing.UP) && 
 						worldIn.getBlockState(pos.down()).isSideSolid(worldIn, pos.down(), EnumFacing.UP)) { 
-					IBlockState skeletonState = TreasureBlocks.SKELETON.getDefaultState().withProperty(SkeletonBlock.FACING, facing)
+					IBlockState skeletonState = TreasureBlocks.SKELETON.getDefaultState().withProperty(SkeletonBlock.FACING, facing.getOpposite())
 							.withProperty(SkeletonBlock.PART, SkeletonBlock.EnumPartType.BOTTOM);
-					
+
 					worldIn.setBlockState(posIn, skeletonState, 10);
 					Treasure.logger.debug("placing skeleton bottom");
 					worldIn.setBlockState(pos, skeletonState.withProperty(SkeletonBlock.PART, SkeletonBlock.EnumPartType.TOP), 10);

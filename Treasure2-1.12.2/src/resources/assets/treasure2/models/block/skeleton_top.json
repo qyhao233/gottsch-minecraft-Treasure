@@ -1,10 +1,10 @@
 {
 	"credit": "Made with Blockbench",
 	"textures": {
-		"0": "Treasure2/skeleton",
-		"2": "Treasure2/skeleton-head",
-		"3": "Treasure2/skeleton-body",
-		"particle": "Treasure2/skeleton"
+		"0": "treasure2:blocks/skeleton",
+		"2": "treasure2:blocks/skeleton-head",
+		"3": "treasure2:blocks/skeleton-body",
+		"particle": "treasure2:blocks/skeleton"
 	},
 	"elements": [
 		{
@@ -25,12 +25,12 @@
 			"from": [4, 0, 0],
 			"to": [12, 4, 8],
 			"faces": {
-				"north": {"uv": [8, 0, 0, 4], "texture": "#missing"},
-				"east": {"uv": [8, 0, 0, 4], "texture": "#0"},
+				"north": {"uv": [8, 10, 16, 14], "texture": "#3"},
+				"east": {"uv": [0, 8, 4, 16], "rotation": 90, "texture": "#3"},
 				"south": {"uv": [8, 0, 0, 4], "texture": "#0"},
-				"west": {"uv": [0, 10, 3, 16], "rotation": 90, "texture": "#3"},
+				"west": {"uv": [4, 8, 8, 16], "rotation": 270, "texture": "#3"},
 				"up": {"uv": [8, 0, 0, 8], "rotation": 180, "texture": "#3"},
-				"down": {"uv": [8, 0, 0, 8], "rotation": 180, "texture": "#0"}
+				"down": {"uv": [8, 0, 16, 8], "rotation": 180, "texture": "#3"}
 			}
 		},
 		{
