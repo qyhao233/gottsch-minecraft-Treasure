@@ -102,8 +102,8 @@ public abstract class AbstractChestGenerator implements IChestGenerator {
 			Treasure.logger.debug("Below ground @ {}", spawnCoords.toShortString());
 
 			// select a pit generator
-			//			Pits pit = Pits.values()[random.nextInt(Pits.values().length)];
-			Pits pit = Pits.STRUCTURE_PIT;
+			Pits pit = Pits.values()[random.nextInt(Pits.values().length)];
+//			Pits pit = Pits.STRUCTURE_PIT;
 			if (pit == Pits.STRUCTURE_PIT) {
 				// select a pit from the subset
 				List<IPitGenerator> pitGens = ChestWorldGenerator.structurePitGenerators.values().stream().collect(Collectors.toList());

@@ -17,6 +17,7 @@ import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.block.AbstractChestBlock;
 import com.someguyssoftware.treasure2.block.FogBlock;
 import com.someguyssoftware.treasure2.block.ITreasureBlock;
+import com.someguyssoftware.treasure2.block.SkeletonBlock;
 import com.someguyssoftware.treasure2.block.TreasureBlocks;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
 import com.someguyssoftware.treasure2.generator.GenUtil;
@@ -118,7 +119,12 @@ public class GravestoneMarkerGenerator implements IMarkerGenerator {
 			EnumFacing facing = horizontals[random.nextInt(horizontals.length)];
 
 			// place the block
-			world.setBlockState(spawnCoords.toPos(), marker.getDefaultState().withProperty(AbstractChestBlock.FACING, facing));
+			if (marker instanceof SkeletonBlock) {
+				GenUtil.placeSkeleton(world, random, spawnCoords);
+			}
+			else {
+				world.setBlockState(spawnCoords.toPos(), marker.getDefaultState().withProperty(AbstractChestBlock.FACING, facing));
+			}
 			
 			// add fog around the block
 			if (TreasureConfig.enableFog && RandomHelper.checkProbability(random, TreasureConfig.gravestoneFogProbability)) {
