@@ -19,8 +19,10 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IStringSerializable;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -41,6 +43,10 @@ public class SkeletonBlock extends SkullAndBonesBlock {
 	public SkeletonBlock(String modID, String name, Material material) {
 		super(modID, name, material);
 		this.setDefaultState(this.blockState.getBaseState().withProperty(PART, SkeletonBlock.EnumPartType.BOTTOM));
+		this.bounds[0] =new AxisAlignedBB(0F, 0F, 0F, 1F, 0.375F, 1F);	// S
+		this.bounds[1] = new AxisAlignedBB(0F, 0F, 0F, 1F, 0.375F, 1F);	// W
+		this.bounds[2] = new AxisAlignedBB(0F, 0F, 0F, 1F, 0.375F, 1F); // N
+		this.bounds[3] = new AxisAlignedBB(0F, 0F, 0F, 1F, 0.375F, 1F);	// E
 	}
 
 	@Override
@@ -53,7 +59,7 @@ public class SkeletonBlock extends SkullAndBonesBlock {
 	 */
     @SideOnly(Side.CLIENT)
     public BlockRenderLayer getBlockLayer() {
-   		return BlockRenderLayer.CUTOUT_MIPPED;
+   		return BlockRenderLayer.CUTOUT;
     }
 	
 	/**

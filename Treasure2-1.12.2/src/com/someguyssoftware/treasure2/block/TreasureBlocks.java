@@ -402,7 +402,7 @@ public class TreasureBlocks {
 				.setBounds(stdChestBounds);
 		
 		// TODO change bounds
-		SKELETON = new SkeletonBlock(Treasure.MODID, TreasureConfig.SKELETON_ID, Material.ROCK).setBounds(stdChestBounds);
+		SKELETON = new SkeletonBlock(Treasure.MODID, TreasureConfig.SKELETON_ID, Material.ROCK);
 		
 		// add all the gravestones to the list
 		gravestones = new ArrayList<>();
