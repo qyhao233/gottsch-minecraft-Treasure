@@ -18,11 +18,14 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
  * @author Mark Gottschling on Feb 2, 2019
@@ -44,6 +47,14 @@ public class SkeletonBlock extends SkullAndBonesBlock {
 	protected BlockStateContainer createBlockState() {
 		return new BlockStateContainer(this, new IProperty[] {FACING, PART});
 	}
+	
+	/**
+	 * This is required to process alpha channels in block textures
+	 */
+    @SideOnly(Side.CLIENT)
+    public BlockRenderLayer getBlockLayer() {
+   		return BlockRenderLayer.CUTOUT_MIPPED;
+    }
 	
 	/**
 	 * Called when a neighboring block was changed and marks that this state should

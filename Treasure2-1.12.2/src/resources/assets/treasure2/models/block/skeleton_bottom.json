@@ -1,9 +1,9 @@
 {
 	"credit": "Made with Blockbench",
-    "parent": "treasure2:block/ore_parent",	
+	"parent": "treasure2:block/ore_parent",
 	"textures": {
 		"0": "treasure2:blocks/skeleton_bottom",
-		"particle": "treasure2:blocks/skeleton_bottom"
+		"particle": "treasure2:blocks/skeleton_head"
 	},
 	"elements": [
 		{
@@ -21,8 +21,8 @@
 		},
 		{
 			"name": "leftArm",
-			"from": [3, 0, 10],
-			"to": [5, 2, 16],
+			"from": [3, 0, 12],
+			"to": [5, 2, 18],
 			"rotation": {"angle": -22.5, "axis": "y", "origin": [8, 8, 8]},
 			"faces": {
 				"north": {"uv": [12, 0, 15, 3], "texture": "#0"},
@@ -35,9 +35,8 @@
 		},
 		{
 			"name": "rightArm",
-			"from": [11, 0, 10],
-			"to": [13, 2, 16],
-			"rotation": {"angle": 22.5, "axis": "y", "origin": [8, 8, 8]},
+			"from": [13, 0, 9],
+			"to": [15, 2, 15],
 			"faces": {
 				"north": {"uv": [13, 7, 16, 10], "texture": "#0"},
 				"east": {"uv": [0, 13, 6, 16], "texture": "#0"},

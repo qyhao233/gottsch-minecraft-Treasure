@@ -18,6 +18,7 @@ import com.someguyssoftware.treasure2.Treasure;
 import com.someguyssoftware.treasure2.block.AbstractChestBlock;
 import com.someguyssoftware.treasure2.block.FogBlock;
 import com.someguyssoftware.treasure2.block.ITreasureBlock;
+import com.someguyssoftware.treasure2.block.SkeletonBlock;
 import com.someguyssoftware.treasure2.block.TreasureBlocks;
 import com.someguyssoftware.treasure2.chest.ChestInfo;
 import com.someguyssoftware.treasure2.config.TreasureConfig;
@@ -332,6 +333,39 @@ public class GenUtil {
 		return isSuccess;
 	}
 
+	public static void placeSkeleton(World world, Random random, ICoords coords) {
+		// select a random facing direction
+		EnumFacing[] horizontals = EnumFacing.HORIZONTALS;
+		EnumFacing facing = horizontals[random.nextInt(horizontals.length)];
+
+		// TODO add offset() to coords in gottschcore
+		ICoords coords2 = new Coords(coords.toPos().offset(facing));
+		
+		Cube cube = new Cube(world, coords);
+		Cube cube2 = new Cube(world, coords2);
+
+//		IBlockState state2 = world.getBlockState(coords2.toPos());
+		boolean flag = cube.isReplaceable();
+		boolean flag1 = cube2.isReplaceable();
+		boolean flag2 = flag || cube.isAir();
+		boolean flag3 = flag1 || cube2.isAir();
+		
+		// TODO add cube.isSideSolid
+		if (flag2 && flag3 && world.getBlockState(coords.down(1).toPos()).isSideSolid(world, coords.down(1).toPos(), EnumFacing.UP) && 
+				world.getBlockState(coords2.down(1).toPos()).isSideSolid(world, coords2.down(1).toPos(), EnumFacing.UP)) { 
+			IBlockState skeletonState = TreasureBlocks.SKELETON.getDefaultState().withProperty(SkeletonBlock.FACING, facing.getOpposite())
+					.withProperty(SkeletonBlock.PART, SkeletonBlock.EnumPartType.BOTTOM);
+			
+			world.setBlockState(coords.toPos(), skeletonState, 3);
+//			Treasure.logger.debug("placing skeleton bottom");
+			world.setBlockState(coords2.toPos(), skeletonState.withProperty(SkeletonBlock.PART, SkeletonBlock.EnumPartType.TOP), 3);
+//			Treasure.logger.debug("placing skeleton top");
+
+			world.notifyNeighborsRespectDebug(coords.toPos(), cube.getState().getBlock(), false);
+			world.notifyNeighborsRespectDebug(coords2.toPos(), cube.getState().getBlock(), false);
+		}
+	}
+	
 	/**
 	 * 
 	 * @param world
@@ -403,127 +437,6 @@ public class GenUtil {
 			}
 		}	
 	}
-	
-//	/**
-//	 * Gets the surface position. Any aboveground land surface or surface of body of water/lava.
-//	 * Also takes into account Treasure blocks - gravestones, chests etc.
-//	 * Not necessarily valid.
-//	 * @param world
-//	 * @param x
-//	 * @param y
-//	 * @param z
-//	 * @return
-//	 */
-//	public static BlockPos getAnySurfacePos(final World world, final BlockPos posIn) {
-//		BlockPos pos = new BlockPos(posIn);		
-//		boolean isGoodBlock = false;
-//		
-//		// check if the block below the chest is viable
-//		while (!isGoodBlock) {
-//			IBlockState blockState = world.getBlockState(pos.add(0, -1, 0));
-//			Block block = blockState.getBlock();
-//			
-//			if (blockState.getBlock() == Blocks.lava || blockState.getBlock() == Blocks.water) {
-//				return pos;		
-//			}
-//
-//			if (blockState != null && (block.isAir(world, pos) || block.isBurning(world, pos) || block.isLeaves(world, pos) || block.isFoliage(world, pos))
-//					|| block.getMaterial().isReplaceable() || block == Blocks.log || block == Blocks.log2
-//					|| block instanceof GenericBlockContainer || block instanceof IBoundsBlock) {
-//				pos = pos.add(0, -1, 0);
-//			}
-//			else {
-//				isGoodBlock = true;
-//			}
-//			
-//			if (pos.getY() < 0) {
-//				return null;
-//			}
-//		}		
-//		return pos;
-//	}
-	
-	/**
-	 * Gets the first land surface position, can be under water/lava,  from the given starting point.
-	 * Also takes into account Treasure blocks - gravestones, chests etc.
-	 * 
-	 * @param world
-	 * @param x
-	 * @param y
-	 * @param z
-	 * @return
-	 */
-//	public static BlockPos getAnyLandSurfacePos(final World world, final BlockPos posIn) {
-//		BlockPos pos = new BlockPos(posIn);		
-//		boolean isGoodBlock = false;
-//		
-//		// check if the block below the chest is viable
-//		while (!isGoodBlock) {
-//			IBlockState blockState = world.getBlockState(pos.add(0, -1, 0));
-//			Block block = blockState.getBlock();
-//
-//			/*
-//			 * also check against ice as it is not a valid "land" surface - it can generate onto top of water.
-//			 */
-//			if (blockState != null && (block.isAir(world, pos) || block == Blocks.water || block == Blocks.lava
-//					|| block.getMaterial().isReplaceable() || block.isBurning(world, pos) || block.isLeaves(world, pos) || block.isFoliage(world, pos))
-//					|| block == Blocks.log || block == Blocks.log2 || block == Blocks.ice
-//					|| block instanceof GenericBlockContainer || block instanceof IBoundsBlock) {
-//				pos = pos.add(0, -1, 0);
-//			}
-//			else {
-//				isGoodBlock = true;
-//			}
-//			
-//			if (pos.getY() < 0) {
-//				return null;
-//			}
-//		}		
-//		return pos;
-//	}
-	
-	/**
-	 * Gets the first <b>valid</b>  land surface position (not on water or on lava) from the given starting point.
-	 * Also takes into account Treasure blocks - gravestones, chests etc.
-	 * 
-	 * @param world
-	 * @param x
-	 * @param y
-	 * @param z
-	 * @return
-	 */
-//	public static BlockPos getDryLandSurfacePos(final World world, final BlockPos posIn) {
-//		BlockPos pos = new BlockPos(posIn);		
-//		boolean isGoodBlock = false;
-//		
-//		// check if the block below the chest is viable
-//		while (!isGoodBlock) {
-//			IBlockState blockState = world.getBlockState(pos.add(0, -1, 0));
-//			Block block = blockState.getBlock();
-//			
-//			if (blockState.getBlock() == Blocks.lava || blockState.getBlock() == Blocks.water) {
-//				// return without generating.
-//				return null;				
-//			}
-//
-//			/*
-//			 * also check against ice as it is not a valid "land" surface - it can generate onto top of water.
-//			 */
-//			if (blockState != null && (block.isAir(world, pos) || block.isBurning(world, pos) || block.isLeaves(world, pos) || block.isFoliage(world, pos))
-//					|| block.getMaterial().isReplaceable() || block == Blocks.log || block == Blocks.log2 || block == Blocks.ice
-//					|| block instanceof GenericBlockContainer || block instanceof IBoundsBlock) {
-//				pos = pos.add(0, -1, 0);
-//			}
-//			else {
-//				isGoodBlock = true;
-//			}
-//			
-//			if (pos.getY() < 0) {
-//				return null;
-//			}
-//		}		
-//		return pos;
-//	}
 	
 	/**
 	 * Returns a <b>valid</b> pos underground.
@@ -624,29 +537,6 @@ public class GenUtil {
 		}
 	}
 
-	
-//	/**
-//	 * 
-//	 * @param nearestChestCoords
-//	 * @param chest
-//	 */
-//	public static void placeKeyInChest(World world, ICoords nearestChestCoords, TileEntity chest) {
-//		// get the chest tile entity at the nearest poi
-//		AbstractTreasureChestTileEntity nearestChestTileEntity   = (AbstractTreasureChestTileEntity) world.getTileEntity(nearestChestCoords.toBlockPos());
-//
-//		// create an item stack of obsidian key
-//		ItemStack keyStack = new ItemStack(TreasureItems.obsidianKey);
-//        if (!keyStack.hasTagCompound()) {
-//        	keyStack.setTagCompound(new NBTTagCompound());
-//        }
-//        // save the key cuts to the key item stack
-//        keyStack.getTagCompound().setString(AbstractUniqueTreasureChestTileEntity.NBT_KEY_CUTS, ((IUniqueTreasureChestTileEntity)chest).getKeyCuts());
-//
-//		// place obsidian key in chest
-//		nearestChestTileEntity.getProxy().setInventorySlotContents(UNIQUE_KEY_SLOT, keyStack);
-//		
-//		Treasure.logger.info(String.format("CHEATER! Obsidian Key generated @ %d %d %d", nearestChestCoords.getX(), nearestChestCoords.getY(), nearestChestCoords.getZ()));
-//	}
 	/**
 	 * 
 	 * @param world
