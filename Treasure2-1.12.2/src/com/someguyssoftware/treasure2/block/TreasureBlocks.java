@@ -398,10 +398,8 @@ public class TreasureBlocks {
 		SKULL_CROSSBONES = new SkullAndBonesBlock(
 				Treasure.MODID, 
 				TreasureConfig.SKULL_CROSSBONES_ID, 
-				Material.ROCK)
-				.setBounds(stdChestBounds);
+				Material.ROCK);
 		
-		// TODO change bounds
 		SKELETON = new SkeletonBlock(Treasure.MODID, TreasureConfig.SKELETON_ID, Material.ROCK);
 		
 		// add all the gravestones to the list
@@ -554,6 +552,7 @@ public class TreasureBlocks {
 					GRAVESTONE3_POLISHED_DIORITE,
 					GRAVESTONE3_OBSIDIAN,
 					SKULL_CROSSBONES,
+					SKELETON,
 					WISHING_WELL_BLOCK,
 					FOG_BLOCK,
 					HIGH_FOG_BLOCK,
@@ -587,7 +586,6 @@ public class TreasureBlocks {
 			};
 			registry.registerAll(blocks);	
 			// register speciality chests separately (so they aren't in the rarity map)
-			registry.register(SKELETON); // something is up with this block - probably the getState(), getMeta() methods
 			registry.register(WITHER_CHEST);
 			registry.register(SKULL_CHEST);
 			registry.register(GOLD_SKULL_CHEST);
