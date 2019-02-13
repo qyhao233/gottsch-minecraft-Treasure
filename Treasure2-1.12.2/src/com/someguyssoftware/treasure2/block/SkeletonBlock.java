@@ -53,21 +53,17 @@ public class SkeletonBlock extends SkullAndBonesBlock {
 	 */
 	public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos) {
 		EnumFacing enumfacing = (EnumFacing) state.getValue(FACING);
-Treasure.logger.debug("in neighbor changed.");
 		if (state.getValue(PART) == SkeletonBlock.EnumPartType.BOTTOM) {
-			// if the head is something other than SkeletonBlock, indicating that is has
-			// been destroyed
-			if (worldIn.getBlockState(pos.offset(enumfacing)).getBlock() != this) {
-				Treasure.logger.debug("block has been destroyed for some reason");
+			// if the head is something other than SkeletonBlock, indicating that is has been destroyed
+			if (worldIn.getBlockState(pos.offset(enumfacing.getOpposite())).getBlock() != this) {
 				worldIn.setBlockToAir(pos);
 			}
 		}
 		// this is the the head
-		else if (worldIn.getBlockState(pos.offset(enumfacing.getOpposite())).getBlock() != this) {
+		else if (worldIn.getBlockState(pos.offset(enumfacing)).getBlock() != this) {
 			if (WorldInfo.isServerSide(worldIn)) {
 				this.dropBlockAsItem(worldIn, pos, state, 0);
 			}
-
 			worldIn.setBlockToAir(pos);
 		}
 	}

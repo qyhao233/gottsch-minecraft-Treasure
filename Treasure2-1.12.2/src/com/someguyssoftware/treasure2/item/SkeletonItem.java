@@ -74,11 +74,10 @@ public class SkeletonItem extends ModItem {
 						worldIn.getBlockState(pos.down()).isSideSolid(worldIn, pos.down(), EnumFacing.UP)) { 
 					IBlockState skeletonState = TreasureBlocks.SKELETON.getDefaultState().withProperty(SkeletonBlock.FACING, facing.getOpposite())
 							.withProperty(SkeletonBlock.PART, SkeletonBlock.EnumPartType.BOTTOM);
-
-					worldIn.setBlockState(posIn, skeletonState, 10);
-					Treasure.logger.debug("placing skeleton bottom");
-					worldIn.setBlockState(pos, skeletonState.withProperty(SkeletonBlock.PART, SkeletonBlock.EnumPartType.TOP), 10);
-					Treasure.logger.debug("placing skeleton top");
+					
+					worldIn.setBlockState(posIn, skeletonState, 3);
+					worldIn.setBlockState(pos, skeletonState.withProperty(SkeletonBlock.PART, SkeletonBlock.EnumPartType.TOP), 3);
+					
 					SoundType soundtype = skeletonState.getBlock().getSoundType(skeletonState, worldIn, posIn, player);
 					worldIn.playSound((EntityPlayer) null, posIn, soundtype.getPlaceSound(), SoundCategory.BLOCKS, (soundtype.getVolume() + 1.0F) / 2.0F, soundtype.getPitch() * 0.8F);
 
