@@ -41,9 +41,11 @@ public class WitchDenGenerator {
 	private static final String WITCH_DEN_LOCATION = "treasure:special/witch-den";
 
 	private static final String[] WITCH_DEN_LOCATIONS = {
-			"treasure:special/witch-den-base",
-			"treasure:special/witch-den-mid",
-			"treasure:special/witch-den-top"
+			"treasure:aboveground/witch/witch-den1",
+			"treasure:aboveground/witch/witch-den2",
+			"treasure:aboveground/witch/witch-den3",
+			"treasure:aboveground/witch/witch-den4",
+			"treasure:aboveground/witch/witch-den5"
 	};
 	
 	/**
