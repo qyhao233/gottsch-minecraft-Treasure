@@ -77,7 +77,7 @@ public class SpawnWitchDenOnlyCommand extends CommandBase {
 		}
 		catch(Exception e) {
 			player.sendMessage(new TextComponentString("Error:  " + e.getMessage()));
-			Treasure.logger.error("Error generating Treasure! pit:", e);
+			Treasure.logger.error("Error generating Treasure! witch den:", e);
 			e.printStackTrace();
 		}
 	}

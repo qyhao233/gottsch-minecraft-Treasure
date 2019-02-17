@@ -40,10 +40,12 @@ import static com.someguyssoftware.treasure2.enums.StructureMarkers.*;
  * @author Mark Gottschling on Jan 19, 2019
  *
  */
+// TODO redo this. doesn't work well for specials like witch's den, plus doesn't work well with generic template manager unless they key wasn't StructureType but a String or Integer etc
 public class TreasureTemplateManager {
 	public enum StructureType {
 		ABOVEGROUND,
-		UNDERGROUND
+		UNDERGROUND,
+		WITCH
 	};
 	
 	/*
@@ -140,11 +142,12 @@ public class TreasureTemplateManager {
 	}
 	
 	/**
-	 * 
+	 * @deprecated use getTemplatesByType(type)
 	 * @param server
 	 * @param id
 	 * @return
 	 */
+	@Deprecated
 	public Template getTemplate(/*@Nullable MinecraftServer server, */ResourceLocation r) {
 //		String s = r.getResourcePath();
 		String s = r.toString();

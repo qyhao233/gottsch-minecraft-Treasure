@@ -220,6 +220,14 @@ public class TreasureTemplate extends Template {
 		}
 	}
 
+	/**
+	 * 
+	 * @param worldIn
+	 * @param pos
+	 * @param mirrorIn
+	 * @param rotationIn
+	 * @param aabb
+	 */
 	private void addEntitiesToWorld(World worldIn, BlockPos pos, Mirror mirrorIn, Rotation rotationIn, @Nullable StructureBoundingBox aabb) {
 		PlacementSettings placement = new PlacementSettings();
 		placement.setRotation(rotationIn).setMirror(mirrorIn);
@@ -402,10 +410,9 @@ public class TreasureTemplate extends Template {
 			}
 			this.blocks.add(new TreasureTemplate.BlockInfo(blockPos, blockState, nbttagcompound1));
 			
-			// TODO not reading in proximity spawners for some reason
 			// check if a scan block
 			Block block = blockState.getBlock();
-			if (scanForBlocks.contains(block)) {
+			if (block != Blocks.AIR && scanForBlocks.contains(block)) {
 				// add pos to map
 				Treasure.logger.debug("template map adding block -> {} with pos -> {}", block.getRegistryName(), blockPos);
 				map.put(block, new Coords(blockPos));

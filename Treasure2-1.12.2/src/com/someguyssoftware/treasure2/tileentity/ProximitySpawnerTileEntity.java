@@ -94,7 +94,12 @@ public class ProximitySpawnerTileEntity extends AbstractProximityTileEntity {
     	for (int i = 0; i < mobCount; i++) {
 
             Entity entity = EntityList.createEntityByIDFromName(getMobName(), world);
-
+            if (entity == null) {
+            	Treasure.logger.debug("unable to create entity -> {}", getMobName());
+            	selfDestruct();
+            	return;
+            }
+            
             // NOTE 4D = spawn range
             double x = (double)blockCoords.getX() + (world.rand.nextDouble() - world.rand.nextDouble()) * 4D + 0.5D;
             double y = (double)(blockCoords.getY() + world.rand.nextInt(3) - 1);
