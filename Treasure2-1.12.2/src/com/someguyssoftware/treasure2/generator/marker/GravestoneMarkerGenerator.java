@@ -113,13 +113,14 @@ public class GravestoneMarkerGenerator implements IMarkerGenerator {
 			Block marker = null;
 			// grab a random marker
 			marker = TreasureBlocks.gravestones.get(random.nextInt(TreasureBlocks.gravestones.size()));
-			
+			Treasure.logger.debug("marker class -> {}", marker.getClass().getSimpleName());
 			// select a random facing direction
 			EnumFacing[] horizontals = EnumFacing.HORIZONTALS;
 			EnumFacing facing = horizontals[random.nextInt(horizontals.length)];
 
 			// place the block
 			if (marker instanceof SkeletonBlock) {
+				Treasure.logger.debug("should be placing skeleton block -> {}", spawnCoords.toShortString());
 				GenUtil.placeSkeleton(world, random, spawnCoords);
 			}
 			else {

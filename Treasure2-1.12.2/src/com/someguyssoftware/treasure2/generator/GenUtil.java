@@ -333,6 +333,12 @@ public class GenUtil {
 		return isSuccess;
 	}
 
+	/**
+	 * 
+	 * @param world
+	 * @param random
+	 * @param coords
+	 */
 	public static void placeSkeleton(World world, Random random, ICoords coords) {
 		// select a random facing direction
 		EnumFacing[] horizontals = EnumFacing.HORIZONTALS;

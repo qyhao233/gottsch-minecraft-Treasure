@@ -174,6 +174,7 @@ public class TreasureLootTables {
 		WITHER_CHEST_LOOT_TABLE = lootTableManager.getLootTableFromLocation(new ResourceLocation(Treasure.MODID + ":chests/wither_chest"));
 		SKULL_CHEST_LOOT_TABLE = lootTableManager.getLootTableFromLocation(new ResourceLocation(Treasure.MODID + ":chests/skull_chest"));
 		GOLD_SKULL_CHEST_LOOT_TABLE = lootTableManager.getLootTableFromLocation(new ResourceLocation(Treasure.MODID + ":chests/gold_skull_chest"));
+		CAULDRON_CHEST_LOOT_TABLE = lootTableManager.getLootTableFromLocation(new ResourceLocation(Treasure.MODID + ":chests/cauldron_chest"));
 
 		// for every entry in the RESOURCE_LOCATION_TABLE add to the LOOT_TABLES_TABLE
 		for(Table.Cell<String, Rarity, List<ResourceLocation>> cell : CHEST_LOOT_TABLES_RESOURCE_LOCATION_TABLE.cellSet()) {
